@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="stylesheet.css">
+    <title>Iphone</title>
+</head>
+<body>
+    <main class="main">
+        <div class="iphone">
+            <input class="iphone__silent-mode-switch" type="checkbox">
+            <button class="iphone__volume-up-btn" type="button"></button>
+            <button class="iphone__volume-down-btn" type="button"></button>
+            <div class="iphone__front-camera"></div>
+            <div class="iphone__speaker"></div>
+            <div class="iphone__ambient-light-sensor"></div>
+            <button class="iphone__sleep-btn" type="button"></button>
+            <button class="iphone__home-btn" type="button"></button>
+            <!-- think about canvas ↓ -->
+            <div class="screen">
+                <header class="screen__header">
+                    <span class="screen__signal-strength-el">•••••</span>
+                    <span class="screen__mobile-provider">SingTel</span>
+                    <div class="screen__wi-fi-icon"></div>
+                    <div class="screen__control-center-line"></div>
+                    <div class="screen__battery-level-icon"></div>
+                </header>
+                <section class="screen__time-date-widget">
+                    <time class="screen__time-date-widget-time">5:18</time>
+                    <h2 class="screen__time-date-widget-date">Wednesday, 24 September</h2>
+                </section>
+                <section class="screen__slider">
+                    <label class="screen__slider-label" for="slider">slide to unlock</label>
+                    <input class="screen__slider-input" type="range" name="slider" min="0" max="100">  
+                </section>
+                <footer class="screen__footer">
+                    <div class="screen__home-line"></div>
+                    <div class="screen__camera-icon"></div>
+                </footer>
+                
+            </div>
+        </div>
+    </main>
+</body>
+</html>

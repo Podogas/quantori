@@ -1,0 +1,18 @@
+@font-face {
+    font-family: "SF-Pro";
+    src: url(./SFPRODISPLAYREGULAR.OTF);
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: "SF-Pro";
+    src: url(./SFPRODISPLAYBOLD.OTF);
+    font-weight: bold;
+    font-style: normal;
+}
+@font-face {
+    font-family: "SF-Pro";
+    src: url(./SFPRODISPLAYTHIN.ttf);
+    font-weight: 100;
+    font-style: normal;
+}
