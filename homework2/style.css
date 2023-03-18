@@ -234,7 +234,7 @@
 
 
  
-.screen {transform: perspective(400px);
+.screen {
     /*flex is for for 2nd */
     display: flex;
     width: 100%;
