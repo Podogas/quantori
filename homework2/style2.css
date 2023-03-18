@@ -1,10 +1,6 @@
-:root {
-    /* thanks to this guy! https://codepen.io/jumarjuaton/pen/mdJYWYq it realy helped me to pick color */
-    --initialDvdColor: invert(59%) sepia(31%) saturate(7365%) brightness(92%) contrast(104%);
-    --initialDvdColor2: invert(80%) sepia(16%) saturate(6990%) brightness(111%) contrast(104%);
-    --i2: invert(12%) sepia(80%) saturate(7413%) brightness(96%) contrast(111%);
-    --i3: invert(8%) sepia(100%) saturate(6993%) brightness(109%) contrast(134%);;
-    --degreeIterationConstant: 30deg;
+* {
+    margin: 0;
+    padding: 0;
 }
 @keyframes hor-movement {
     0% {
@@ -21,23 +17,6 @@
     }
     100% {
         transform: translateY(59vmin) translateY(-100%);
-    }
-  }
-  @keyframes hor-movement1 {
-    0% {
-        transform: translateX(90%);
-    }
-    100% {
-        transform: translateX(0);
-    }
-  }
-  
-  @keyframes ver-movement1 {
-    0% {
-        transform: translateY(100vh) translateY(-100%);
-    }
-    100% {
-        transform: translateY(0);
     }
   }
   @keyframes hor-color {
@@ -72,107 +51,38 @@
         filter: var(--initialDvdColor) hue-rotate(270deg);
     }
   }
-  
   @keyframes ver-color {
     0% , 9.99% {
-        filter: var(--initialDvdColor2) hue-rotate(0deg);
+        filter: var(--initialDvdColor) hue-rotate(0deg);
     }
     10% , 19.99%{
-        filter: var(--initialDvdColor2) hue-rotate(180deg);
+        filter: var(--initialDvdColor) hue-rotate(180deg);
     }
     20% , 29.99%{
-        filter: var(--initialDvdColor2) hue-rotate(0deg);
+        filter: var(--initialDvdColor) hue-rotate(0deg);
     }
     30% , 39.99%{
-        filter: var(--initialDvdColor2) hue-rotate(180deg);
+        filter: var(--initialDvdColor) hue-rotate(180deg);
     }
     40% , 49.99%{
-        filter: var(--initialDvdColor2) hue-rotate(0deg);
+        filter: var(--initialDvdColor) hue-rotate(0deg);
     }
     50% , 59.99%{
-        filter: var(--initialDvdColor2) hue-rotate(180deg);
+        filter: var(--initialDvdColor) hue-rotate(180deg);
     }
     60% , 69.99%{
-        filter: var(--initialDvdColor2) hue-rotate(0deg);
+        filter: var(--initialDvdColor) hue-rotate(0deg);
     }
     70% , 79.99%{
-        filter: var(--initialDvdColor2) hue-rotate(180deg);
+        filter: var(--initialDvdColor) hue-rotate(180deg);
     }
     80% , 89.99%{
-        filter: var(--initialDvdColor2) hue-rotate(0deg);
+        filter: var(--initialDvdColor) hue-rotate(0deg);
     }
     90% , 100%{
-        filter: var(--initialDvdColor2) hue-rotate(180deg);
+        filter: var(--initialDvdColor) hue-rotate(180deg);
     }
   }
-
-
-@keyframes hor-color1 {
-    0% , 9.99% {
-        filter: var(--i2) hue-rotate(90deg);
-    }
-    10% , 19.99%{
-        filter: var(--i2) hue-rotate(270deg);
-    }
-    20% , 29.99%{
-        filter: var(--i2) hue-rotate(90deg);
-    }
-    30% , 39.99%{
-        filter: var(--i2) hue-rotate(270deg);
-    }
-    40% , 49.99%{
-        filter: var(--i2) hue-rotate(90deg);
-    }
-    50% , 59.99%{
-        filter: var(--i2) hue-rotate(270deg);
-    }
-    60% , 69.99%{
-        filter: var(--i2) hue-rotate(90deg);
-    }
-    70% , 79.99%{
-        filter: var(--i2) hue-rotate(270deg);
-    }
-    80% , 89.99%{
-        filter: var(--i2) hue-rotate(90deg);
-    }
-    90% , 100%{
-        filter: var(--i2) hue-rotate(270deg);
-    }
-  }
-  
-  @keyframes ver-color1 {
-    0% , 9.99% {
-        filter: var(--i3) hue-rotate(0deg);
-    }
-    10% , 19.99%{
-        filter: var(--i3) hue-rotate(180deg);
-    }
-    20% , 29.99%{
-        filter: var(--i3) hue-rotate(0deg);
-    }
-    30% , 39.99%{
-        filter: var(--i3) hue-rotate(180deg);
-    }
-    40% , 49.99%{
-        filter: var(--i3) hue-rotate(0deg);
-    }
-    50% , 59.99%{
-        filter: var(--i3) hue-rotate(180deg);
-    }
-    60% , 69.99%{
-        filter: var(--i3) hue-rotate(0deg);
-    }
-    70% , 79.99%{
-        filter: var(--i3) hue-rotate(180deg);
-    }
-    80% , 89.99%{
-        filter: var(--i3) hue-rotate(0deg);
-    }
-    90% , 100%{
-        filter: var(--i32) hue-rotate(180deg);
-    }
-  }
-  
   @keyframes cubeRotation {
     0% {
         transform: rotateY(0deg) rotateX(0deg);
@@ -181,8 +91,9 @@
         transform: rotateY(360deg) rotateX(360deg);
     }
 }  
-
+/* screen */
 .vertical-movement-wrapper {
+    --initialDvdColor: invert(59%) sepia(31%) saturate(7365%) brightness(92%) contrast(104%);
     animation-name: ver-movement, ver-color;
     animation-duration: 4.242s, 42.42s;
     animation-iteration-count: infinite, infinite;
@@ -191,6 +102,7 @@
   }
 
 .horizontal-movement-wrapper {
+    --initialDvdColor: invert(80%) sepia(16%) saturate(6990%) brightness(111%) contrast(104%);
     animation-name: hor-movement, hor-color;
     animation-duration: 9.423s, 94.23s;
     animation-iteration-count: infinite, infinite;
@@ -205,25 +117,11 @@
     width: 15%;
  }
 
-
-
-
-
-
-
-
-
-
-
-
-* {
-    margin: 0;
-    padding: 0;
-}
 .screen {
     background-color: #e6dfdf;
     height: 100vh;
 }
+ /* Cube */
 .cubic-screen {
     display: flex;
     width: 100%;
@@ -233,11 +131,13 @@
     margin:0;
     padding:0;
 }
+
 .cubic-screen__container {
     width: 60vmin;
     height: 60vmin;
     perspective: 300vmin;
 }
+
 .cube__wrapper {
     animation-name: cubeRotation;
     animation-duration: 20s;
@@ -249,6 +149,7 @@
     height: 100%;
     transform-style: preserve-3d;
 }
+
 .cube__edge {
     display: block;
     position: absolute;
