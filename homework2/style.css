@@ -1,11 +1,4 @@
-:root {
-    /* thanks to this guy! https://codepen.io/jumarjuaton/pen/mdJYWYq it realy helped me to pick color */
-    --initialDvdColor: invert(59%) sepia(31%) saturate(7365%) brightness(92%) contrast(104%);
-    --initialDvdColor2: invert(80%) sepia(16%) saturate(6990%) brightness(111%) contrast(104%);
-    --i2: invert(12%) sepia(80%) saturate(7413%) brightness(96%) contrast(111%);
-    --i3: invert(8%) sepia(100%) saturate(6993%) brightness(109%) contrast(134%);;
-    --degreeIterationConstant: 30deg;
-}
+
 * {
     margin: 0;
     padding: 0;
@@ -95,107 +88,41 @@
   
   @keyframes ver-color {
     0% , 9.99% {
-        filter: var(--initialDvdColor2) hue-rotate(0deg);
+        filter: var(--initialDvdColor) hue-rotate(0deg);
     }
     10% , 19.99%{
-        filter: var(--initialDvdColor2) hue-rotate(180deg);
+        filter: var(--initialDvdColor) hue-rotate(180deg);
     }
     20% , 29.99%{
-        filter: var(--initialDvdColor2) hue-rotate(0deg);
+        filter: var(--initialDvdColor) hue-rotate(0deg);
     }
     30% , 39.99%{
-        filter: var(--initialDvdColor2) hue-rotate(180deg);
+        filter: var(--initialDvdColor) hue-rotate(180deg);
     }
     40% , 49.99%{
-        filter: var(--initialDvdColor2) hue-rotate(0deg);
+        filter: var(--initialDvdColor) hue-rotate(0deg);
     }
     50% , 59.99%{
-        filter: var(--initialDvdColor2) hue-rotate(180deg);
+        filter: var(--initialDvdColor) hue-rotate(180deg);
     }
     60% , 69.99%{
-        filter: var(--initialDvdColor2) hue-rotate(0deg);
+        filter: var(--initialDvdColor) hue-rotate(0deg);
     }
     70% , 79.99%{
-        filter: var(--initialDvdColor2) hue-rotate(180deg);
+        filter: var(--initialDvdColor) hue-rotate(180deg);
     }
     80% , 89.99%{
-        filter: var(--initialDvdColor2) hue-rotate(0deg);
+        filter: var(--initialDvdColor) hue-rotate(0deg);
     }
     90% , 100%{
-        filter: var(--initialDvdColor2) hue-rotate(180deg);
+        filter: var(--initialDvdColor) hue-rotate(180deg);
     }
   }
-/* hor22 */
 
-
-@keyframes hor-color1 {
-    0% , 9.99% {
-        filter: var(--i2) hue-rotate(90deg);
-    }
-    10% , 19.99%{
-        filter: var(--i2) hue-rotate(270deg);
-    }
-    20% , 29.99%{
-        filter: var(--i2) hue-rotate(90deg);
-    }
-    30% , 39.99%{
-        filter: var(--i2) hue-rotate(270deg);
-    }
-    40% , 49.99%{
-        filter: var(--i2) hue-rotate(90deg);
-    }
-    50% , 59.99%{
-        filter: var(--i2) hue-rotate(270deg);
-    }
-    60% , 69.99%{
-        filter: var(--i2) hue-rotate(90deg);
-    }
-    70% , 79.99%{
-        filter: var(--i2) hue-rotate(270deg);
-    }
-    80% , 89.99%{
-        filter: var(--i2) hue-rotate(90deg);
-    }
-    90% , 100%{
-        filter: var(--i2) hue-rotate(270deg);
-    }
-  }
-  
-  @keyframes ver-color1 {
-    0% , 9.99% {
-        filter: var(--i3) hue-rotate(0deg);
-    }
-    10% , 19.99%{
-        filter: var(--i3) hue-rotate(180deg);
-    }
-    20% , 29.99%{
-        filter: var(--i3) hue-rotate(0deg);
-    }
-    30% , 39.99%{
-        filter: var(--i3) hue-rotate(180deg);
-    }
-    40% , 49.99%{
-        filter: var(--i3) hue-rotate(0deg);
-    }
-    50% , 59.99%{
-        filter: var(--i3) hue-rotate(180deg);
-    }
-    60% , 69.99%{
-        filter: var(--i3) hue-rotate(0deg);
-    }
-    70% , 79.99%{
-        filter: var(--i3) hue-rotate(180deg);
-    }
-    80% , 89.99%{
-        filter: var(--i3) hue-rotate(0deg);
-    }
-    90% , 100%{
-        filter: var(--i32) hue-rotate(180deg);
-    }
-  }
-  
 
 .vertical-movement-wrapper {
+    /* thanks to this guy! https://codepen.io/jumarjuaton/pen/mdJYWYq it realy helped me to pick color */
+    --initialDvdColor: invert(80%) sepia(16%) saturate(6990%) brightness(111%) contrast(104%);    
     animation-name: ver-movement, ver-color;
     animation-duration: 4.242s, 42.42s;
     animation-iteration-count: infinite, infinite;
@@ -204,6 +131,7 @@
   }
 
 .horizontal-movement-wrapper {
+    --initialDvdColor: invert(59%) sepia(31%) saturate(7365%) brightness(92%) contrast(104%);
     animation-name: hor-movement, hor-color;
     animation-duration: 9.423s, 94.23s;
     animation-iteration-count: infinite, infinite;
@@ -212,34 +140,11 @@
  
 }
 
-
-
-.vertical-movement-wrapper1 {
-    animation-name: ver-movement1, ver-color1;
-    animation-duration: 1.414s, 14.14s;
-    animation-iteration-count: infinite, infinite;
-    animation-direction: alternate, normal;
-    animation-timing-function: linear;
-  }
-
-.horizontal-movement-wrapper1 {
-    animation-name: hor-movement1, hor-color1;
-    animation-duration: 3.141s, 31.41s;
-    animation-iteration-count: infinite, infinite;
-    animation-direction: alternate, normal;
-    animation-timing-function: linear;
- 
-}
-
-
-
- 
-.screen {transform: perspective(400px);
-    /*flex is for for 2nd */
+.screen {
     display: flex;
     width: 100%;
     height: 100vh;
-    background-color: #f2f2f2;
+    background-color: #191919;
     overflow: hidden;
 
 }
@@ -256,33 +161,3 @@
     animation-timing-function: linear;
     animation-fill-mode: forwards;
  }
-.xz-plane{
-    background-color: rgba(255, 0, 0, 0.5);
-    width: 50%;
-    height: 100vh;
-    transform: translate3d(10%,1%,1%)
-}
-.yz-plane{
-    background-color: rgba(0, 128, 0, 0.5);
-    width: 50%;
-    height: 100vh;
-}
-
-
-
-
-
-
-
-
-
-   
-.dvd-logo1 {
-    animation-name: fadeIn;
-    animation-delay: 0s;
-    animation-duration: 6s;
-    animation-iteration-count: 1;
-    animation-direction:normal;
-    animation-timing-function: linear;
-    animation-fill-mode: forwards;
-}
