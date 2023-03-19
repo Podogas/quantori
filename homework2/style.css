@@ -21,25 +21,19 @@
   }
 
 @keyframes hor-movement {
-    0% {content:'this may be';
+    0% {
         transform: translateX(0);
     }
-    1%,99% {
-        content:normal;
-    }
-    100% {content:'the worst solution';
+    100% {
         transform: translateX(90%);
     }
   }
   
   @keyframes ver-movement {
-    0% {content:'you ever see';
+    0% {
         transform: translateY(0);
     }
-    1%,99% {
-        content:normal;
-    }
-    100% {content:'in your whole life';
+    100% {
         transform: translateY(100vh) translateY(-100%);
     }
   }
