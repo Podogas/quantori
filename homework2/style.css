@@ -1,10 +1,11 @@
 :root {
-    /* thanks to this guy! https://codepen.io/jumarjuaton/pen/mdJYWYq it realy helped me to pick color */
-    --initialDvdColor: invert(59%) sepia(31%) saturate(7365%) brightness(92%) contrast(104%);
-    --initialDvdColor2: invert(80%) sepia(16%) saturate(6990%) brightness(111%) contrast(104%);
-    --i2: invert(12%) sepia(80%) saturate(7413%) brightness(96%) contrast(111%);
-    --i3: invert(8%) sepia(100%) saturate(6993%) brightness(109%) contrast(134%);;
-    --degreeIterationConstant: 30deg;
+    /* animation durations are multiplying by --<cube edge>Factor */
+    --rightFactor: 1;
+    --leftFactor: 0.3;
+    --frontFactor: 0.7;
+    --backFactor: 1.2;
+    --topFactor:0.8;
+    --bottomFactor: 0.5;
 }
 * {
     margin: 0;
@@ -12,54 +13,39 @@
 }
 @keyframes fadeIn {
     0%, 50% {
+        content: normal;
         opacity: 0;
     }
     100% {
+        content: normal;
         opacity: 1;
     }
   }
-  @keyframes fadeInVer {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
-  }  
+
 @keyframes hor-movement {
-    0% {
+    0% {content:'';
         transform: translateX(0);
     }
-    100% {
+    1%,99% {
+        content:normal;
+    }
+    100% {content:'';
         transform: translateX(90%);
     }
   }
   
   @keyframes ver-movement {
-    0% {
+    0% {content:'';
         transform: translateY(0);
     }
-    100% {
-        transform: translateY(100vh) translateY(-100%);
+    1%,99% {
+        content:normal;
+    }
+    100% {content:'';
+        transform:  translateY(59vmin) translateY(-100%);
     }
   }
-  @keyframes hor-movement1 {
-    0% {
-        transform: translateX(90%);
-    }
-    100% {
-        transform: translateX(0);
-    }
-  }
-  
-  @keyframes ver-movement1 {
-    0% {
-        transform: translateY(100vh) translateY(-100%);
-    }
-    100% {
-        transform: translateY(0);
-    }
-  }
+
   @keyframes hor-color {
     0% , 9.99% {
         filter: var(--initialDvdColor) hue-rotate(90deg);
@@ -92,158 +78,111 @@
         filter: var(--initialDvdColor) hue-rotate(270deg);
     }
   }
-  
   @keyframes ver-color {
     0% , 9.99% {
-        filter: var(--initialDvdColor2) hue-rotate(0deg);
+        filter: var(--initialDvdColor) hue-rotate(0deg);
     }
     10% , 19.99%{
-        filter: var(--initialDvdColor2) hue-rotate(180deg);
+        filter: var(--initialDvdColor) hue-rotate(180deg);
     }
     20% , 29.99%{
-        filter: var(--initialDvdColor2) hue-rotate(0deg);
+        filter: var(--initialDvdColor) hue-rotate(0deg);
     }
     30% , 39.99%{
-        filter: var(--initialDvdColor2) hue-rotate(180deg);
+        filter: var(--initialDvdColor) hue-rotate(180deg);
     }
     40% , 49.99%{
-        filter: var(--initialDvdColor2) hue-rotate(0deg);
+        filter: var(--initialDvdColor) hue-rotate(0deg);
     }
     50% , 59.99%{
-        filter: var(--initialDvdColor2) hue-rotate(180deg);
+        filter: var(--initialDvdColor) hue-rotate(180deg);
     }
     60% , 69.99%{
-        filter: var(--initialDvdColor2) hue-rotate(0deg);
+        filter: var(--initialDvdColor) hue-rotate(0deg);
     }
     70% , 79.99%{
-        filter: var(--initialDvdColor2) hue-rotate(180deg);
+        filter: var(--initialDvdColor) hue-rotate(180deg);
     }
     80% , 89.99%{
-        filter: var(--initialDvdColor2) hue-rotate(0deg);
+        filter: var(--initialDvdColor) hue-rotate(0deg);
     }
     90% , 100%{
-        filter: var(--initialDvdColor2) hue-rotate(180deg);
+        filter: var(--initialDvdColor) hue-rotate(180deg);
     }
   }
-/* hor22 */
-
-
-@keyframes hor-color1 {
-    0% , 9.99% {
-        filter: var(--i2) hue-rotate(90deg);
+  @keyframes cubeRotation {
+    0% {
+        transform: rotateY(0deg) rotateX(0deg);
     }
-    10% , 19.99%{
-        filter: var(--i2) hue-rotate(270deg);
+    100% {
+        transform: rotateY(360deg) rotateX(360deg);
     }
-    20% , 29.99%{
-        filter: var(--i2) hue-rotate(90deg);
-    }
-    30% , 39.99%{
-        filter: var(--i2) hue-rotate(270deg);
-    }
-    40% , 49.99%{
-        filter: var(--i2) hue-rotate(90deg);
-    }
-    50% , 59.99%{
-        filter: var(--i2) hue-rotate(270deg);
-    }
-    60% , 69.99%{
-        filter: var(--i2) hue-rotate(90deg);
-    }
-    70% , 79.99%{
-        filter: var(--i2) hue-rotate(270deg);
-    }
-    80% , 89.99%{
-        filter: var(--i2) hue-rotate(90deg);
-    }
-    90% , 100%{
-        filter: var(--i2) hue-rotate(270deg);
-    }
-  }
-  
-  @keyframes ver-color1 {
-    0% , 9.99% {
-        filter: var(--i3) hue-rotate(0deg);
-    }
-    10% , 19.99%{
-        filter: var(--i3) hue-rotate(180deg);
-    }
-    20% , 29.99%{
-        filter: var(--i3) hue-rotate(0deg);
-    }
-    30% , 39.99%{
-        filter: var(--i3) hue-rotate(180deg);
-    }
-    40% , 49.99%{
-        filter: var(--i3) hue-rotate(0deg);
-    }
-    50% , 59.99%{
-        filter: var(--i3) hue-rotate(180deg);
-    }
-    60% , 69.99%{
-        filter: var(--i3) hue-rotate(0deg);
-    }
-    70% , 79.99%{
-        filter: var(--i3) hue-rotate(180deg);
-    }
-    80% , 89.99%{
-        filter: var(--i3) hue-rotate(0deg);
-    }
-    90% , 100%{
-        filter: var(--i32) hue-rotate(180deg);
-    }
-  }
-  
-
+}  
+/* screen */
 .vertical-movement-wrapper {
-    animation-name: ver-movement, ver-color;
-    animation-duration: 4.242s, 42.42s;
-    animation-iteration-count: infinite, infinite;
-    animation-direction: alternate, normal;
+    animation-name: ver-movement, ver-color, fadeIn;
+    animation-iteration-count: infinite, infinite, 1;
+    animation-direction: alternate, normal, normal;
     animation-timing-function: linear;
-  }
-
+}
 .horizontal-movement-wrapper {
-    animation-name: hor-movement, hor-color;
-    animation-duration: 9.423s, 94.23s;
-    animation-iteration-count: infinite, infinite;
-    animation-direction: alternate, normal;
+    animation-name: hor-movement, hor-color, fadeIn;
+    animation-iteration-count: infinite, infinite, 1;
+    animation-direction: alternate, normal, normal;
     animation-timing-function: linear;
  
 }
-
-
-
-.vertical-movement-wrapper1 {
-    animation-name: ver-movement1, ver-color1;
-    animation-duration: 1.414s, 14.14s;
-    animation-iteration-count: infinite, infinite;
-    animation-direction: alternate, normal;
-    animation-timing-function: linear;
-  }
-
-.horizontal-movement-wrapper1 {
-    animation-name: hor-movement1, hor-color1;
-    animation-duration: 3.141s, 31.41s;
-    animation-iteration-count: infinite, infinite;
-    animation-direction: alternate, normal;
-    animation-timing-function: linear;
- 
+/* animation durations and colors for each cube edge */
+.cube__edge_right .vertical-movement-wrapper {
+    /* thanks to this guy! https://codepen.io/jumarjuaton/pen/mdJYWYq it realy helped me to pick color */
+    --initialDvdColor:  sepia(16%) saturate(6990%) brightness(111%) contrast(104%) invert(80%);
+    animation-duration: calc(4.242s*var(--rightFactor)), calc(42.42s*var(--rightFactor)), 2s;
 }
-
-
-
- 
-.screen {
-    /*flex is for for 2nd */
-    display: flex;
-    width: 100%;
-    height: 100vh;
-    background-color: #f2f2f2;
-    overflow: hidden;
-
+.cube__edge_right  .horizontal-movement-wrapper {
+    --initialDvdColor:  sepia(31%) saturate(7365%) brightness(92%) contrast(104%) invert(59%);
+    animation-duration: calc(9.423s*var(--rightFactor)), calc(94.23s*var(--rightFactor)), 2s;
 }
- .dvd-logo {
+.cube__edge_left .vertical-movement-wrapper {
+    --initialDvdColor:  sepia(16%) saturate(6990%) brightness(111%) contrast(104%) invert(10%);
+    animation-duration: calc(4.242s*var(--leftFactor)), calc(42.42s*var(--leftFactor)), 2s;
+}
+.cube__edge_left  .horizontal-movement-wrapper {
+    --initialDvdColor:  sepia(31%) saturate(7365%) brightness(92%) contrast(104%) invert(90%);
+    animation-duration: calc(9.423s*var(--leftFactor)), calc(94.23s*var(--leftFactor)), 2s;
+}
+.cube__edge_front .vertical-movement-wrapper {
+    --initialDvdColor:  sepia(16%) saturate(6990%) brightness(111%) contrast(104%) invert(5%);
+    animation-duration: calc(4.242s*var(--frontFactor)), calc(42.42s*var(--frontFactor)), 2s;
+}
+.cube__edge_front  .horizontal-movement-wrapper {
+    --initialDvdColor:  sepia(31%) saturate(7365%) brightness(92%) contrast(104%) invert(30%);
+    animation-duration: calc(9.423s*var(--frontFactor)), calc(94.23s*var(--frontFactor)), 2s;
+}
+.cube__edge_back .vertical-movement-wrapper {
+    --initialDvdColor:  sepia(16%) saturate(6990%) brightness(111%) contrast(104%) invert(76%);
+    animation-duration: calc(4.242s*var(--backFactor)), calc(42.42s*var(--backFactor)), 2s;
+}
+.cube__edge_back  .horizontal-movement-wrapper {
+    --initialDvdColor:  sepia(31%) saturate(7365%) brightness(92%) contrast(104%) invert(11%);
+    animation-duration: calc(9.423s*var(--backFactor)), calc(94.23s*var(--backFactor)), 2s;
+}
+.cube__edge_top .vertical-movement-wrapper {
+    --initialDvdColor:  sepia(16%) saturate(6990%) brightness(111%) contrast(104%) invert(76%);
+    animation-duration: calc(4.242s*var(--topFactor)), calc(42.42s*var(--topFactor)), 2s;
+}
+.cube__edge_top  .horizontal-movement-wrapper {
+    --initialDvdColor:  sepia(31%) saturate(7365%) brightness(92%) contrast(104%) invert(25%);
+    animation-duration: calc(9.423s*var(--topFactor)), calc(94.23s*var(--topFactor)), 2s;
+}
+.cube__edge_bottom .vertical-movement-wrapper {
+    --initialDvdColor:  sepia(16%) saturate(6990%) brightness(111%) contrast(104%) invert(60%);
+    animation-duration: calc(4.242s*var(--bottomFactor)), calc(42.42s*var(--bottomFactor)), 2s;
+}
+.cube__edge_bottom  .horizontal-movement-wrapper {
+    --initialDvdColor:  sepia(31%) saturate(7365%) brightness(92%) contrast(104%) invert(12%);
+    animation-duration: calc(9.423s*var(--bottomFactor)), calc(94.23s*var(--bottomFactor)), 2s;
+}
+.dvd-logo {
     opacity: 0;
     display: block;
     filter: invert(80%);
@@ -256,88 +195,69 @@
     animation-timing-function: linear;
     animation-fill-mode: forwards;
  }
-.xz-plane{
-    background-color: rgba(255, 0, 0, 0.5);
-    width: 50%;
-    height: 100vh;
-    transform: translate3d(10%,1%,1%)
-}
-.yz-plane{
-    background-color: rgba(0, 128, 0, 0.5);
-    width: 50%;
+
+.screen {
+    background-color: #e6dfdf;
     height: 100vh;
 }
-
-
-
-
-
-
-
-
-
-   
-.dvd-logo1 {
-    animation-name: fadeIn;
-    animation-delay: 0s;
-    animation-duration: 6s;
-    animation-iteration-count: 1;
-    animation-direction:normal;
-    animation-timing-function: linear;
-    animation-fill-mode: forwards;
-}
-
-
-
-
-
-    
-
-
-#main {
+ /* Cube */
+.cubic-screen {
     display: flex;
     width: 100%;
+    height: 100%;
     justify-content: center;
     align-items: center;
     margin:0;
     padding:0;
 }
-.layer {
-    
+
+.cubic-screen__container {
+    width: 60vmin;
+    height: 60vmin;
+    perspective: 300vmin;
 }
-.layer-cell {
-    display:table-cell;
-    vertical-align:middle;    
-}
-/* cube */
-.container {
-    width: 50vmin;
-    height: 50vmin;
-    perspective: 250vmin;
-}
-#cube {
-    transform: rotateY(45deg) rotateX(15deg);
+
+.cube__wrapper {
+    animation-name: cubeRotation;
+    animation-duration: 20s;
+    animation-iteration-count: infinite;
+    animation-direction:normal;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
     width: 100%;
     height: 100%;
     transform-style: preserve-3d;
 }
-#cube figure {
+
+.cube__edge {
     display: block;
     position: absolute;
-    width: 49vmin;
-    height: 49vmin;
-    border: 0.5vmin solid black;
+    width: 59vmin;
+    height: 59vmin;
+    border: 1vmin solid #292929;
 }
-
-#cube .front  { background: hsla(   0, 100%, 50%, 0.7 ); }
-#cube .back   { background: hsla(  60, 100%, 50%, 0.7 ); }
-#cube .right  { background: hsla( 120, 100%, 50%, 0.7 ); }
-#cube .left   { background: hsla( 180, 100%, 50%, 0.7 ); }
-#cube .top    { background: hsla( 240, 100%, 50%, 0.7 ); }
-#cube .bottom { background: hsla( 300, 100%, 50%, 0.7 ); }
-#cube .front  { transform: translateZ(25vmin); }
-#cube .back   { transform: rotateX(-180deg) translateZ(25vmin); }
-#cube .right { transform: rotateY(90deg) translateZ(25vmin); }
-#cube .left { transform: rotateY(-90deg) translateZ(25vmin); }
-#cube .top {  transform: rotateX(90deg) translateZ(25vmin); }
-#cube .bottom { transform: rotateX(-90deg) translateZ(25vmin); }
+ /* some kind of easter egg, colors below is from TV when there is no signal) */
+.cube__edge_right {
+    background: rgba(249, 251, 0, 0.2);
+    transform: rotateY(90deg) translateZ(30vmin); 
+}
+.cube__edge_left  { 
+    background: rgba(2, 254, 255, 0.2); 
+    transform: rotateY(-90deg) translateZ(30vmin);
+}
+.cube__edge_front { 
+    background: rgba(251, 1, 2, 0.2);
+    transform: translateZ(30vmin);
+}
+.cube__edge_back { 
+    background: rgba(253, 0, 251, 0.2);
+    transform: rotateX(-180deg) translateZ(30vmin); 
+}
+.cube__edge_top   { 
+    background: rgba(1, 255, 0, 0.2);
+    transform: rotateX(90deg) translateZ(30vmin);
+}
+.cube__edge_bottom { 
+    background: rgba(3, 1, 252, 0.2);
+    transform: rotateX(-90deg) translateZ(30vmin); 
+}
