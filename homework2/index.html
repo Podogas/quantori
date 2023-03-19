@@ -9,21 +9,49 @@
 </head>
 <body>
     <main class="screen">
-            <div class="horizontal-movement-wrapper">
+            <div class="horizontal-movement-wrapper" >
                 <div class="vertical-movement-wrapper">
-                    <img class="dvd-logo dvd-logo_first" src="./dvd_logo.png" alt="dvd logo">
+                    <img class="dvd-logo dvd-logo_first" id='dvd' src="./dvd_logo.png" alt="dvd logo">
                 </div>
             </div>
-       
-        
-            
-        
     </main>
+    <!-- im tried to play around with template, and embed element?
+        switching the being rendered state of such an <object> or <embed> element is supposed to reload entirely its inner Document, which means also its DOM tree.
+
+Now, only Safari behaves like that, Firefox never implemented that behavior, and Chrome did recently change their to match FF's one, against the specs.
+        but it works only once trying with slot tag all this was for make some magic with shadow dom, but i cannot find anything in css that can change html elements or operating with html dom -->
+        <audio id="audio" >
+            <source src="./audio/laserSFX.mp3" type="audio/mp3">
+        </audio>
+        <audio id="audio1" >
+            <source src="./audio/laserSFX.mp3" type="audio/mp3">
+        </audio>
+
+<script>    
+    const horizontalMovementWrapperEl = document.getElementsByClassName('horizontal-movement-wrapper')[0]; 
+    const verticalMovementWrapperEl = document.getElementsByClassName('vertical-movement-wrapper')[0];          
+    const audioEl = document.getElementById('audio');
+    const audioEl1 = document.getElementById('audio1');
     
+    // horizontalMovementWrapperEl.onresize = () => {console.log(1)}
+    const dvd = document.getElementById('dvd');
+  console.log(verticalMovementWrapperEl) 
+setInterval(test, 5)
+function test(){
+    const horComputedStyle = window.getComputedStyle(horizontalMovementWrapperEl);
+    const verComputedStyle = window.getComputedStyle(verticalMovementWrapperEl);
+    if(horComputedStyle.getPropertyValue('content') !== 'normal'){
+        audioEl.play(); 
+    }
+    if( verComputedStyle.getPropertyValue('content') !== 'normal'){
+        audioEl1.play(); 
+    } 
+        
+}
+
+</script>
+
     
-    <audio class="audio" >
-        <source class="audio-source" src="./audio/Hi-Hat.mp3" type="audio/mp3">
-    </audio>
   
 
     

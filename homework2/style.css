@@ -1,3 +1,9 @@
+.testButton:hover + .test {
+    display:block;
+}
+
+.test {
+}
 
 * {
     margin: 0;
@@ -5,34 +11,35 @@
 }
 @keyframes fadeIn {
     0%, 50% {
+        content: normal;
         opacity: 0;
     }
     100% {
+        content: normal;
         opacity: 1;
     }
   }
-  @keyframes fadeInVer {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
-  }  
+
 @keyframes hor-movement {
-    0% {
+    0% {content:'this may be';
         transform: translateX(0);
     }
-    100% {
+    1%,99% {
+        content:normal;
+    }
+    100% {content:'the worst solution';
         transform: translateX(90%);
     }
   }
   
   @keyframes ver-movement {
-    0% {
+    0% {content:'you ever see';
         transform: translateY(0);
     }
-    100% {
+    1%,99% {
+        content:normal;
+    }
+    100% {content:'in your whole life';
         transform: translateY(100vh) translateY(-100%);
     }
   }
@@ -123,19 +130,19 @@
 .vertical-movement-wrapper {
     /* thanks to this guy! https://codepen.io/jumarjuaton/pen/mdJYWYq it realy helped me to pick color */
     --initialDvdColor: invert(80%) sepia(16%) saturate(6990%) brightness(111%) contrast(104%);    
-    animation-name: ver-movement, ver-color;
-    animation-duration: 4.242s, 42.42s;
-    animation-iteration-count: infinite, infinite;
-    animation-direction: alternate, normal;
+    animation-name: ver-movement, ver-color, fadeIn;
+    animation-duration: 4.242s, 42.42s, 2s;
+    animation-iteration-count: infinite, infinite, 1;
+    animation-direction: alternate, normal, normal;
     animation-timing-function: linear;
   }
 
 .horizontal-movement-wrapper {
     --initialDvdColor: invert(59%) sepia(31%) saturate(7365%) brightness(92%) contrast(104%);
-    animation-name: hor-movement, hor-color;
-    animation-duration: 9.423s, 94.23s;
-    animation-iteration-count: infinite, infinite;
-    animation-direction: alternate, normal;
+    animation-name: hor-movement, hor-color, fadeIn;
+    animation-duration: 9.423s, 94.23s, 2s;
+    animation-iteration-count: infinite, infinite, 1;
+    animation-direction: alternate, normal, normal;
     animation-timing-function: linear;
  
 }
