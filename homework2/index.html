@@ -9,147 +9,51 @@
 </head>
 <body>
     <main class="screen">
-        <div class="volume">
-            <label class="volume__label" for="volume">Volume</label>
-            <input class="volume__input" name="volume" id="volumeInput" type="range" value="0.25" min="0" max="1" step="0.01" onchange="changeVolume()">
-        </div>
-        
-        <div class="warning-box hidden">
-            <p class="warning-box__description">Please, enable sound. You can do it by clicking on the button below, or by clicking on page</p>
-            <button class="warning-box__btn" type="button" onclick="hideWarningBox()">enable</button>
-        </div>   
-        <h1 class="screen__heading">Pure Madness</h1>
-        <section class="cubic-screen">
-            <section class="cubic-screen__container">
-                <div class="cube__wrapper">
-                    <figure class="cube__edge cube__edge_right">
-                        <div class="horizontal-movement-wrapper">
-                            <div class="vertical-movement-wrapper">
-                                <img class="dvd-logo dvd-logo_first" src="./dvd_logo.png" alt="dvd logo">
-                            </div>
-                        </div>
-                    </figure>
-                    <figure class="cube__edge cube__edge_left">
-                        <div class="horizontal-movement-wrapper">
-                            <div class="vertical-movement-wrapper">
-                                <img class="dvd-logo dvd-logo_first" src="./dvd_logo.png" alt="dvd logo">
-                            </div>
-                        </div>
-                    </figure>
-                    <figure class="cube__edge cube__edge_front">
-                        <div class="horizontal-movement-wrapper">
-                            <div class="vertical-movement-wrapper">
-                                <img class="dvd-logo dvd-logo_first" src="./dvd_logo.png" alt="dvd logo">
-                            </div>
-                        </div>
-                    </figure>
-                    <figure class="cube__edge cube__edge_back">
-                        <div class="horizontal-movement-wrapper">
-                            <div class="vertical-movement-wrapper">
-                                <img class="dvd-logo dvd-logo_first" src="./dvd_logo.png" alt="dvd logo">
-                            </div>
-                        </div>
-                    </figure>
-                    <figure class="cube__edge cube__edge_top">
-                        <div class="horizontal-movement-wrapper">
-                            <div class="vertical-movement-wrapper">
-                                <img class="dvd-logo dvd-logo_first" src="./dvd_logo.png" alt="dvd logo">
-                            </div>
-                        </div>
-                    </figure>
-                    <figure class="cube__edge cube__edge_bottom">
-                        <div class="horizontal-movement-wrapper">
-                            <div class="vertical-movement-wrapper">
-                                <img class="dvd-logo dvd-logo_first" src="./dvd_logo.png" alt="dvd logo">
-                            </div>
-                        </div>
-                    </figure>  
+            <div class="horizontal-movement-wrapper" >
+                <div class="vertical-movement-wrapper">
+                    <img class="dvd-logo dvd-logo_first" id='dvd' src="./dvd_logo.png" alt="dvd logo">
                 </div>
-            </section>
-        </section>
-    </div>
-</main>
+            </div>
+    </main>
+    <!-- im tried to play around with template, and embed element?
+        switching the being rendered state of such an <object> or <embed> element is supposed to reload entirely its inner Document, which means also its DOM tree.
 
-<script>
-const allAudioArray = [];   
-const warningBoxEl = document.getElementsByClassName('warning-box')[0];
-const volumeInputEl = document.getElementById('volumeInput');   
-const horizontalMovementWrapperElList = Array.from(document.getElementsByClassName('horizontal-movement-wrapper')); 
-const verticalMovementWrapperElList = Array.from(document.getElementsByClassName('vertical-movement-wrapper'));
-const regexp = /(?<=[\s]).*(?=s,)/;
-const hideWarningBox = () => {
-    warningBoxEl.classList.add('hidden');
-}
-const changeVolume = () => {
-    allAudioArray.forEach(audio => {
-        
-        audio.volume = volumeInputEl.value;
-        console.log(audio.volume, 'volume')
-    })
+Now, only Safari behaves like that, Firefox never implemented that behavior, and Chrome did recently change their to match FF's one, against the specs.
+        but it works only once trying with slot tag all this was for make some magic with shadow dom, but i cannot find anything in css that can change html elements or operating with html dom -->
+        <audio id="audio" >
+            <source src="./audio/laserSFX.mp3" type="audio/mp3">
+        </audio>
+        <audio id="audio1" >
+            <source src="./audio/laserSFX.mp3" type="audio/mp3">
+        </audio>
+
+<script>    
+    const horizontalMovementWrapperEl = document.getElementsByClassName('horizontal-movement-wrapper')[0]; 
+    const verticalMovementWrapperEl = document.getElementsByClassName('vertical-movement-wrapper')[0];          
+    const audioEl = document.getElementById('audio');
+    const audioEl1 = document.getElementById('audio1');
+    
+    // horizontalMovementWrapperEl.onresize = () => {console.log(1)}
+    const dvd = document.getElementById('dvd');
+  console.log(verticalMovementWrapperEl.animationDuration) 
+setInterval(test, 5)
+function test(){
+    const horComputedStyle = window.getComputedStyle(horizontalMovementWrapperEl);
+    const verComputedStyle = window.getComputedStyle(verticalMovementWrapperEl);
+    if(horComputedStyle.getPropertyValue('content') !== 'normal'){
+        audioEl.play(); 
     }
-    horizontalMovementWrapperElList.forEach(element => {
-        const horComputedStyle = window.getComputedStyle(element);
-        const horAnimationCycleLengthInMs = (horComputedStyle.animationDuration.match(regexp)[0])*100;
-        const clickSound = new Audio('./audio/laserSFX.mp3');
-        allAudioArray.push(clickSound);
-        // this line waiting for 1 spesific animation to  be ready, but all animations are getting ready pretty at the same time so i used this aproach, i think its sutable for our hw 
-        document.getAnimations()[1].ready.then((result) => {
-            syncSound();
-        } )
-        function syncSound() {
-            warningBoxEl.classList.add('hidden')
-            setInterval(() => {
-                console.log(element)
-                clickSound.play().catch((error) => {
-                    warningBoxEl.classList.remove('hidden');
-                    console.log(error.message);
-                })
-            }, horAnimationCycleLengthInMs);
-        }    
-    })
-    verticalMovementWrapperElList.forEach(element => {
-        const verComputedStyle = window.getComputedStyle(element);
-        const verAnimationCycleLengthInMs = (verComputedStyle.animationDuration.match(regexp)[0])*100;
-        const clickSound = new Audio('./audio/laserSFX.mp3');
-        allAudioArray.push(clickSound);
-        document.getAnimations()[1].ready.then((result) => {
-            syncSound();
-        } )
-        function syncSound() {
-            setInterval(() => {
-                console.log(allAudioArray[0].volume)
-                warningBoxEl.classList.add('hidden')
-                clickSound.play().catch((error) => {
-                    warningBoxEl.classList.remove('hidden');
-                    console.log(error.message);
-                })
-            }, verAnimationCycleLengthInMs);
-        }    
-            
-})
-changeVolume();
-// const horComputedStyle = window.getComputedStyle(horizontalMovementWrapperElList[0]);
-// const verComputedStyle = window.getComputedStyle(verticalMovementWrapperElList[0]);
-// <script>    
-//     const horizontalMovementWrapperEl = document.getElementsByClassName('horizontal-movement-wrapper')[0]; 
-//     const verticalMovementWrapperEl = document.getElementsByClassName('vertical-movement-wrapper')[0];          
-//     const audioVerEl = document.getElementById('audio-ver');
-//     const audioHorEl = document.getElementById('audio-hor');
-
-//     const horComputedStyle = window.getComputedStyle(horizontalMovementWrapperEl);
-//     const verComputedStyle = window.getComputedStyle(verticalMovementWrapperEl);
-//     const regexp = /(?<=[\s]).*(?=s,)/;
-//     const horAnimationCycleLengthInMs = (horComputedStyle.animationDuration.match(regexp)[0])*100;
-//     const verAnimationCycleLengthInMs = (verComputedStyle.animationDuration.match(regexp)[0])*100;
-//     setInterval(() => {
-//             audioVerEl.play(); 
-//     }, horAnimationCycleLengthInMs);
-//     setInterval(() => {
-//             audioHorEl.play();  
-//     }, verAnimationCycleLengthInMs);
-
-
+    if( verComputedStyle.getPropertyValue('content') !== 'normal'){
+        audioEl1.play(); 
+    } 
+        
+}
 
 </script>
+
+    
+  
+
+    
 </body>
 </html>
