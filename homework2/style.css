@@ -232,13 +232,55 @@
     border-radius: 1vmin;
     background-color: #e6dfdf;
 }
+.warning-box__btn:hover {
+    cursor: pointer;
+    background-color: rgb(255, 108, 108);
+}
 .hidden {
     display: none;
 }
-.warning-box__btn:hover {
-    cursor: pointer;
+.volume {
+    z-index: 2;
+    position: absolute;
+    right: 0;
+    width: 20vmin;
+    display: flex;
+    flex-direction: column;
     background-color: rgba(251, 1, 2, 0.1);
+    font-family: monospace;
+    font-size: 2vmin;
+    color: rgb(18, 19, 19);
+    align-items: center;
+    padding: 3vmin;
+    border-bottom-left-radius: 3vmin;
 }
+.volume__label {
+    padding: 3vmin;
+}
+.volume__input {
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: #e6dfdf;
+    width: 70%;
+    height: 0.5vmin;
+    border-radius: 1vmin;
+}
+.volume__input::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 2vmin;
+    height: 2vmin;
+    border-radius: 50%/50% ;
+    background-color: rgb(255, 108, 108);
+}
+.volume__input::-moz-range-thumb { 
+    width: 2vmin;
+    height: 2vmin;
+    border-radius: 50%/50% ;
+    background-color: rgb(255, 108, 108);
+
+}
+
  /* Cube */
 .cubic-screen {
     display: flex;
@@ -271,6 +313,7 @@
 .cube__edge {
     display: block;
     position: absolute;
+    overflow: hidden;
     width: 59vmin;
     height: 59vmin;
     border: 1vmin solid #292929;
