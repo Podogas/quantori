@@ -9,6 +9,13 @@
 </head>
 <body>
     <main class="screen">
+        <label for="volume">Громкость</label>
+        <input name="volume" id="volumeInput" type="range" value="0.25" min="0" max="1" step="0.01" onchange="changeVolume()">
+        <div class="warning-box hidden">
+            <p class="warning-box__description">Please, enable sound. You can do it by clicking on the button below, or by clicking on page</p>
+            <button class="warning-box__btn" type="button" onclick="hideWarningBox()">enable</button>
+        </div>   
+        <h1 class="screen__heading">Pure Madness</h1>
         <section class="cubic-screen">
             <section class="cubic-screen__container">
                 <div class="cube__wrapper">
@@ -59,57 +66,86 @@
         </section>
     </div>
 </main>
-<audio id="audio" >
-    <source src="./audio/laserSFX.mp3" type="audio/mp3">
-</audio>
-<audio id="audio1" >
-    <source src="./audio/laserSFX.mp3" type="audio/mp3">
-</audio>
 
-<script>    
+<script>
+const allAudioArray = [];   
+const warningBoxEl = document.getElementsByClassName('warning-box')[0];
+const volumeInputEl = document.getElementById('volumeInput');   
 const horizontalMovementWrapperElList = Array.from(document.getElementsByClassName('horizontal-movement-wrapper')); 
-const verticalMovementWrapperElList = Array.from(document.getElementsByClassName('vertical-movement-wrapper'));          
-const audioEl = document.getElementById('audio');
-const audioEl1 = document.getElementById('audio1');
-
-// horizontalMovementWrapperEl.onresize = () => {console.log(1)}
-const dvd = document.getElementById('dvd');
-console.log(verticalMovementWrapperElList) 
-setInterval(test, 5)
-function test(){
+const verticalMovementWrapperElList = Array.from(document.getElementsByClassName('vertical-movement-wrapper'));
+const regexp = /(?<=[\s]).*(?=s,)/;
+const hideWarningBox = () => {
+    warningBoxEl.classList.add('hidden');
+}
+const changeVolume = () => {
+    allAudioArray.forEach(audio => {
+        
+        audio.volume = volumeInputEl.value;
+        console.log(audio.volume, 'volume')
+    })
+    }
     horizontalMovementWrapperElList.forEach(element => {
         const horComputedStyle = window.getComputedStyle(element);
-        let isAlreadyTicked = false;
-        if(horComputedStyle.getPropertyValue('content') !== 'normal' && isAlreadyTicked == false){
-            const clickSound = new Audio('./audio/Hi-Hat.mp3');
-            clickSound.play().catch(function (error) {
-            console.log("Chrome cannot play sound without user interaction first")});
-            isAlreadyTicked = true;
-        }
-        if(horComputedStyle.getPropertyValue('content') == 'normal'){
-                isAlreadyTicked == false;
-            }
+        const horAnimationCycleLengthInMs = (horComputedStyle.animationDuration.match(regexp)[0])*100;
+        const clickSound = new Audio('./audio/laserSFX.mp3');
+        allAudioArray.push(clickSound);
+        // this line waiting for 1 spesific animation to  be ready, but all animations are getting ready pretty at the same time so i used this aproach, i think its sutable for our hw 
+        document.getAnimations()[1].ready.then((result) => {
+            syncSound();
+        } )
+        function syncSound() {
+            warningBoxEl.classList.add('hidden')
+            setInterval(() => {
+                console.log(element)
+                clickSound.play().catch((error) => {
+                    warningBoxEl.classList.remove('hidden');
+                    console.log(error.message);
+                })
+            }, horAnimationCycleLengthInMs);
+        }    
     })
     verticalMovementWrapperElList.forEach(element => {
         const verComputedStyle = window.getComputedStyle(element);
-        let isAlreadyTicked = false;
-        const clickSound = new Audio('./audio/Hi-Hat.mp3');
-        console.log(verComputedStyle.getPropertyValue('content'))
-        if( verComputedStyle.getPropertyValue('content') !== 'normal' && isAlreadyTicked == false){
-            clickSound.play().catch(function (error) {
-            console.log("Chrome cannot play sound without user interaction first")});
-            isAlreadyTicked = true;
-        }
-        if(verComputedStyle.getPropertyValue('content') == 'normal'){
-            isAlreadyTicked == false;
-            } 
-    })
-    
+        const verAnimationCycleLengthInMs = (verComputedStyle.animationDuration.match(regexp)[0])*100;
+        const clickSound = new Audio('./audio/laserSFX.mp3');
+        allAudioArray.push(clickSound);
+        document.getAnimations()[1].ready.then((result) => {
+            syncSound();
+        } )
+        function syncSound() {
+            setInterval(() => {
+                console.log(allAudioArray[0].volume)
+                warningBoxEl.classList.add('hidden')
+                clickSound.play().catch((error) => {
+                    warningBoxEl.classList.remove('hidden');
+                    console.log(error.message);
+                })
+            }, verAnimationCycleLengthInMs);
+        }    
+            
+})
+changeVolume();
 // const horComputedStyle = window.getComputedStyle(horizontalMovementWrapperElList[0]);
 // const verComputedStyle = window.getComputedStyle(verticalMovementWrapperElList[0]);
+// <script>    
+//     const horizontalMovementWrapperEl = document.getElementsByClassName('horizontal-movement-wrapper')[0]; 
+//     const verticalMovementWrapperEl = document.getElementsByClassName('vertical-movement-wrapper')[0];          
+//     const audioVerEl = document.getElementById('audio-ver');
+//     const audioHorEl = document.getElementById('audio-hor');
+
+//     const horComputedStyle = window.getComputedStyle(horizontalMovementWrapperEl);
+//     const verComputedStyle = window.getComputedStyle(verticalMovementWrapperEl);
+//     const regexp = /(?<=[\s]).*(?=s,)/;
+//     const horAnimationCycleLengthInMs = (horComputedStyle.animationDuration.match(regexp)[0])*100;
+//     const verAnimationCycleLengthInMs = (verComputedStyle.animationDuration.match(regexp)[0])*100;
+//     setInterval(() => {
+//             audioVerEl.play(); 
+//     }, horAnimationCycleLengthInMs);
+//     setInterval(() => {
+//             audioHorEl.play();  
+//     }, verAnimationCycleLengthInMs);
 
 
-}
 
 </script>
 </body>

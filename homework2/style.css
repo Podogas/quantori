@@ -1,16 +1,17 @@
 :root {
     /* animation durations are multiplying by --<cube edge>Factor */
     --rightFactor: 1;
-    --leftFactor: 0.3;
+    --leftFactor: 0.5;
     --frontFactor: 0.7;
-    --backFactor: 1.2;
-    --topFactor:0.8;
-    --bottomFactor: 0.5;
+    --backFactor: 0.2;
+    --topFactor:1.2;
+    --bottomFactor: 1.5;
 }
 * {
     margin: 0;
     padding: 0;
 }
+
 @keyframes fadeIn {
     0%, 50% {
         content: normal;
@@ -23,30 +24,24 @@
   }
 
 @keyframes hor-movement {
-    0% {content:'';
+    0% {
         transform: translateX(0);
     }
-    1%,99% {
-        content:normal;
-    }
-    100% {content:'';
+    100% {
         transform: translateX(90%);
     }
   }
   
-  @keyframes ver-movement {
-    0% {content:'';
+@keyframes ver-movement {
+    0% {
         transform: translateY(0);
     }
-    1%,99% {
-        content:normal;
-    }
-    100% {content:'';
+    100% {
         transform:  translateY(59vmin) translateY(-100%);
     }
   }
 
-  @keyframes hor-color {
+@keyframes hor-color {
     0% , 9.99% {
         filter: var(--initialDvdColor) hue-rotate(90deg);
     }
@@ -78,7 +73,7 @@
         filter: var(--initialDvdColor) hue-rotate(270deg);
     }
   }
-  @keyframes ver-color {
+@keyframes ver-color {
     0% , 9.99% {
         filter: var(--initialDvdColor) hue-rotate(0deg);
     }
@@ -110,7 +105,7 @@
         filter: var(--initialDvdColor) hue-rotate(180deg);
     }
   }
-  @keyframes cubeRotation {
+@keyframes cubeRotation {
     0% {
         transform: rotateY(0deg) rotateX(0deg);
     }
@@ -200,6 +195,50 @@
     background-color: #e6dfdf;
     height: 100vh;
 }
+.screen__heading {
+    max-width: 50vmin;
+    display: inline-block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 7vmin;
+    color: rgb(175, 179, 179);
+    font-family: monospace;
+}
+.warning-box {
+    z-index: 2;
+    position: absolute;
+    width: 30vmin;
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(251, 1, 2, 0.1);
+    font-family: monospace;
+    font-size: 2vmin;
+    color: rgb(18, 19, 19);
+    align-items: center;
+    padding: 3vmin;
+    border-bottom-right-radius: 3vmin;
+
+}
+.warning-box__description {
+    padding: 3vmin;
+}
+.warning-box__btn {
+    transition: background-color 100ms;
+    font-family: monospace;
+    padding: 1vmin;
+    border: none;
+    border-radius: 1vmin;
+    background-color: #e6dfdf;
+}
+.hidden {
+    display: none;
+}
+.warning-box__btn:hover {
+    cursor: pointer;
+    background-color: rgba(251, 1, 2, 0.1);
+}
  /* Cube */
 .cubic-screen {
     display: flex;
@@ -238,26 +277,26 @@
 }
  /* some kind of easter egg, colors below is from TV when there is no signal) */
 .cube__edge_right {
-    background: rgba(249, 251, 0, 0.2);
+    background: rgba(249, 251, 0, 0.1);
     transform: rotateY(90deg) translateZ(30vmin); 
 }
 .cube__edge_left  { 
-    background: rgba(2, 254, 255, 0.2); 
+    background: rgba(2, 254, 255, 0.1); 
     transform: rotateY(-90deg) translateZ(30vmin);
 }
 .cube__edge_front { 
-    background: rgba(251, 1, 2, 0.2);
+    background: rgba(251, 1, 2, 0.1);
     transform: translateZ(30vmin);
 }
 .cube__edge_back { 
-    background: rgba(253, 0, 251, 0.2);
+    background: rgba(253, 0, 251, 0.1);
     transform: rotateX(-180deg) translateZ(30vmin); 
 }
 .cube__edge_top   { 
-    background: rgba(1, 255, 0, 0.2);
+    background: rgba(1, 255, 0, 0.1);
     transform: rotateX(90deg) translateZ(30vmin);
 }
 .cube__edge_bottom { 
-    background: rgba(3, 1, 252, 0.2);
+    background: rgba(3, 1, 252, 0.1);
     transform: rotateX(-90deg) translateZ(30vmin); 
 }
