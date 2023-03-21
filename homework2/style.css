@@ -11,35 +11,27 @@
 }
 @keyframes fadeIn {
     0%, 50% {
-        content: normal;
         opacity: 0;
     }
     100% {
-        content: normal;
         opacity: 1;
     }
   }
 
 @keyframes hor-movement {
-    0% {content:'this may be';
+    0% {
         transform: translateX(0);
     }
-    1%,99% {
-        content:normal;
-    }
-    100% {content:'the worst solution';
+    100% {
         transform: translateX(90%);
     }
   }
   
   @keyframes ver-movement {
-    0% {content:'you ever see';
+    0% {
         transform: translateY(0);
     }
-    1%,99% {
-        content:normal;
-    }
-    100% {content:'in your whole life';
+    100% {
         transform: translateY(100vh) translateY(-100%);
     }
   }
@@ -156,15 +148,7 @@
 
 }
  .dvd-logo {
-    opacity: 0;
     display: block;
     filter: invert(80%);
     width: 10%;
-    animation-name: fadeIn;
-    animation-delay: 0s;
-    animation-duration: 3s;
-    animation-iteration-count: 1;
-    animation-direction:normal;
-    animation-timing-function: linear;
-    animation-fill-mode: forwards;
  }

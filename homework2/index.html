@@ -11,7 +11,7 @@
     <main class="screen">
             <div class="horizontal-movement-wrapper" >
                 <div class="vertical-movement-wrapper">
-                    <img class="dvd-logo dvd-logo_first" id='dvd' src="./dvd_logo.png" alt="dvd logo">
+                    <img class="dvd-logo dvd-logo_first" src="./dvd_logo.png" alt="dvd logo">
                 </div>
             </div>
     </main>
@@ -23,32 +23,36 @@ Now, only Safari behaves like that, Firefox never implemented that behavior, and
         <audio id="audio" >
             <source src="./audio/laserSFX.mp3" type="audio/mp3">
         </audio>
-        <audio id="audio1" >
+        <audio id="audio2" >
             <source src="./audio/laserSFX.mp3" type="audio/mp3">
         </audio>
 
-<script>    
-    const horizontalMovementWrapperEl = document.getElementsByClassName('horizontal-movement-wrapper')[0]; 
-    const verticalMovementWrapperEl = document.getElementsByClassName('vertical-movement-wrapper')[0];          
+<script>
     const audioEl = document.getElementById('audio');
-    const audioEl1 = document.getElementById('audio1');
-    
-    // horizontalMovementWrapperEl.onresize = () => {console.log(1)}
-    const dvd = document.getElementById('dvd');
-  console.log(verticalMovementWrapperEl.animationDuration) 
-setInterval(test, 5)
-function test(){
-    const horComputedStyle = window.getComputedStyle(horizontalMovementWrapperEl);
-    const verComputedStyle = window.getComputedStyle(verticalMovementWrapperEl);
-    if(horComputedStyle.getPropertyValue('content') !== 'normal'){
-        audioEl.play(); 
-    }
-    if( verComputedStyle.getPropertyValue('content') !== 'normal'){
-        audioEl1.play(); 
-    } 
-        
-}
+    const audioEl2 = document.getElementById('audio2');
+    const regexp = /(?<=).*?(?=s,)/;
 
+    const horMovementWrapperEl = document.getElementsByClassName('horizontal-movement-wrapper')[0];
+    const horComputedStyle = window.getComputedStyle(horMovementWrapperEl);
+    const horAnimationCycleLengthInMs = (horComputedStyle.animationDuration.match(regexp)[0]*1000);
+    const horAnimation = document.getAnimations()[0];
+
+    const verMovementWrapperEl = document.getElementsByClassName('vertical-movement-wrapper')[0];
+    const verComputedStyle = window.getComputedStyle(verMovementWrapperEl);
+    const verAnimationCycleLengthInMs = (verComputedStyle.animationDuration.match(regexp)[0]*1000);
+    const verAnimation = document.getAnimations()[3];
+    function hor(){
+        setInterval(() => {
+            audioEl.play()
+        },horAnimationCycleLengthInMs);
+    }
+    function ver() {
+        setInterval(() => {
+            audioEl2.play()
+        },verAnimationCycleLengthInMs);
+    }
+    horAnimation.ready.then(() => hor());
+    verAnimation.ready.then(() => ver());
 </script>
 
     
