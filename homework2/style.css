@@ -144,4 +144,5 @@
     display: block;
     filter: invert(80%);
     width: 10%;
+    caret-color: transparent;
  }
