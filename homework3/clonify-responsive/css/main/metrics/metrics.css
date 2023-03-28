@@ -1,0 +1,72 @@
+.metrics {
+    margin:3.2rem;
+    display: flex;
+}
+.metrics__card:last-child {
+    margin: 0;
+}
+.metrics__card {
+    padding: 2rem;
+    flex: 1;
+    background-color: #ffffff;
+    border-radius: 0.8rem;
+    margin-right: 3.2rem; 
+    box-shadow: 0 0.1rem 1rem rgba(0,0,0,0.06);
+}
+.metrics__card-title {
+    font-weight: 400;
+    font-size: 1.6rem;
+    line-height: 2.6rem;
+    color: #5F6980;
+}
+.metrics__card-data {
+    font-weight: 600;
+    font-size: 2.6rem;
+    line-height: 4rem;
+    color: #282828;
+    margin-bottom: 3.4rem;
+}
+.metrics__card-info {
+    font-weight: 600;
+    font-size: 1.2rem;
+    line-height: 2rem;
+}
+.metrics__card-info-badge--profit {
+    color: #20C997;
+    background-color: #DCFFF5;
+}
+.metrics__card-info-badge--loss {
+    color: #DC3545;
+    background-color: #FFE0E3;
+}
+.metrics__card-info-badge--neutral {
+    background-color: #F2F4F7;
+    color: #5F6980;
+}
+.metrics__card-info-text {
+    color: #9D9FA1;
+}
+.metrics__card-info-text--hidden {
+    display: none;
+}
+
+@media screen and (max-width: 550px) {
+    .metrics {
+        flex-direction: column;
+        margin: 0;
+    }
+    .metrics__card {
+        padding: 1.2rem 1.6rem;
+        margin:0 0 1.6rem 0;
+    }
+    .metrics__card-title {
+        font-size: 1.4rem;
+        line-height: 2.2rem;
+    }
+    .metrics__card-data {
+        font-size: 2.2rem;
+        line-height: 3.8rem;
+        margin-bottom: 2.4rem;
+    }
+    
+}

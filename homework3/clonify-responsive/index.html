@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/style.css">
+    <title>Clonify</title>
+</head>
+<body class="page">
+    <main class="main">
+        <header class="header">
+        <!-- this label was in figma, but it was hidden, i have added it just in case --><label class="header__label-for-search-bar header__label-for-search-bar"for="header__search-bar">Label</label>
+        <form class="header__search-form" action="">
+            <button class="header__search-bar-button" type="button"></button>
+            <input class="header__search-bar" type="text" name="header__search-bar" placeholder="Search...">
+        </form>
+        <nav class="header__navigation">
+            <menu class="header__menu">
+                <button class="header__menu-btn header__menu-btn-notifications header__menu-btn-notifications--unread"></button>
+                <button class="header__menu-btn header__menu-btn-calendar"></button>
+                <button class="header__menu-btn header__menu-btn-layout-grid"></button>
+            </menu>
+            <button class="header__navigation-btn-avatar header__navigation-btn-avatar--online"></button>
+        </nav>
+        </header>
+
+
+
+        <section class="banner">
+            <div class="banner__message">
+                <h2 class="banner__message-title">Unlock premium stats</h2>
+                <p class="banner__message-subtitle">Get up to 10TB of storage for a limited time</p>
+            </div>
+            <button class="banner__button" type="button">Upgrade</button>
+        </section>     
+        <section class="metrics">
+            <article class="metrics__card">
+                <h4 class="metrics__card-title">Revenue</h4>
+                <p class="metrics__card-data">$56,945</p>
+                <div class="metrics__card-info">
+                    <!-- some weird bug about extra spase in spans, thats why I have write them in the same line without ant spases in html -->
+                    <span class="badge metrics__card-info-badge metrics__card-info-badge--profit metrics__card-info-badge-revenue">+45%</span><span class="metrics__card-info-text">From 4.6%</span>    
+                    <!-- metrics__card-info-badge-revenue class is only for changing data through css, because mobile and desctop has different values -->
+                </div>
+            </article>
+            <article class="metrics__card">
+                <h4 class="metrics__card-title">Users</h4>
+                <p class="metrics__card-data">76.8%</p>
+                <div class="metrics__card-info">
+                    <span class="badge metrics__card-info-badge metrics__card-info-badge--loss metrics__card-info-badge-users">-1.7%</span><span class="metrics__card-info-text">From 4.6%</span>    
+                </div>
+            </article>
+            <article class="metrics__card">
+                <h4 class="metrics__card-title">New Signups</h4>
+                <p class="metrics__card-data">116</p>
+                <div class="metrics__card-info">
+                    <span class="badge metrics__card-info-badge metrics__card-info-badge--neutral metrics__card-info-badge-new-signups">0.00</span><span class="metrics__card-info-text metrics__card-info-text--hidden">From 4.6%</span>    
+                </div>
+            </article>
+            <article class="metrics__card">
+                <h4 class="metrics__card-title">Retention</h4>
+                <p class="metrics__card-data">12.67%</p>
+                <div class="metrics__card-info">
+                    <span class="badge metrics__card-info-badge metrics__card-info-badge--profit metrics__card-info-badge-retention">+0.6%</span><span class="metrics__card-info-text">From 4.6%</span>    
+                </div>
+            </article>                
+        </section>          
+        <section class="graph">
+            <header class="graph__header section__header">
+                <h3 class="graph__header-title section__header-title">Performance</h3>
+                <button class="graph__header-button section__header-button" type="button"></button>
+            </header>
+            <div class="graph__diagram">
+                <ul class="graph__diagram-coords-line-oy">
+                    <li class="graph__diagram-coords">0</li>
+                    <li class="graph__diagram-coords">100</li>
+                    <li class="graph__diagram-coords">200</li>
+                    <li class="graph__diagram-coords">300</li>                       
+                    <li class="graph__diagram-coords">400</li>
+                </ul>
+                <div class="graph__diagram-column">
+                    <div class="graph__diagram-image">
+                          
+                        <img class="graph__diagram-image-instagram" src="./img/graph__diagram-image-instagram.svg" alt="Graph instagram">
+                        <img class="graph__diagram-image-facebook" src="./img/graph__diagram-image-facebook.svg" alt="Graph facebook">
+                    </div>
+                    <ul class="graph__diagram-coords-line-ox">
+                        <li class="graph__diagram-coords">Sun</li>
+                        <li class="graph__diagram-coords">Mon</li>
+                        <li class="graph__diagram-coords">Tue</li>
+                        <li class="graph__diagram-coords">Wed</li>
+                        <li class="graph__diagram-coords">Thu</li>
+                        <li class="graph__diagram-coords">Fri</li>
+                        <li class="graph__diagram-coords">Sat</li>
+                    </ul>
+                </div>
+            </div>
+            <footer class="graph__footer">
+                <div class="graph__footer-caption-wrap">
+                    <figure class="graph__footer-caption-image graph__footer-caption-image-instagram"></figure>
+                    <span class="graph__footer-caption">Instagram</span>
+                </div>
+                <div class="graph__footer-caption-wrap">
+                    <figure class="graph__footer-caption-image graph__footer-caption-image-facebook"></figure>
+                    <span class="graph__footer-caption">Facebook</span>
+                </div>
+            </footer>    
+        </section>
+        <section  class="table">
+            <header class="table__header section__header">
+                <h3 class="table__header-title section__header-title">Installed apps</h3>
+                <button class="table__header-button section__header-button" type="button"></button>
+            </header>
+            <table class="table__table">
+               <thead class="table__table-head">
+                    <tr class="table__table-head-tr table__table-tr">
+                        <th class="table__table-th">Source</th>
+                        <th class="table__table-th">Amount</th>
+                        <th class="table__table-th">Status</th>
+                        <th class="table__table-th">User ID</th>
+                        <th class="table__table-th">Joined</th>
+                        <th class="table__table-th">Group</th>
+                    </tr>
+               </thead>
+               <tbody class="table__table-body">
+                    <tr class="table__table-tr">
+                        <td class="table__table-td table__table-td-source table__table-td-source-zepplin">Zepplin</td>
+                        <td class="table__table-td table__table-td-amount">686.00</td>
+                        <td class=" table__table-td">
+                            <span class="badge table__table-td-status table__table-td-status--active">Active</span>     
+                        </td>
+                        <td class="table__table-td table__table-td-user-id">114423</td>
+                        <td class="table__table-td table__table-td-joined">October</td>
+                        <td class="table__table-td table__table-td-group">Design</td>
+                    </tr>
+                    <tr class="table__table-tr">
+                        <td class="table__table-td table__table-td-source table__table-td-source-figma">Figma</td>
+                        <td class="table__table-td table__table-td-amount">864.00</td>
+                        <td class="table__table-td">
+                            <span class="badge table__table-td-status table__table-td-status--pending">Pending</span>
+                        </td>
+                        <td class="table__table-td table__table-td-user-id">76223</td>
+                        <td class="table__table-td table__table-td-joined">June</td>
+                        <!-- figma in Finance group, there are a lot of strange things in mockup :) -->
+                        <td class="table__table-td table__table-td-group">Finance</td>
+                    </tr>
+                    <tr class="table__table-tr">
+                        <td class="table__table-td table__table-td-source table__table-td-source-meta">Meta</td>
+                        <td class="table__table-td table__table-td-amount">176.00</td>
+                        <td class="table__table-td">
+                            <span class="badge table__table-td-status table__table-td-status--cancelled">Cancelled</span>
+                        </td>
+                        <td class="table__table-td table__table-td-user-id">89453</td>
+                        <td class="table__table-td table__table-td-joined">March</td>
+                        <td class="table__table-td table__table-td-group">Coding</td>
+                    </tr>
+                    <tr class="table__table-tr">
+                        <td class="table__table-td table__table-td-source table__table-td-source-angular">Angular</td>
+                        <td class="table__table-td table__table-td-amount">49.00</td>
+                        <td class=" table__table-td">
+                            <span class="badge table__table-td-status table__table-td-status--active">Active</span>     
+                        </td>
+                        <td class="table__table-td table__table-td-user-id">11467</td>
+                        <td class="table__table-td table__table-td-joined">February</td>
+                        <td class="table__table-td table__table-td-group">Marketing</td>
+                    </tr> 
+                    <tr class="table__table-tr">
+                        <td class="table__table-td table__table-td-source table__table-td-source-vue">Vue</td>
+                        <td class="table__table-td table__table-td-amount">999.00</td>
+                        <td class=" table__table-td">
+                            <span class="badge table__table-td-status table__table-td-status--active">Active</span>     
+                        </td>
+                        <td class="table__table-td table__table-td-user-id">67385</td>
+                        <td class="table__table-td table__table-td-joined">October</td>
+                        <td class="table__table-td table__table-td-group">Finance</td>
+                    </tr>   
+               </tbody>
+            </table>
+            <footer class="table__footer">
+                <button class="table__footer-btn table__footer-btn-arrow-back" type="button"></button>
+                <span class="table__footer-current-page-caption">1/15</span>
+                <button class="table__footer-btn table__footer-btn-arrow-forward" type="button"></button>
+            </footer>
+        </section>
+    </main>
+    <aside class="sidebar">
+        <img class="sidebar__logo" src="./img/logo.svg" alt="Clonify logo">
+        <menu class="sidebar__dashboard">
+            <h3 class="sidebar__title">d a s h b o a r d</h3>
+            <button class="sidebar__dashboard-menu-item-dashboard sidebar__menu-item sidebar__dashboard-menu-item-dashboard--opened" type="button">
+                Dashboard
+                <span class="sidebar__dashboard-menu-item-dashboard-number  sidebar__menu-item-number sidebar__menu-item-number--hidden">2</span>
+            </button>  
+                <nav class="sidebar__dashboard-menu-nav">
+                    <a class="sidebar__dashboard-menu-link sidebar__dashboard-menu-link--active" href="#">Analytics</a>
+                    <a class="sidebar__dashboard-menu-link " href="#">Finance</a>
+                    <a class="sidebar__dashboard-menu-link " href="#">Job Board</a>
+                </nav>
+            <button class="sidebar__dashboard-menu-item-messages sidebar__menu-item" type="button">
+                Messages
+                <span class="sidebar__dashboard-menu-item-messages-number sidebar__menu-item-number--hidden sidebar__menu-item-number">2</span>
+            </button>
+            <button class="sidebar__dashboard-menu-item-friends sidebar__menu-item" type="button">
+                Friends
+                <span class="sidebar__dashboard-menu-item-friends-number sidebar__menu-item-number--hidden sidebar__menu-item-number">2</span>
+            </button>
+            <button class="sidebar__dashboard-menu-item-apps sidebar__menu-item" type="button">
+                Apps
+                <span class="sidebar__dashboard-menu-item-apps-number sidebar__menu-item-number--hidden sidebar__menu-item-number">2</span>
+            </button>       
+        </menu>
+        <menu class="sidebar__pages">
+            <h3 class="sidebar__title">p a g e s</h3>
+            <button class="sidebar__pages-menu-item-help-center sidebar__menu-item" type="button">
+                Help Center
+                <span class="sidebar__pages-menu-item-help-center-number sidebar__menu-item-number--hidden sidebar__menu-item-number">2</span>
+            </button>
+            <button class="sidebar__pages-menu-item-file-manager sidebar__menu-item" type="button">
+                File Manager
+                <span class="sidebar__pages-menu-item-file-manager-number sidebar__menu-item-number--hidden sidebar__menu-item-number">2</span>
+            </button>
+        </menu>
+        <footer class="sidebar__footer">
+            <button class="sidebar__footer-button-settings sidebar__footer-button"></button>
+            <button class="sidebar__footer-button-logout sidebar__footer-button"></button>
+            <button class="sidebar__footer-button-globe sidebar__footer-button"></button>
+        </footer>
+    </aside>
+    
+    
+    
+</body>
+</html>

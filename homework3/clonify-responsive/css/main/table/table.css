@@ -1,0 +1,178 @@
+.table {
+    background-color: #ffffff;
+    border-radius: 1.2rem;
+    margin: 3.2rem 3.2rem 0 3.2rem;
+}
+.table__header {
+    margin: 0;
+    padding: 1.6rem 2.4rem calc(1.6rem - 1px) 2.4rem;
+}
+.table__table {
+    width:100%;
+    display: flex;
+    flex-wrap: wrap;
+    color: #5F6980;
+    font-weight: 400;
+    font-size: 1.4rem;
+    line-height: 2.2rem;
+}
+.table__table-head {
+    width: 100%;
+    display: flex;
+    background-color: #F9FAFB;
+}
+.table__table-body {
+    display: flex;
+    flex-wrap: wrap;
+}
+.table__table-tr {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+    border-bottom: 1px solid #EAECF0;
+    padding: 1.6rem 3.6rem calc(1.6rem - 1px) 2.4rem;
+}
+.table__table-head-tr {
+    border: none;
+    padding: 1.6rem 3.6rem calc(1.6rem - 1px) 2.4rem;
+    font-weight: 400;
+}
+.table__table-th {
+    display: flex;
+    width: 10.7rem;
+}
+.table__table-td {
+    display: flex;
+    width: 10.7rem;
+}
+.table__table-td-status--active {
+    background-color: #DCFFF5;
+    color: #20C997;
+}
+.table__table-td-status--pending {
+    background-color: #FFEAD8;
+    color: #FD7E14;
+}
+.table__table-td-status--cancelled {
+    background-color: #F2F4F7;
+    color: #5F6980;
+}
+.table__table-td-source {
+    align-items: center;
+    color: #282828;
+    font-weight: 600;
+}
+.table__table-td-source::before {
+    content: '';
+    display: block;
+    width: 4.4rem;
+    height: 4.4rem;
+    background-color: #FFFFFF;
+    margin-right: 1.2rem;
+    border-radius: 1rem;
+    background-position: center;
+    background-repeat: no-repeat;
+    box-shadow: 0 0.1rem 1rem rgba(0,0,0,0.06);
+}
+.table__table-td-source-zepplin::before {
+   background-image: url('../../../img/table__table-td-source-zepplin.svg');
+}
+.table__table-td-source-figma::before {
+    background-image: url(../../../img/table__table-td-source-figma.svg);
+}
+
+.table__table-td-source-meta::before {
+    background-image: url(../../../img/table__table-td-source-meta.svg);
+}
+
+.table__table-td-source-angular::before {
+    background-image: url(../../../img/table__table-td-source-angular.svg);
+}
+
+.table__table-td-source-vue::before {
+    background-image: url(../../../img/table__table-td-source-vue.svg);
+}
+.table__footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2.4rem 0;
+}
+.table__footer-btn {
+    width: 3.2rem;
+    height: 3.2rem;
+    background-image: url(../../../img/table__footer-btn-arrow-back.svg);
+    background-size: cover;
+}
+.table__footer-btn-arrow-forward {
+    transform: rotate(180deg);
+}
+.table__footer-current-page-caption {
+    font-weight: 400;
+    color: #282828;
+    font-size: 1.8rem;
+    line-height: 3rem;
+    margin: 0.7rem 1.2rem;
+}
+@media screen and (min-width: 1820px) {
+    .table__table-td-source::before{
+        background-size: contain;
+    }
+}
+@media screen and (max-width: 966px) {
+    .table__table-td-source::before{
+        background-size: contain;
+    }
+}
+@media screen and (max-width: 550px) {
+    .table {
+        margin: 0;
+        overflow: hidden;
+        max-width: calc(100vmin - 3.3rem);
+    }
+    .table__table-tr:last-child {
+        border: none;
+        padding-bottom: 0;
+        margin-bottom: 1.6rem;
+    }
+    .table__table {
+        overflow-x: scroll;
+        overflow-y: hidden;
+        scrollbar-color: #D9D9D9 #F2F4F7;
+        -ms-overflow-style: none;
+        margin: 0;
+    }
+    .table__table-td-source::before{
+        background-size: unset;
+    }
+    .table__table::-webkit-scrollbar {
+        height: 1.7rem;
+        background-color: #F2F4F7;
+    }
+    .table__table::-webkit-scrollbar-thumb {
+        background-color: #D9D9D9;
+        border: 0.3rem solid #F2F4F7;
+        width: 57%;
+        border-radius: 5.8rem;
+    }
+    .table__table-head {
+        min-width: 1144px;
+    }
+    .table__table-body {
+        min-width: 1144px;
+    }
+    .table__footer {
+        padding: 1.6rem 0 3.2rem 0;
+    }
+    .table__footer-btn {
+        width: 2.4rem;
+        height: 2.4rem;
+    }
+    .table__footer-current-page-caption {
+        font-size: 1.4rem;
+        line-height: 2.2rem;
+        margin: 0.7rem 1.2rem;
+    }
+}
