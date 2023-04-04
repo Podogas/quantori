@@ -1,0 +1,14 @@
+@import url(./banner/banner.css);
+@import url(./graph/graph.css);
+@import url(./header/header.css);
+@import url(./metrics/metrics.css);
+@import url(./table/table.css);
+
+@media screen and (max-width: 550px) {
+    .main {
+        background-color: #FFFFFF;
+    }
+}
+.main {
+    flex: 1;
+ }

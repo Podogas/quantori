@@ -1,0 +1,151 @@
+@import url(./main/main.css);
+@import url(./aside/aside.css);
+
+  /* free Inter from GoogleFonts,
+  I think it would be better to add fonts in vendor folder, but for hw i think its ok */
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+html {
+    font-size: 10px;
+}
+  /* NORMALIZE */
+* {
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+  /* we are using only Inter on this page */
+  body, input, textarea, button {font-family: 'Inter', sans-serif;}
+  
+  button {
+    background-color: transparent; 
+    cursor: pointer;
+  }
+  a {
+      text-decoration: none;
+  }
+  th {
+    font-weight: unset;
+  }
+  .page {
+    margin: 0;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: start;
+    background-color: #F2F4F7;
+  }
+    /* SECTIONS */
+  .section__header {
+    border-bottom: 1px solid #EAECF0;
+    box-sizing: border-box;
+    padding: 1.6rem 2.4rem calc(1.6rem - 1px) 2.4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .section__header-title {
+    color: #282828;
+    font-weight: 600;
+    font-size: 1.8rem;
+    line-height: 3rem;
+  }
+  .section__header-button {
+    width: 2.4rem;
+    height: 2.4rem;
+    background-image: url(../img/graph__header-button.svg);
+    background-size: cover;
+  }
+  .badge {
+    display: inline-block;
+    padding: 0.2rem 1rem;
+    border-radius: 10rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+    line-height: 2rem;
+    margin-right: 0.8rem;
+  }
+    @media screen and (min-width: 2560px) {
+       .page {
+        max-width: 2560px;
+        margin-left: auto;
+        margin-right: auto;
+       }
+    }
+    @media screen and (min-width: 1820px) {
+        html {
+            font-size: 15px;
+        }
+    }
+    @media screen and (max-width: 966px) {
+        html {
+            font-size: 5px;
+        }
+    }
+    @media screen and (max-width: 550px) {
+        html {
+            font-size: 10px;
+        }
+        .page {
+            background-color: #FFFFFF;
+            padding: 1.6rem;
+            min-width: 320px;
+            box-sizing: border-box;
+        }
+        /* mobile mockup has another data in some spans so there is (bad) solution*/
+        .badge {
+            font-size: 0;
+            line-height: 0;
+          }
+        .table__table-td-status {
+            font-size: 1.2rem;
+            line-height: 2rem;
+        }  
+        .metrics__card-info-badge-revenue::after {
+            display: inline-block;
+            content: ' +45% ';
+            font-size: 1.2rem;
+            line-height: 2rem;
+        }
+        .metrics__card-info-badge-users::after {
+            display: inline-block;
+            content: ' +45% ';
+            font-size: 1.2rem;
+            line-height: 2rem;
+        }
+        .metrics__card-info-badge-new-signups::after {
+            display: inline-block;
+            content: ' 0.00 ';
+            font-size: 1.2rem;
+            line-height: 2rem;
+        }
+        .metrics__card-info-badge-retention::after {
+            display: inline-block;
+            content: ' +45% ';
+            font-size: 1.2rem;
+            line-height: 2rem;
+        }
+
+
+        .section__header {
+            padding: 1.4rem 1.6rem calc(1.4rem - 1px) 1.6rem;
+        }
+        .section__header-title {
+            font-size: 1.6rem;
+            line-height: 2.6rem;
+        }
+        .section__header-button {
+            width: 2rem;
+            height: 2rem;
+        }
+        .table__header {
+        padding: 1.6rem 2.4rem; 
+        }
+        .table__header-title {
+            font-size: 1.8rem;
+            line-height: 3rem;
+        }
+        .table__header-button {
+            width: 2.4rem;
+            height: 2.4rem;
+        }
+    }

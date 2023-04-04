@@ -1,0 +1,168 @@
+.sidebar {
+    position: relative;
+    width:16.2%;
+    min-width: 200px;
+    min-height: 650px;
+    max-height: 1024px;
+    padding: 1.8rem 2rem 0 2rem;
+    border-right: 1px solid #EAECF0;
+    background-color: #ffffff;
+    box-sizing: border-box;
+}
+.sidebar__logo {
+    width: 10rem;
+    height: 3rem;
+    margin-bottom: 2.2rem;
+}
+.sidebar__dashboard {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+.sidebar__title {
+    margin-top: 3.2rem;
+    margin-bottom: 1.6rem;
+    text-transform: uppercase;
+    color: #9D9FA2;
+    font-size: 1.2rem;
+    line-height: 2rem;
+    font-weight: 600;
+}
+.sidebar__menu-item {
+    cursor: pointer;
+    display: flex;
+    width: 100%;
+    color: #5F6980;
+    font-weight: 600;
+    font-size: 1.4rem;
+    line-height: 2.2rem;
+    padding: 1.2rem 0 1.2rem 0;
+}
+ /* this element is hidden in mockup, but just in case i have added it */
+.sidebar__menu-item-number {
+    margin-left: 1.2rem;
+    background-color: #282828;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 100%;
+    color: #ffffff;
+}
+.sidebar__menu-item-number--hidden {
+    display: none;
+}
+.sidebar__menu-item::before {
+    content: '';
+    display: inline-block;
+    width: 2rem;
+    height: 2rem;
+    margin-right: 0.8rem;
+    background-size: contain;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+.sidebar__menu-item::after {
+    content: '';
+    display: inline-block;
+    width: 2rem;
+    height: 2rem;
+    background-image: url(../../img/chevron-down.svg);
+    background-size: contain;
+    background-position: center center;
+    background-repeat: no-repeat;
+    margin-left: auto;
+}
+.sidebar__dashboard-menu-item-dashboard {
+    color: #282828;
+}
+.sidebar__dashboard-menu-nav {
+    display: flex;
+    flex-direction: column;
+    padding:0.4rem 0 0 2.8rem;
+    font-size: 1.4em;
+    font-weight: 600;
+    line-height: 2.2rem;
+}
+.sidebar__dashboard-menu-link {
+    color: #5F6980;
+    margin-bottom: 1.2rem;
+}
+.sidebar__dashboard-menu-link--active {
+    color: #1E1E1E ;
+}
+.sidebar__dashboard-menu-item-dashboard::before {
+    background-image: url(../../img/sidebar__dashboard-menu-item-dashboard.svg);
+}
+.sidebar__dashboard-menu-item-dashboard::after {
+   background-image: url(../../img/chevron-up.svg);
+}
+.sidebar__dashboard-menu-item-messages::before {
+    background-image: url(../../img/sidebar__dashboard-menu-item-messages.svg);
+}
+.sidebar__dashboard-menu-item-friends::before {
+    background-image: url(../../img/sidebar__dashboard-menu-item-friends.svg)
+}
+.sidebar__dashboard-menu-item-apps::before {
+    background-image: url(../../img/sidebar__dashboard-menu-item-apps.svg)
+}
+.sidebar__pages-menu-item-help-center::before {
+    background-image: url(../../img/sidebar__pages-menu-item-help-center.svg)
+}
+.sidebar__pages-menu-item-file-manager::before {
+    background-image: url(../../img/sidebar__pages-menu-item-file-manager.svg)
+}
+
+ /* ASIDE-FOOTER */
+.sidebar__footer {
+    display: flex;
+    padding: 1.2rem 1.9rem;
+    box-sizing: border-box;
+    justify-content: space-between;
+    border-top: 1px solid #EAECF0;
+    position: absolute;
+    width: 100%;
+    left: 0;
+    bottom: 0;
+}
+.sidebar__footer-button {
+    width: 2rem;
+    height: 2rem;
+}
+.sidebar__footer-button-settings {
+    background-image: url(../../img/sidebar__footer-button-settings.svg);
+}
+.sidebar__footer-button-logout {
+    background-image: url(../../img/sidebar__footer-button-logout.svg);
+}
+.sidebar__footer-button-globe {
+    background-image: url(../../img/sidebar__footer-button-globe.svg);
+}
+@media screen and (min-width: 1820px) {
+    .sidebar__footer-button {
+        background-size: contain;
+    }
+}
+@media screen and (max-width: 966px) {
+    .sidebar {
+        min-width: 100px;
+    }
+    .sidebar__footer-button {
+        background-size: contain;
+    }
+}
+
+@media screen and (max-width: 550px) {
+    .sidebar {
+        border: none;
+        width: 0;
+        min-width: 0;
+        padding: 0;
+    }
+    .sidebar__logo {
+        position: absolute;
+        top: 0.7rem;
+        margin: 0;
+    }
+    .sidebar__dashboard,.sidebar__pages,.sidebar__footer {
+        display: none;
+    }    
+}
