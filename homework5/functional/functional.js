@@ -1,84 +1,99 @@
  (function () {
-    function getLocalStorage(key){
-        return JSON.parse(localStorage.getItem(key));
-    }
-    function changeLocalStorage(key ,data){
-        return localStorage.setItem(key, JSON.stringify(data));
-    }
+    const weatherApiKey = '664cca40924e42439d4161003231504';
+    const weatherApiUrl = 'http://api.weatherapi.com/v1/current.json';
+    const dbUrl = 'http://localhost:3004';
     const appContainer = document.getElementById("functional-example");
     let isPopupOpened = false;
     let popup = Popup();
-    let tasksFromMockup = {
-        initialTasks: [
-                {  
-                public: {
-                 titleText: 'Task 1 Title',
-                 tagText: 'work',
-                 date: 'Yesterday',
-                },
-                 _private: {
-                    tagModifier: '--work',
-                }
-              },
-              {
-              public: {
-                titleText: 'Task 2 Title',
-                tagText: 'tag',
-                date: 'Today',
-                },
-                _private: {
-                    tagModifier: '--other',
-                }
-              },
-              {
-                public: {
-                titleText: 'Task 3 Title',
-                tagText: 'health',
-                date: 'Friday, 23 Mar',
-                },
-                _private: {
-                    tagModifier: '--health',
-                }
-             },
-             {  public: {
-                    titleText: 'Task 4 Title',
-                    tagText: 'home',
-                    date: 'Monday, 3 Apr',
-                },
-                _private: {
-                    tagModifier: '--home',
-                }
-             },
-            ],
-            completedTasks: [
-            {  
-                public: {
-                 titleText: 'Completed Task 1 Title',
-                 tagText: 'tag',
-                 date: 'Tuesday, 14 Feb',
-                },
-                 _private: {
-                    tagModifier: '--completed',
-                }
-              },
-              {  
-                public: {
-                 titleText: 'Completed Task 2 Title',
-                 tagText: 'tag',
-                 date: 'Friday, 3 Feb',
-                },
-                 _private: {
-                    tagModifier: '--completed',
-                }
-              },
-            ]      
+    let weatherData;
+    let dbData = {};
+    function formatDate(day){
+        const yyyy = day.getFullYear();
+        let mm = day.getMonth() + 1;
+        let dd = day.getDate();
+        if (dd < 10) dd = '0' + dd;
+        if (mm < 10) mm = '0' + mm;
+        return `${dd}.${mm}.${yyyy}`;
+    };
+    function checkIfModalWasShown() {
+        const date = new Date;
+        function getArrayOfTasksForToday(tasks) {
+            const arrayForToday = tasks.filter((task) => task.date == formatDate(date));
+            return arrayForToday;
         }
-    // cheching if localStorage is set
-    if(!getLocalStorage('initialTasks')) {
-        changeLocalStorage('initialTasks', tasksFromMockup)
+        lastVisit = window.localStorage.getItem('last-visit');
+        const arr =  getArrayOfTasksForToday(dbData.tasks.incompleted)
+        if(!lastVisit && arr.length != 0){
+            window.localStorage.setItem('last-visit', date.getDate());
+            appContainer.append(Modal(arr));
+        }
     }
-    let ref = getLocalStorage('initialTasks');
+    function getWeather(url, key, query) {
+        return fetch( `${url}?key=${key}&q=${query}&aqi=no`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        })
+        .then(res => res.ok ? res.json() : undefined)
+        .then( resJson => {
+            if(resJson){
+                weatherData = {};
+                weatherData['iconUrl'] = resJson.current.condition.icon;
+                weatherData['location'] = resJson.location.name;
+                weatherData['temp'] = resJson.current.temp_c;
+            }
+            return resJson;
+        })
+    }
+    function postTask(baseUrl, data) {
+        return fetch( `${baseUrl}/tasks`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        })
+    }
+
+    function getAllTasks(baseUrl) {
+        return fetch( `${baseUrl}/tasks`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        })
+        .then( res => res.json())
+        .catch(err => console.error(err))
+        .then(resJson => {
+            if(resJson){
+                dbData['tasks'] = {completed: [], incompleted: []};
+                resJson.map(el => el.isCompleted == true ? dbData.tasks.completed.push(el) :  dbData.tasks.incompleted.push(el));
+                dbData.tasks.completed.sort((a, b) => a.updatedAt - b.updatedAt);
+                dbData.tasks.incompleted.sort((a, b) => a.updatedAt - b.updatedAt);                
+            }
+            return resJson;
+        })
+    }
     
+    function deleteTask(baseUrl, id) {
+        return fetch( `${baseUrl}/tasks/${id}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        })
+    }
+    function updateTask(baseUrl, data, id) {
+        return fetch( `${baseUrl}/tasks/${id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        })
+        .then( res => res.json())
+    }
     function createElement(element, classList, text, attr){
         let el = undefined;
         if(element){
@@ -97,11 +112,17 @@
     }
 
     function Header() {
-            let header = createElement('header', ['header'], )
-            let title = createElement('h1', ['header__title'],  'To Do List');
-            header.append(title);
-            headerEl = header
-        return headerEl
+        let header = createElement('header', ['header'], )
+        let title = createElement('h1', ['header__title'],  'To Do List');
+        let weatherWidget = createElement('div', ["header__weather-widget"]);
+        if(weatherData){
+            let icon = createElement('img', ["header__weather-widget-icon"], '', [{name:'src', value: `http:${weatherData.iconUrl}`}])
+            let tempreture = createElement('span', ['header__weather-widget-tempreture'], `${weatherData.temp}°`);
+            let location = createElement('span', ['header__weather-widget-location'], weatherData.location);
+            weatherWidget.append(icon, tempreture, location);
+        } 
+            header.append(title, weatherWidget);
+        return header;
     }
     
     function Nav() {
@@ -109,14 +130,14 @@
         let input = createElement('input', ['nav__input'], '', [{name: "placeholder", value: "Search Task"}])
         let button = createElement('button', ['nav__button'], '+ New Task', [{name: "type", value: "button"}])
         function onInputChange() {
-            const unFilteredResults = [...ref.initialTasks];
+            const unFilteredResults = [...dbData.tasks.incompleted];
             let filteredResults = [];
             if (input.value.replace(/\s/g, '') !== '') {
-                filteredResults = unFilteredResults.sort((a, b)=>{
-                  return  b.public.titleText.toLowerCase().includes(input.value.toLowerCase()) - a.public.titleText.toLowerCase().includes(input.value.toLowerCase())
+                filteredResults = unFilteredResults.filter((a)=>{
+                  return  a.title.toLowerCase().includes(input.value.toLowerCase())
             })
         } else {
-            filteredResults = ref.initialTasks;    
+            filteredResults = dbData.tasks.incompleted;    
         }
             updateComponent(AllTasks, filteredResults,'all-tasks');   
         }
@@ -132,36 +153,53 @@
     
     function AllTasks(tasks) {
         let section = createElement('section', ['all-tasks'],)
+        if (tasks.length !== 0) {
         let title = createElement('h3', ['all-tasks__title'],  'All Tasks');
         function Task(data) {
             let task = createElement('div', ["all-tasks__task"],);
             let checkbox = createElement('input', ['all-tasks__task-checkbox'], null, [{name: "type", value: "checkbox"}]);
             let taskInfoWrapper = createElement('div', ["all-tasks__task-info-wrapper"],);
-            let taskTitle = createElement('h4', ["all-tasks__task-title"], data.public.titleText,);
+            let taskTitle = createElement('h4', ["all-tasks__task-title"], data.title,);
             let taskCaptionWrapper = createElement('div', ["all-tasks__task-caption-wrapper"],);
-            let taskTag = createElement('span', ['all-tasks__task-tag', `all-tasks__task-tag${data._private.tagModifier}`], data.public.tagText);
-            let taskDate = createElement('span', ['all-tasks__task-date'], data.public.date);
+            let taskTag = createElement('span', ['all-tasks__task-tag', `all-tasks__task-tag--${data.tag}`], data.tag);
+            let taskDate = createElement('span', ['all-tasks__task-date'], data.date);
             let taskButton = createElement('button', ['all-tasks__task-button'], null, [{name: "type", value: "button"}])
-            function deleteTask() {
-                ref.initialTasks = ref.initialTasks.filter(d => d!==data);
-                changeLocalStorage('initialTasks', ref);
-                deleteComponent(task,'all-tasks')
+            function removeTask() {
+                deleteTask(dbUrl, data.id)
+                .then(res => res.json())
+                .catch(err => console.error(err, err.message))
+                .then( () => {
+                    removeTaskFromList();
+                })
+            }
+            function removeTaskFromList() {
+                dbData.tasks.incompleted = dbData.tasks.incompleted.filter(d => d!==data);
+                deleteComponent(task,'.all-tasks');   
             }
             function moveTaskToComplited() {
-                const dataToPush = ref.initialTasks.filter(d => d==data)[0];
-                dataToPush._private.prevTagModifier = dataToPush._private.tagModifier;
-                dataToPush._private.tagModifier = '--completed';
-                ref.completedTasks.push(dataToPush)
-                changeLocalStorage('initialTasks', ref)
-                setTimeout(() => {
-                    deleteTask(task);
-                    updateComponent(CompletedTasks, ref.completedTasks, 'completed-tasks')
-                }, 100)
+                const dataToPush = dbData.tasks.incompleted.filter(d => d==data)[0];
+                dataToPush.isCompleted = true;
+                dataToPush.prevTag = dataToPush.tag;
+                dataToPush.updatedAt = Date.now();
+                dbData.tasks.completed.unshift(dataToPush)
+                updateTask(dbUrl, dataToPush ,data.id)
+                .catch(err => console.error(err, err.message))
+                .then( () => {
+                    setTimeout(() => {
+                        removeTaskFromList(task);
+                        updateComponent(CompletedTasks, dbData.tasks.completed, 'completed-tasks');
+                        updateComponent(AllTasks, dbData.tasks.incompleted, 'all-tasks');
+                    }, 100);
+                })
+
+
+                
                 
             }
 
             taskButton.onclick = () => {
-                deleteTask();
+                removeTask();
+
             }
             checkbox.onclick = () => {
                 moveTaskToComplited();
@@ -178,40 +216,52 @@
         section.innerHTML = ''
         section.append(title, ...taskElArray)
         return section;
-        
+        }  else {
+            section.style.display = 'none';
+            return section;
+        }
     }
     
     function CompletedTasks(tasks) {
         let section = createElement('section', ['completed-tasks'],)
-        if (ref.completedTasks.length !== 0) {
+        if (dbData.tasks.completed.length !== 0) {
             let title = createElement('h3', ['completed-tasks__title'],  'Completed Tasks');
             function Task(data) {
                 let task = createElement('div', ["completed-tasks__task"],);
                 let checkbox = createElement('input', ['completed-tasks__task-checkbox'], null, [{name: "type", value: "checkbox"}, {name: "checked", value: "true"}]);
                 let taskInfoWrapper = createElement('div', ["completed-tasks__task-info-wrapper"],);
-                let taskTitle = createElement('h4', ["completed-tasks__task-title"], data.public.titleText,);
+                let taskTitle = createElement('h4', ["completed-tasks__task-title"], data.title,);
                 let taskCaptionWrapper = createElement('div', ["completed-tasks__task-caption-wrapper"],);
-                let taskTag = createElement('span', ['completed-tasks__task-tag', `completed__task-tag${data._private.tagModifier}`], data.public.tagText);
-                let taskDate = createElement('span', ['completed-tasks__task-date'], data.public.date);
-                function deleteTask() {
-                    ref.completedTasks = ref.completedTasks.filter(d => d!==data);
-                    changeLocalStorage('initialTasks', ref)
-                    deleteComponent(task,'completed-tasks')
+                let taskTag = createElement('span', ['completed-tasks__task-tag', `completed__task-tag--completed`], data.tag);
+                let taskDate = createElement('span', ['completed-tasks__task-date'], data.date);
+                function removeTaskFromList() {
+                    dbData.tasks.completed = dbData.tasks.completed.filter(d => d!==data);
+                    deleteComponent(task,'.completed-tasks')
                 }
                 function moveTaskToAllTasks() {
-                    const dataToPush = ref.completedTasks.filter(d => d==data)[0];
-                    const prevTagModifier = dataToPush._private.prevTagModifier ? dataToPush._private.prevTagModifier : '--other';
-                    dataToPush._private.tagModifier = prevTagModifier;
-                    ref.initialTasks.push(dataToPush)
-                    deleteTask();
-                    changeLocalStorage('initialTasks', ref)
-                    updateComponent(AllTasks, ref.initialTasks, 'all-tasks');
+                    const dataToPush = dbData.tasks.completed.filter(d => d==data)[0];
+                    const prevTag = dataToPush.prevTag ? dataToPush.prevTag : 'other';
+                    dataToPush.tag = prevTag;
+                    dataToPush.isCompleted = false;
+                    dataToPush.updatedAt = Date.now();
+                    dbData.tasks.incompleted.push(dataToPush);
+                    updateTask(dbUrl, dataToPush ,data.id)
+                    .catch(err => console.error(err, err.message))
+                    .then( () => {
+                        removeTaskFromList();
+                        updateComponent(AllTasks, dbData.tasks.incompleted, 'all-tasks');
+                        updateComponent(CompletedTasks, dbData.tasks.completed, 'completed-tasks');
+                    })
+                    
                     
                 }
                 checkbox.onclick = moveTaskToAllTasks;
                 taskCaptionWrapper.append(taskTag, taskDate);
                 taskInfoWrapper.append(taskTitle, taskCaptionWrapper);
                 task.append(checkbox,taskInfoWrapper);
+                if(dbData.tasks.completed.length == 0) {
+                    task = '';
+                }
                 return task;
             }
             let taskElArray = [];
@@ -225,16 +275,46 @@
         }
     }
 
+    function Modal(tasks) {
+        function getDayPart() {
+            let hour = new Date().getHours();    
+            if(hour<5){
+                return 'Night'
+            } else if(hour<12){
+                return 'Morning'
+            } else if(hour<17){
+                return 'Afternoon'
+            } else if(hour<21){
+                return 'Evening'
+            } else {
+                return 'Night'
+            }
+             
+        }
+        function closeModal(){
+            appContainer.removeChild(section)
+
+        }
+        function fillList(task){
+            const listItem = createElement('li', ['modal__list-item']);
+            listItem.innerText = task.title;
+            return listItem;
+        }
+        const section = createElement('section', ['modal'],);
+        const title = createElement('h2', ['modal__title'], `Good ${getDayPart()}`);
+        const listCaption = createElement('p', ['modal__list-caption'], 'You have the next planned tasks for today: ');
+        const list = createElement('ul', ['modal__list']);
+        const button = createElement('button', ['modal__button'], 'Ok', [{name: 'type', value: 'button'}]);
+        button.onclick = closeModal;
+        let taskElArray = [];
+        tasks.forEach(taskData => {
+            taskElArray.push(fillList(taskData))});
+        list.append(...taskElArray);
+        section.append(title, listCaption, list, button);
+        return section;
+    }
 
     function Popup() {
-        const formatDate = (day) => {
-            const yyyy = day.getFullYear();
-            let mm = day.getMonth() + 1;
-            let dd = day.getDate();
-            if (dd < 10) dd = '0' + dd;
-            if (mm < 10) mm = '0' + mm;
-            return `${dd}.${mm}.${yyyy}`;
-        };
         let popupTextInputValue = '';
         let popupTagValue = '';
         let popupDateValue = `${formatDate(new Date())}`;
@@ -253,21 +333,21 @@
         let cancelButton = createElement('button', ['popup__buttons', 'popup__buttons-cancel'], 'Cancel', [{name: 'type', value: 'button'}]);
         let addButton = createElement('button', ['popup__buttons', 'popup__buttons-add', 'popup__buttons-add--disabled'], 'Add Task', [{name: 'type', value: 'button'}]);
         function addNewTask() {
-            let taskDataTemplate = {
-                public: {
-                titleText: popupTextInputValue,
-                tagText: popupTagValue,
-                date: popupDateValue,
-                },
-                _private: {
-                    tagModifier: `--${popupTagValue}`,
-                }
-            }
-            ref.initialTasks.push(taskDataTemplate);
-            changeLocalStorage('initialTasks', ref)
-            updateComponent(AllTasks, ref.initialTasks, 'all-tasks');
-            closePopup();
-            
+            let taskDataTemplate = 
+            {   updatedAt: Date.now(),
+                title: popupTextInputValue,
+                isCompleted: false,
+                tag: popupTagValue,
+                date: popupDateValue
+              }
+            postTask(dbUrl, taskDataTemplate)
+            .then(res => res.json())
+            .catch(err => console.error(err, err.message))
+            .then(resJson => {
+                dbData.tasks.incompleted.push(resJson);
+                updateComponent(AllTasks, dbData.tasks.incompleted, 'all-tasks');
+                closePopup();
+            })   
         }
         function validate() {
             if(popupTextInputValue.replace(/\s/g, '') !== '' && popupTagValue !== ''){
@@ -343,13 +423,12 @@
     
     
     function App() {
-
-        appContainer.append(Header(), Nav(), AllTasks(ref.initialTasks), CompletedTasks(ref.completedTasks));
+        appContainer.append(Header(), Nav(), AllTasks(dbData.tasks.incompleted), CompletedTasks(dbData.tasks.completed));
         return appContainer;
     }
     
     function deleteComponent(component, parentSelector) {
-        const parentElement = appContainer.querySelector(`.${parentSelector}`)
+        const parentElement = appContainer.querySelector(parentSelector)
         parentElement.removeChild(component)
     }
     
@@ -367,10 +446,42 @@
             popup = null;
         }    
     }
-    
     function renderApp() {
        App()
     }
+    function fetchDataByApi() {
+        Promise.all([
+            getAllTasks(dbUrl),
+            getWeather(weatherApiUrl, weatherApiKey, `tbilisi`),
+        ])
+        .then((data) => {
+            const tasks = data[0];
+            const weather = data[1];
+            return tasks;
+          })
+        .then(tasks => {
+            if(tasks){
+                renderApp();
+            }
+        })
+        .then(() => checkIfModalWasShown())
+        .then(() => navigator.geolocation.getCurrentPosition(onAcceptGeo, onDeclineGeo))
+        
+    }
 
-    renderApp();
+    function onAcceptGeo(position) {
+        getWeather(weatherApiUrl, weatherApiKey, `${position.coords.latitude},${position.coords.longitude}`)
+        .then( res => {
+            weatherData = {};
+            weatherData['iconUrl'] = res.current.condition.icon;
+            weatherData['location'] = res.location.name;
+            weatherData['temp'] = res.current.temp_c;
+            updateComponent( Header, '', 'header')
+        })
+    }
+    function onDeclineGeo() {
+        console.warn('You have blocked site from getting your location, location is now set to default (Tbilisi)')
+    }    
+    fetchDataByApi();
+    
 })();
