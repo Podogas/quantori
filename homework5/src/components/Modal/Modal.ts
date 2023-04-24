@@ -3,13 +3,13 @@ import { createElement, getDayPart } from '../../utils/Utils';
 //DELETE!!!!
 const appContainer = document.getElementById("functional-example");
 
-export default function Modal(tasks) {
+export default function Modal(tasks: Array<any>) {
 
     function closeModal(){
         appContainer.removeChild(section)
 
     }
-    function fillList(task){
+    function fillList(task: {title: string}){
         const listItem = createElement('li', ['modal__list-item']);
         listItem.innerText = task.title;
         return listItem;
@@ -20,7 +20,7 @@ export default function Modal(tasks) {
     const list = createElement('ul', ['modal__list']);
     const button = createElement('button', ['modal__button'], 'Ok', [{name: 'type', value: 'button'}]);
     button.onclick = closeModal;
-    let taskElArray = [];
+    let taskElArray: HTMLElement[] = [];
     tasks.forEach(taskData => {
         taskElArray.push(fillList(taskData))});
     list.append(...taskElArray);

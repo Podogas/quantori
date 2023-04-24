@@ -3,14 +3,14 @@ import {createElement} from '../../utils/Utils';
 import { updateTask } from '../../api/Api';
 import AllTasks from '../AllTasks/AllTasks';
 
-import { App, deleteComponent, updateComponent } from '../../index.js';
+import { App, deleteComponent, updateComponent } from '../../index';
 
 export default function CompletedTasks() {
     const section = createElement('section', ['completed-tasks'],)
     if (App.state.tasks.completed.length !== 0) {
         const title = createElement('h3', ['completed-tasks__title'],  'Completed Tasks');
-        function Task(data) {
-            const task = createElement('div', ["completed-tasks__task"],);
+        function Task(data: {title: string, tag: string, date: string, id: string}) {
+            let task = createElement('div', ["completed-tasks__task"],);
             const checkbox = createElement('input', ['completed-tasks__task-checkbox'], null, [{name: "type", value: "checkbox"}, {name: "checked", value: "true"}]);
             const taskInfoWrapper = createElement('div', ["completed-tasks__task-info-wrapper"],);
             const taskTitle = createElement('h4', ["completed-tasks__task-title"], data.title,);
@@ -43,11 +43,11 @@ export default function CompletedTasks() {
             taskInfoWrapper.append(taskTitle, taskCaptionWrapper);
             task.append(checkbox,taskInfoWrapper);
             if(App.state.tasks.completed.length === 0) {
-                task = '';
+                task = null;
             }
             return task;
         }
-        const taskElArray = [];
+        const taskElArray: HTMLElement[] = [];
         App.state.tasks.completed.forEach(taskData => {
         taskElArray.push(Task(taskData))});
         section.append(title, ...taskElArray)

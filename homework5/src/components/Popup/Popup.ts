@@ -1,7 +1,7 @@
 import './Popup.css';
-import {createElement, formatDate} from '../../utils/Utils.js';
+import {createElement, formatDate} from '../../utils/Utils';
 import { postTask } from '../../api/Api';
-import { togglePopup, App, updateComponent } from '../../index.js';
+import { togglePopup, App, updateComponent } from '../../index';
 import AllTasks from '../AllTasks/AllTasks';
 export default function Popup() {
     let popupTextInputValue = '';
@@ -9,7 +9,7 @@ export default function Popup() {
     let popupDateValue = `${formatDate(new Date())}`;
     const popup = createElement('section', ['popup'],);
     const title = createElement('h2', ['popup__title'], 'Add New Task');
-    const input = createElement('input', ['popup__input'], null, [{name: 'type',value: 'text'},{name: 'placeholder' ,value: 'Task Title'}]);
+    const input = createElement('input', ['popup__input'], null, [{name: 'type',value: 'text'},{name: 'placeholder' ,value: 'Task Title'}]) as HTMLInputElement;
     const infoWrapper = createElement('div', ['popup__info-wrapper']);
     const infoTagsWrapper = createElement('div', ['popup__info-tags-wrapper']);
     const infoTagHealth = createElement('span', ['popup__info-tag', 'popup__info-tag--health'], 'health')
@@ -49,11 +49,11 @@ export default function Popup() {
         }
     }
     function addText(){
-        popupTextInputValue = input.value;
+        popupTextInputValue = input?.value;
         validate();
     }
-    function addInfoTag(e){
-        let tagValue = e.target.innerText;
+    function addInfoTag(e: Event){
+        let tagValue = (e.target as HTMLInputElement).innerText;
         infoTagHealth.classList.remove(`popup__info-tag--health--selected`);
         infoTagWork.classList.remove(`popup__info-tag--work--selected`);
         infoTagHome.classList.remove(`popup__info-tag--home--selected`);
@@ -61,7 +61,7 @@ export default function Popup() {
         if(tagValue == popupTagValue){
             tagValue = '';
         } else {
-            e.target.classList.add(`popup__info-tag--${tagValue}--selected`);
+            (e.target as HTMLInputElement).classList.add(`popup__info-tag--${tagValue}--selected`);
         }
         
         switch (tagValue) {
@@ -82,8 +82,8 @@ export default function Popup() {
           }
           validate();
     }
-    function addDate(e){
-        const inputValue = e.target.value;
+    function addDate(e: Event){
+        const inputValue = (e.target as HTMLInputElement).value;
         const dd = inputValue.slice(8, 10);
         const mm = inputValue.slice(5, 7);
         const yyyy = inputValue.slice(0, 4);

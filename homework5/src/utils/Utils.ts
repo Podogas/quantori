@@ -1,5 +1,5 @@
-function createElement(element, classList, text, attr){
-    let el = undefined;
+function createElement(element: string, classList?: Array<string>, text?: string, attr?: Array<{name: string, value: string}>){
+    let el: HTMLElement | undefined;
     if(element){
         el = document.createElement(element);
     }
@@ -14,12 +14,12 @@ function createElement(element, classList, text, attr){
     }    
     return el;
 }
-function formatDate(day){
-    const yyyy = day.getFullYear();
-    let mm = day.getMonth() + 1;
-    let dd = day.getDate();
-    if (dd < 10) dd = '0' + dd;
-    if (mm < 10) mm = '0' + mm;
+function formatDate(day: Date){
+    const yyyy: number = day.getFullYear();
+    let mm: number | string = day.getMonth() + 1;
+    let dd: number | string = day.getDate();
+    if (dd < 10) dd = `0${dd}`;
+    if (mm < 10) mm = `0${mm}`;
     return `${dd}.${mm}.${yyyy}`;
 };
 function getDayPart() {

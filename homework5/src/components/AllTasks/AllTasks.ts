@@ -1,15 +1,30 @@
 import './AllTasks.css';
 import {createElement} from '../../utils/Utils';
 import { deleteTask, updateTask } from '../../api/Api';
-import {deleteComponent, updateComponent} from '../../index.js';
+import {deleteComponent, updateComponent} from '../../index';
 import CompletedTasks from '../CompletedTasks/CompletedTasks';
 
-export default function AllTasks(tasks) {
+interface TaskData {
+    title: string,
+    tag: string,
+    date: string,
+    id: string,
+    isCompleted: boolean,
+    prevTag: string,
+    updatedAt: number
+}
+
+interface Tasks {
+    completed: TaskData[],
+    incompleted: TaskData[]
+}
+
+export default function AllTasks(tasks: Tasks) {
     const section = createElement('section', ['all-tasks'],)
     if (tasks.incompleted.length !== 0) {
     const title = createElement('h3', ['all-tasks__title'],  'All Tasks');
-    function Task(data) {
-        const task = createElement('div', ["all-tasks__task"],);
+    function Task(data: TaskData) {
+        let task = createElement('div', ["all-tasks__task"],);
         const checkbox = createElement('input', ['all-tasks__task-checkbox'], null, [{name: "type", value: "checkbox"}]);
         const taskInfoWrapper = createElement('div', ["all-tasks__task-info-wrapper"],);
         const taskTitle = createElement('h4', ["all-tasks__task-title"], data.title,);
@@ -30,7 +45,7 @@ export default function AllTasks(tasks) {
             deleteComponent(task,'.all-tasks');   
         }
         function moveTaskToComplited() {
-            const dataToPush = tasks.incompleted.filter(d => d==data)[0];
+            const dataToPush = tasks.incompleted.filter(d => d===data)[0];
             dataToPush.isCompleted = true;
             dataToPush.prevTag = dataToPush.tag;
             dataToPush.updatedAt = Date.now();
@@ -39,7 +54,7 @@ export default function AllTasks(tasks) {
             .catch(err => console.error(err, err.message))
             .then( () => {
                 setTimeout(() => {
-                    removeTaskFromList(task);
+                    removeTaskFromList();
                     updateComponent(CompletedTasks, tasks, 'completed-tasks');
                     updateComponent(AllTasks, tasks, 'all-tasks');
                 }, 100);
@@ -58,11 +73,11 @@ export default function AllTasks(tasks) {
         taskInfoWrapper.append(taskTitle, taskCaptionWrapper);
         task.append(checkbox,taskInfoWrapper, taskButton);
         if(tasks.incompleted.length === 0) {
-            task = '';
+            task = null;
         }
         return task;
     }
-    const taskElArray = [];
+    const taskElArray: HTMLElement[] = [];
     tasks.incompleted.forEach(taskData => {
         taskElArray.push(Task(taskData))});
     section.innerHTML = ''

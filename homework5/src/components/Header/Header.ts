@@ -1,6 +1,6 @@
 import './Header.css';
 import {createElement} from '../../utils/Utils';
-import { App } from '../../index.js';
+import { App } from '../../index';
 
 export default function Header() {
     const header = createElement('header', ['header'], )
