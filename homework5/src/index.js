@@ -7,10 +7,8 @@ import Modal from './components/Modal/Modal';
 import Popup from './components/Popup/Popup';
 import { formatDate } from './utils/Utils';
 import {fetchDataByApi } from './api/Api';
-
-
-
 const appContainer = document.getElementById("functional-example");
+
 function togglePopup(popup){
     popup ? appContainer.removeChild(popup) : appContainer.append(Popup());   
 }
@@ -38,18 +36,22 @@ function checkIfModalWasShown() {
         appContainer.append(Modal(arr));
     }
 }
+
+function App() {
+    appContainer.append(Header(), Nav(), AllTasks(App.state.tasks), CompletedTasks());
+    return appContainer;
+}
  
 App.state = {
     tasks: {},
     weatherData: {},
 }
-function App() {
-    appContainer.append(Header(), Nav(), AllTasks(App.state.tasks), CompletedTasks());
-    return appContainer;
-}
+
 function renderApp() {
     App(); 
     checkIfModalWasShown();
 }
+
 fetchDataByApi();
+
 export {updateComponent, deleteComponent, togglePopup, checkIfModalWasShown, App, renderApp};

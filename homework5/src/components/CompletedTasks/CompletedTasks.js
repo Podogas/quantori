@@ -42,7 +42,7 @@ export default function CompletedTasks() {
             taskCaptionWrapper.append(taskTag, taskDate);
             taskInfoWrapper.append(taskTitle, taskCaptionWrapper);
             task.append(checkbox,taskInfoWrapper);
-            if(App.state.tasks.completed.length == 0) {
+            if(App.state.tasks.completed.length === 0) {
                 task = '';
             }
             return task;

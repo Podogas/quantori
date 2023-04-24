@@ -7,22 +7,22 @@ export default function Popup() {
     let popupTextInputValue = '';
     let popupTagValue = '';
     let popupDateValue = `${formatDate(new Date())}`;
-    let popup = createElement('section', ['popup'],);
-    let title = createElement('h2', ['popup__title'], 'Add New Task');
-    let input = createElement('input', ['popup__input'], null, [{name: 'type',value: 'text'},{name: 'placeholder' ,value: 'Task Title'}]);
-    let infoWrapper = createElement('div', ['popup__info-wrapper']);
-    let infoTagsWrapper = createElement('div', ['popup__info-tags-wrapper']);
-    let infoTagHealth = createElement('span', ['popup__info-tag', 'popup__info-tag--health'], 'health')
-    let infoTagWork = createElement('span', ['popup__info-tag', 'popup__info-tag--work'], 'work')
-    let infoTagHome = createElement('span', ['popup__info-tag', 'popup__info-tag--home'], 'home')
-    let infoTagOther = createElement('span', ['popup__info-tag', 'popup__info-tag--other'], 'other')
-    let infoDateWrapper = createElement('div', ['popup__info-date-input-wrapper'], popupDateValue);
-    let dateInput = createElement('input', ['popup__info-date-input'], null, [{name: 'type', value: 'date'}])
-    let buttonsWrapper = createElement('div', ['popup__buttons-wrapper']);
-    let cancelButton = createElement('button', ['popup__buttons', 'popup__buttons-cancel'], 'Cancel', [{name: 'type', value: 'button'}]);
-    let addButton = createElement('button', ['popup__buttons', 'popup__buttons-add', 'popup__buttons-add--disabled'], 'Add Task', [{name: 'type', value: 'button'}]);
+    const popup = createElement('section', ['popup'],);
+    const title = createElement('h2', ['popup__title'], 'Add New Task');
+    const input = createElement('input', ['popup__input'], null, [{name: 'type',value: 'text'},{name: 'placeholder' ,value: 'Task Title'}]);
+    const infoWrapper = createElement('div', ['popup__info-wrapper']);
+    const infoTagsWrapper = createElement('div', ['popup__info-tags-wrapper']);
+    const infoTagHealth = createElement('span', ['popup__info-tag', 'popup__info-tag--health'], 'health')
+    const infoTagWork = createElement('span', ['popup__info-tag', 'popup__info-tag--work'], 'work')
+    const infoTagHome = createElement('span', ['popup__info-tag', 'popup__info-tag--home'], 'home')
+    const infoTagOther = createElement('span', ['popup__info-tag', 'popup__info-tag--other'], 'other')
+    const infoDateWrapper = createElement('div', ['popup__info-date-input-wrapper'], popupDateValue);
+    const dateInput = createElement('input', ['popup__info-date-input'], null, [{name: 'type', value: 'date'}])
+    const buttonsWrapper = createElement('div', ['popup__buttons-wrapper']);
+    const cancelButton = createElement('button', ['popup__buttons', 'popup__buttons-cancel'], 'Cancel', [{name: 'type', value: 'button'}]);
+    const addButton = createElement('button', ['popup__buttons', 'popup__buttons-add', 'popup__buttons-add--disabled'], 'Add Task', [{name: 'type', value: 'button'}]);
     function addNewTask() {
-        let taskDataTemplate = 
+        const taskDataTemplate = 
         {   updatedAt: Date.now(),
             title: popupTextInputValue,
             isCompleted: false,
