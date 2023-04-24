@@ -1,0 +1,102 @@
+.all-tasks {
+    margin-top: 4.2rem;
+    width: 50%
+}
+.all-tasks__title {
+    font-weight: 700;
+    font-size: 2.4rem;
+    line-height: 3.3rem;
+    color: #000000;
+    margin-bottom: 0.4rem;
+}
+.all-tasks__task {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.2rem;
+    padding: 0.8rem 0;
+}
+.all-tasks__task-checkbox {
+    cursor: pointer;
+    width: 2.1rem;
+    height: 2.1rem;
+    margin:0 2rem 0 1.2rem;
+    accent-color: #3C86F4;
+}
+.all-tasks__task-checkbox:checked::after {
+    content: '';
+    display: block;
+    height: 100%;
+    background-color: #3C86F4;
+    border-radius: 0.4rem;
+    background-image: url(../../img/mark-white.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+} 
+
+
+.all-tasks__task-info-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+.all-tasks__task-title {
+    display: inline-block;
+    font-weight: 400;
+    font-size: 1.8rem;
+    line-height: 2.4rem;
+    margin-bottom: 0.9rem;
+    max-width: 38.2rem;
+    overflow-wrap: break-word;
+    
+}
+.all-tasks__task-caption-wrapper {
+    display: flex;
+    align-items: center;
+}
+.all-tasks__task-tag {
+    padding: 0.2rem 0.8rem;
+    border-radius: 0.6rem;
+    font-weight: 600;
+    font-size: 1.2rem;
+    line-height: 1.6rem;
+    margin-right: 1rem;
+}
+.all-tasks__task-tag--health {
+    background-color:rgba(60, 134, 244, 0.31);
+    color: #0053CF;
+}
+.all-tasks__task-tag--work {
+    background-color:#E8D7FF;
+    color: #9747FF;    
+}
+.all-tasks__task-tag--home {
+    background-color: #E2F6E2;
+    color: #639462;    
+}
+.all-tasks__task-tag--other {
+    background-color: #FFECC7;
+    color: #EA8C00;
+}
+
+
+
+.all-tasks__task-date {
+    font-weight: 500;
+    font-size: 1.2rem;
+    line-height: 1.6rem;
+    color: #838383;
+}
+.all-tasks__task-button {
+    cursor: pointer;
+    background-image: url(../../img/Delete.svg);
+    width: 1.6rem;
+    height: 1.6rem;
+    background-size: contain;
+    background-repeat: no-repeat;
+    border: none;
+    margin-left: auto;
+    margin-right: 0.8rem;
+}
+.all-tasks__task-button:hover {
+    background-image: url(../../img/Delete-blue.svg);
+    background-size: contain;
+}

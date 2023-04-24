@@ -1,0 +1,22 @@
+{
+  "name": "homework5",
+  "version": "1.0.0",
+  "description": "To-do app by Pododgas.",
+  "main": "index.js",
+  "scripts": {
+    "webpack": "webpack",
+    "serve": "webpack serve"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "css-loader": "^6.7.3",
+    "html-webpack-plugin": "^5.5.1",
+    "style-loader": "^3.3.2",
+    "ts-loader": "^9.4.2",
+    "webpack": "^5.80.0",
+    "webpack-cli": "^5.0.1",
+    "webpack-dev-server": "^4.13.3"
+  }
+}

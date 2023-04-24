@@ -1,0 +1,141 @@
+.popup {
+    box-shadow: 0px 0px 100vh 100vw rgba(0, 0, 0, 0.1);
+    border-radius: 2.4rem;
+    background-color: #fff;
+    width: 36.33%;
+    max-width: 524px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    padding-left: 3.2rem;
+    padding-right: 2.7rem;
+}
+.popup__title {
+    margin-top: 2.4rem;
+    margin-bottom: 3.8rem;
+    font-weight: 700;
+    font-size: 2.4rem;
+    line-height: 3.27rem;
+}
+.popup__input {
+    padding: 1.5rem 2.1rem;
+    border: 1px solid #D2D2D2;
+    background-color: #F5F5F5;
+    font-weight: 500;
+    line-height: 2rem;
+    border-radius: 1.2rem;
+    width: 90.8%;
+    margin-bottom: 1.8rem;
+}
+.popup__input::placeholder {
+    font-family: 'Nunito','Open Sans', sans-serif;
+    color: #838383;
+    font-weight: 500;
+    line-height: 2rem;
+}
+.popup__info-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 9.2rem;
+}
+.popup__info-tags-wrapper {
+
+}
+.popup__info-tag {
+    cursor: pointer;
+    padding: 0.2rem 0.8rem;
+    border-radius: 0.6rem;
+    font-weight: 500;
+    font-size: 1.2rem;
+    line-height: 1.5rem;
+    margin-right: 1.2rem;
+}
+.popup__info-tag--health {
+    background-color: rgba(60, 134, 244, 0.31);
+    color: #0053CF;
+}
+.popup__info-tag--health--selected {
+    border: 1px solid #0053CF;
+}
+.popup__info-tag--work {
+    background-color: #E8D7FF;
+    color: #9747FF;
+}
+.popup__info-tag--work--selected {
+    border: 1px solid #9747FF;
+}
+.popup__info-tag--home {
+    background-color: #E2F6E2;
+    color: #639462;
+}
+.popup__info-tag--home--selected {
+    border: 1px solid #639462;
+}
+.popup__info-tag--other {
+    background-color: #FFECC7;
+    color: #EA8C00;
+}
+.popup__info-tag--other--selected {
+    border: 1px solid #EA8C00;
+}
+.popup__info-date-input-wrapper{
+    position: relative;
+    width: 18%;
+    font-weight: 500;
+    font-size: 1.5rem;
+    line-height: 2rem;
+    border: 2px solid rgba(60, 134, 244, 0.6);
+    border-radius: 1.2rem;
+    padding: 1rem 1.6rem;
+}
+
+.popup__info-date-input {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    box-sizing: border-box;
+  }
+  .popup__info-date-input::-webkit-calendar-picker-indicator {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+  }
+  .popup__buttons-wrapper {
+    margin-bottom: 2.2rem;
+    display: flex;
+    justify-content: space-between;
+  }
+  .popup__buttons {
+    cursor: pointer;
+    padding: 1.6rem 0;
+    width: 49%;
+    border: none;
+    border-radius: 1.2rem;
+    font-family: 'Nunito','Open Sans', sans-serif;
+    font-weight: 800;
+    font-size: 1.6rem;
+    line-height: 2rem;
+  }
+  .popup__buttons-cancel {
+    background-color: transparent;
+    color: #0053CF;
+  }
+  .popup__buttons-add {
+    color: #FFFFFF;
+    background-color: #3C86F4;
+  }
+  .popup__buttons-add--disabled {
+    background-color: #D3D3D3;
+  }
