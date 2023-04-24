@@ -34,7 +34,7 @@ export default function AllTasks(tasks) {
             dataToPush.isCompleted = true;
             dataToPush.prevTag = dataToPush.tag;
             dataToPush.updatedAt = Date.now();
-            tasks.completed.unshift(dataToPush)
+            tasks.completed.push(dataToPush)
             updateTask(dataToPush ,data.id)
             .catch(err => console.error(err, err.message))
             .then( () => {
@@ -57,6 +57,9 @@ export default function AllTasks(tasks) {
         taskCaptionWrapper.append(taskTag, taskDate);
         taskInfoWrapper.append(taskTitle, taskCaptionWrapper);
         task.append(checkbox,taskInfoWrapper, taskButton);
+        if(tasks.incompleted.length === 0) {
+            task = '';
+        }
         return task;
     }
     const taskElArray = [];
