@@ -4,6 +4,7 @@
   "description": "To-do app by Pododgas.",
   "main": "index.js",
   "scripts": {
+    "start": "json-server --port 3004 --watch ./DB/db.json webpack serve",
     "webpack": "webpack",
     "serve": "webpack serve"
   },
