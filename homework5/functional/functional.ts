@@ -21,7 +21,7 @@
             const arrayForToday = tasks.filter((task) => task.date == formatDate(date));
             return arrayForToday;
         }
-        lastVisit = window.localStorage.getItem('last-visit');
+        const lastVisit = window.localStorage.getItem('last-visit');
         const arr =  getArrayOfTasksForToday(dbData.tasks.incompleted)
         if(!lastVisit && arr.length != 0){
             window.localStorage.setItem('last-visit', date.getDate());
