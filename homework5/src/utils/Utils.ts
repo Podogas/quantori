@@ -1,4 +1,6 @@
-function createElement(element: string, classList?: Array<string>, text?: string, attr?: Array<{name: string, value: string}>){
+function createElement(
+    element: string, classList?: Array<string>, text?: string, attr?: Array<{name: string, value: string}>
+    ):HTMLElement | undefined {
     let el: HTMLElement | undefined;
     if(element){
         el = document.createElement(element);
@@ -14,7 +16,7 @@ function createElement(element: string, classList?: Array<string>, text?: string
     }    
     return el;
 }
-function formatDate(day: Date){
+function formatDate(day: Date):string{
     const yyyy: number = day.getFullYear();
     let mm: number | string = day.getMonth() + 1;
     let dd: number | string = day.getDate();
@@ -22,7 +24,7 @@ function formatDate(day: Date){
     if (mm < 10) mm = `0${mm}`;
     return `${dd}.${mm}.${yyyy}`;
 };
-function getDayPart() {
+function getDayPart():string {
     let hour = new Date().getHours();    
     if(hour<5){
         return 'Night'

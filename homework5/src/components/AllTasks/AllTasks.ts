@@ -3,36 +3,22 @@ import {createElement} from '../../utils/Utils';
 import { deleteTask, updateTask } from '../../api/Api';
 import {deleteComponent, updateComponent} from '../../index';
 import CompletedTasks from '../CompletedTasks/CompletedTasks';
+import {Tasks, Task} from '../../utils/Interfaces';
 
-interface TaskData {
-    title: string,
-    tag: string,
-    date: string,
-    id: string,
-    isCompleted: boolean,
-    prevTag: string,
-    updatedAt: number
-}
-
-interface Tasks {
-    completed: TaskData[],
-    incompleted: TaskData[]
-}
-
-export default function AllTasks(tasks: Tasks) {
-    const section = createElement('section', ['all-tasks'],)
+export default function AllTasks(tasks: Tasks):HTMLElement {
+    const section:HTMLElement = createElement('section', ['all-tasks'],)
     if (tasks.incompleted.length !== 0) {
-    const title = createElement('h3', ['all-tasks__title'],  'All Tasks');
-    function Task(data: TaskData) {
-        let task = createElement('div', ["all-tasks__task"],);
-        const checkbox = createElement('input', ['all-tasks__task-checkbox'], null, [{name: "type", value: "checkbox"}]);
-        const taskInfoWrapper = createElement('div', ["all-tasks__task-info-wrapper"],);
-        const taskTitle = createElement('h4', ["all-tasks__task-title"], data.title,);
-        const taskCaptionWrapper = createElement('div', ["all-tasks__task-caption-wrapper"],);
-        const taskTag = createElement('span', ['all-tasks__task-tag', `all-tasks__task-tag--${data.tag}`], data.tag);
-        const taskDate = createElement('span', ['all-tasks__task-date'], data.date);
-        const taskButton = createElement('button', ['all-tasks__task-button'], null, [{name: "type", value: "button"}])
-        function removeTask() {
+    const title: HTMLElement = createElement('h3', ['all-tasks__title'],  'All Tasks');
+    function Task(data: Task):HTMLElement | null {
+        let task:HTMLElement | null = createElement('div', ["all-tasks__task"],);
+        const checkbox:HTMLElement = createElement('input', ['all-tasks__task-checkbox'], null, [{name: "type", value: "checkbox"}]);
+        const taskInfoWrapper:HTMLElement = createElement('div', ["all-tasks__task-info-wrapper"],);
+        const taskTitle:HTMLElement = createElement('h4', ["all-tasks__task-title"], data.title,);
+        const taskCaptionWrapper:HTMLElement = createElement('div', ["all-tasks__task-caption-wrapper"],);
+        const taskTag:HTMLElement = createElement('span', ['all-tasks__task-tag', `all-tasks__task-tag--${data.tag}`], data.tag);
+        const taskDate:HTMLElement = createElement('span', ['all-tasks__task-date'], data.date);
+        const taskButton:HTMLElement = createElement('button', ['all-tasks__task-button'], null, [{name: "type", value: "button"}])
+        function removeTask():void {
             deleteTask(data.id)
             .then(res => res.json())
             .catch(err => console.error(err, err.message))
@@ -40,12 +26,12 @@ export default function AllTasks(tasks: Tasks) {
                 removeTaskFromList();
             })
         }
-        function removeTaskFromList() {
+        function removeTaskFromList():void {
             tasks.incompleted = tasks.incompleted.filter(d => d!==data);
             deleteComponent(task,'.all-tasks');   
         }
-        function moveTaskToComplited() {
-            const dataToPush = tasks.incompleted.filter(d => d===data)[0];
+        function moveTaskToComplited():void {
+            const dataToPush:Task = tasks.incompleted.find((d:Task) => d===data);
             dataToPush.isCompleted = true;
             dataToPush.prevTag = dataToPush.tag;
             dataToPush.updatedAt = Date.now();
@@ -61,11 +47,11 @@ export default function AllTasks(tasks: Tasks) {
             })    
         }
 
-        taskButton.onclick = () => {
+        taskButton.onclick = ():void => {
             removeTask();
 
         }
-        checkbox.onclick = () => {
+        checkbox.onclick = ():void => {
             moveTaskToComplited();
 
         }
@@ -78,7 +64,7 @@ export default function AllTasks(tasks: Tasks) {
         return task;
     }
     const taskElArray: HTMLElement[] = [];
-    tasks.incompleted.forEach(taskData => {
+    tasks.incompleted.forEach((taskData:Task) => {
         taskElArray.push(Task(taskData))});
     section.innerHTML = ''
     section.append(title, ...taskElArray)

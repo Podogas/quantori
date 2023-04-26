@@ -7,51 +7,59 @@ import Modal from './components/Modal/Modal';
 import Popup from './components/Popup/Popup';
 import { formatDate } from './utils/Utils';
 import {fetchDataByApi } from './api/Api';
-const appContainer = document.getElementById("functional-example");
+import {State} from './utils/Interfaces';
+const appContainer:HTMLElement = document.getElementById("functional-example");
 
-function togglePopup(popup: HTMLElement | undefined){
+function togglePopup(popup: HTMLElement | undefined):void{
     popup ? appContainer.removeChild(popup) : appContainer.append(Popup());   
 }
 
-function deleteComponent(component: HTMLElement, parentSelector: string) {
+function deleteComponent(component: HTMLElement, parentSelector: string):void {
     const parentElement = appContainer.querySelector(parentSelector)
     parentElement.removeChild(component)
 }
 
-function updateComponent(component: Function, data: object, selector: string) {
+function updateComponent(component: Function, data: object, selector: string):void {
     const htmlElement = appContainer.querySelector(`.${selector}`)
     htmlElement.replaceWith(component(data));
 }
 
-function checkIfModalWasShown() {
+function checkIfModalWasShown():void {
     const date = new Date;
-    function getArrayOfTasksForToday() {
-        const arrayForToday = App.state.tasks.incompleted.filter((task) => task.date == formatDate(date));
+    function getArrayOfTasksForToday():object[] {
+        const arrayForToday:object[] = App.state.tasks.incompleted.filter((task) => task.date == formatDate(date));
         return arrayForToday;
     }
     const lastVisit = window.localStorage.getItem('last-visit');
     const arr =  getArrayOfTasksForToday();
     if(!lastVisit && arr.length != 0){
-        console.log( date)
         window.localStorage.setItem('last-visit', `${date.getDate()}`);
         appContainer.append(Modal(arr));
     }
 }
 
-function App() {
+function App():HTMLElement {
     appContainer.append(Header(), Nav(), AllTasks(App.state.tasks), CompletedTasks());
     return appContainer;
 }
-App.state = {
-    tasks: { incompleted:[], completed:[]},
-    weatherData: {iconUrl: '', temp: 0, location: ''},
+const initialState:State ={
+    tasks: {
+        completed:[],
+        incompleted:[]
+    },
+    weatherData: {
+       iconUrl: '',
+       location: '',
+       temp: 0 
+    }
 }
 
-function renderApp() {
+App.state = initialState
+
+function renderApp():void {
     App(); 
     checkIfModalWasShown();
 }
 
 fetchDataByApi();
-
-export {updateComponent, deleteComponent, togglePopup, checkIfModalWasShown, App, renderApp};
+export {updateComponent, deleteComponent, togglePopup, checkIfModalWasShown, App, renderApp, appContainer};

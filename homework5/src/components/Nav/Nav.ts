@@ -3,10 +3,10 @@ import {createElement} from '../../utils/Utils';
 import { updateComponent, togglePopup, App} from "../../index";
 import AllTasks from "../AllTasks/AllTasks";
 
-export default function Nav() {
-    const nav = createElement('nav', ['nav'], )
+export default function Nav():HTMLElement {
+    const nav:HTMLElement = createElement('nav', ['nav'], )
     const input = createElement('input', ['nav__input'], '', [{name: "placeholder", value: "Search Task"}]) as HTMLInputElement;
-    const button = createElement('button', ['nav__button'], '+ New Task', [{name: "type", value: "button"}])
+    const button:HTMLElement = createElement('button', ['nav__button'], '+ New Task', [{name: "type", value: "button"}])
     function onInputChange() {
         const unFilteredResults = [...App.state.tasks.incompleted];
         let filteredResults = {completed: {}, incompleted: {}};
