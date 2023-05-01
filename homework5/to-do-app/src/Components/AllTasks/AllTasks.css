@@ -1,0 +1,14 @@
+.all-tasks {
+    margin-top: 4.2rem;
+    width: 50%
+}
+.all-tasks__title {
+    font-weight: 700;
+    font-size: 2.4rem;
+    line-height: 3.3rem;
+    color: #000000;
+    margin-bottom: 0.4rem;
+}
+
+
+
