@@ -1,9 +1,7 @@
-import { TasksType,TaskType } from "./Interfaces";
-
-
-const formateWeather = (weather) => {
+import { TaskType, WeatherApiResponseType, WeatherDataType } from "./Interfaces";
+const formateWeather = (weather:WeatherApiResponseType) => {
     if(weather){
-        const _weatherObj = {
+        const _weatherObj:WeatherDataType = {
             locationName: weather.location.name,
             temp: `${weather.current.temp_c}°`,
             icon: {
@@ -15,10 +13,10 @@ const formateWeather = (weather) => {
     }
     return;
 }   
-function formatDate(day){
+function formatDate(day:Date){
     const yyyy = day.getFullYear();
-    let mm = day.getMonth() + 1;
-    let dd = day.getDate();
+    let mm: string | number = day.getMonth() + 1;
+    let dd: string | number = day.getDate();
     if (dd < 10) dd = `0${dd}`;
     if (mm < 10) mm = `0${mm}`;
     return `${dd}.${mm}.${yyyy}`;
@@ -39,27 +37,3 @@ function getDayPart(){
      
 }
 export { formateWeather, formatDate, getDayPart};
-
-// interface WeatherData {
-//     iconUrl: string,
-//     location: string,
-//     temp: number
-// }
-// interface Task {
-//         updatedAt: number,
-//         title: string,
-//         isCompleted: boolean,
-//         tag : string,
-//         date: string,
-//         id?: string,
-//         prevTag?: string 
-// }
-
-// interface Tasks {
-//     completed: Array<Task>,
-//     incompleted: Array<Task>
-// }
-// interface State {
-//     tasks: Tasks,
-//     weatherData: WeatherData
-// }

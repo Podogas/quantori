@@ -1,16 +1,9 @@
-//     if(App.state.weatherData){
-//         const icon:HTMLElement = createElement('img', ["header__weather-widget-icon"], '', [{name:'src', value: `http:${App.state.weatherData.iconUrl}`}])
-//         const tempreture:HTMLElement = createElement('span', ['header__weather-widget-tempreture'], `${App.state.weatherData.temp}°`);
-//         const location:HTMLElement = createElement('span', ['header__weather-widget-location'], App.state.weatherData.location);
-//         weatherWidget.append(icon, tempreture, location);
-//     } 
 import React, { useEffect, useState } from 'react';
 import './WeatherWidget.css';
 import { getWeather } from '../../Api/Api';
 import { WeatherDataType } from '../../Utils/Interfaces';
-// header__weather-widget
 
-const WeatherWidget = ({blockName,weather}) => {
+const WeatherWidget = ({blockName,weather}:{blockName:string,weather:WeatherDataType | undefined}) => {
   if(weather){
     return (
       <div className={`${blockName}__weather-widget`}>
@@ -20,7 +13,7 @@ const WeatherWidget = ({blockName,weather}) => {
       </div>
     );
   }
-  
+  return null;
 }
 
 export default WeatherWidget;

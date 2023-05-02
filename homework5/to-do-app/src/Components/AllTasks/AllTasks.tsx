@@ -1,3 +1,4 @@
+import { TaskType, deleteHandlerType, moveTaskHandlerType } from "../../Utils/Interfaces";
 import TaskList from "../TaskList/TaskList";
 import "./AllTasks.css";
 const AllTasks = ({
@@ -6,6 +7,12 @@ const AllTasks = ({
   filteredResults,
   moveTaskHandler,
   deleteHandler
+}:{
+  incompletedTasks:TaskType[],
+  filterOn:boolean, 
+  filteredResults:TaskType[],
+  moveTaskHandler:moveTaskHandlerType,
+  deleteHandler:deleteHandlerType  
 }) => {
   if (filterOn) {
     return (
@@ -15,6 +22,7 @@ const AllTasks = ({
           tasks={filteredResults} 
           blockName='all-tasks' 
           moveTaskHandler={moveTaskHandler}
+          deleteHandler={deleteHandler}
         />
       </section>  
     );

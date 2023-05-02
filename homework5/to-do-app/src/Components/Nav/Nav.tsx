@@ -1,14 +1,19 @@
 import React, { useRef } from 'react';
 import './Nav.css';
-import { TaskType, TasksType } from '../../Utils/Interfaces';
+import { TaskType, filterHandlerType } from '../../Utils/Interfaces';
 const Nav = ({
   incompletedTasks, 
   filterHandler, 
   filterOn, 
   setPopupType
+}:{
+  incompletedTasks:TaskType[], 
+  filterHandler:filterHandlerType, 
+  filterOn:boolean, 
+  setPopupType: (value: string | boolean) => void 
 }) => {
-  const inputRef = useRef();
-  const buttonRef = useRef();
+  const inputRef = useRef<HTMLInputElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
   if(!filterOn){
     if(inputRef.current?.value){
       inputRef.current.value = '';
@@ -19,14 +24,14 @@ const Nav = ({
   }
   const onInputChange = () => {
     const value = inputRef.current?.value
-    if(value.replace(/\s/g, '') !== '') {
-      const filtered = incompletedTasks.filter((a) => {
-        return a.title.toLowerCase().includes(value.toLowerCase())
+    if(value?.replace(/\s/g, '') !== '') {
+      const filtered:TaskType[] = incompletedTasks.filter((a) => {
+        return a.title.toLowerCase().includes(value?.toLowerCase() ?? '')
       })
       filterHandler(filtered);
     }
     else {
-      filterHandler(false)
+      filterHandler([])
     }
   }
   return (

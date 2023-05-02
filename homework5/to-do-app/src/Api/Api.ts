@@ -7,10 +7,6 @@ import { useState } from 'react';
 const httpHeader = {
     "Content-Type": "application/json",
 }
-// const checkRes = () => {
-    // mb make this function to follow DRY principles
-// }
-// сортировка по дате изменения
 const getTasks = () => {
     return fetch(`${dbUrl}/tasks`, {
         method: "GET",
@@ -25,7 +21,7 @@ const getTasks = () => {
     })
     .then(res => res)
 }
-const postTask = (data) => {
+const postTask = (data:TaskType) => {
     return fetch(`${dbUrl}/tasks`, {
         method: "POST",
         headers: httpHeader,
@@ -40,7 +36,7 @@ const postTask = (data) => {
     })
     .then(res => res)
 }
-const deleteTask = (id) => {
+const deleteTask = (id:string) => {
     return fetch( `${dbUrl}/tasks/${id}`, {
         method: "DELETE",
         headers: httpHeader 
@@ -54,7 +50,7 @@ const deleteTask = (id) => {
     })
     .then(res => res)
 }
-const updateTask = (data,id) => {
+const updateTask = (data:TaskType,id:string|undefined) => {
     return fetch( `${dbUrl}/tasks/${id}`, {
         method: "PUT",
         headers: httpHeader,
@@ -72,14 +68,14 @@ const updateTask = (data,id) => {
 }      
 
 const defaultPosition = 'Yerevan';
-const onAcceptGeo = (position) => {
+const onAcceptGeo = (position:GeolocationPosition) => {
     const positionQueryString = `${position.coords.latitude},${position.coords.longitude}`;
      return getWeather(positionQueryString)
 }
 const onDeclineGeo = () => {
     console.warn(`You have blocked site from getting your location, location is now set to default (${defaultPosition})`)
 }
-const getWeather = (query) => {
+const getWeather = (query?:string) => {
     const _query = query ? query : defaultPosition;
     return fetch(`${weatherApiUrl}?key=${weatherApiKey}&q=${_query}&aqi=no`, {
         method: "GET",
@@ -93,6 +89,7 @@ const getWeather = (query) => {
         }
     })
     .then((res) => {
+        console.log(res)
         return formateWeather(res)
     })
 }

@@ -1,45 +1,55 @@
 import React, {useRef, useState} from 'react';
 import './Popup.css';
 import { formatDate } from '../../Utils/Utils';
+import { TaskType, addTaskHandlerType } from '../../Utils/Interfaces';
 
 const Popup = ({
   popupType, 
   setPopupType, 
   addTaskHandler, 
   tasksForToday
+}:{
+  popupType:string | boolean, 
+  setPopupType: React.Dispatch<React.SetStateAction<string | boolean>>, 
+  addTaskHandler:addTaskHandlerType , 
+  tasksForToday:TaskType[]  
 }) => {
   const [date, setDate] = useState(formatDate(new Date()));
   const [isPopupFormValid, setIsPopupformValid] = useState(false);
-  const [selectedTag, setSelectedTag] = useState('');
-  const tagsRef = useRef([...Array(4)].map(() => React.createRef()));
-  const inputRef = useRef();
-  const dateInputRef = useRef();
-  const addBtnRef = useRef();
-  const cancelBtnRef = useRef();
+  const [selectedTag, setSelectedTag] = useState<string>('');
+  const tagsRef = useRef<Array<React.RefObject<HTMLSpanElement>>>([...Array(4)].map(() => React.createRef<HTMLSpanElement>()));
+  const inputRef = useRef<HTMLInputElement>(null);
+  const dateInputRef = useRef<HTMLInputElement>(null);
+  const addBtnRef = useRef<HTMLButtonElement>(null);
+  const cancelBtnRef = useRef(null);
 
   const validate = () => {
-    addBtnRef.current.classList.add('popup__buttons-add--disabled')
+    if(addBtnRef.current && inputRef.current){
+      addBtnRef.current.classList.add('popup__buttons-add--disabled')
     const inputValue = inputRef.current.value;
-    const tag = tagsRef.current.filter(e => e.current.classList.contains('popup__info-tag--selected'));
+    const tag = tagsRef.current.filter((e) => e.current?.classList.contains('popup__info-tag--selected'));
     if(tag.length !==0){
-      const tagText = tag[0].current.innerText;
+      const tagText = tag[0].current?.innerText ?? '';
       if(inputValue.replace(/\s/g, '') !== ''){
         addBtnRef.current.classList.remove('popup__buttons-add--disabled')
         setSelectedTag(tagText);
         setIsPopupformValid(true);
       }
     }
+    }
+    
   }
   const addTask = () => {
     if(isPopupFormValid){
       addTaskHandler({
         updatedAt: Date.now(),
-        title: inputRef.current.value,
+        title: inputRef.current?.value ?? '',
         isCompleted: false,
         tag: selectedTag,
         date: date,
         prevTag: selectedTag
-      })
+      }
+      )
     }  
   }
   const closePopup = () => {
@@ -48,18 +58,18 @@ const Popup = ({
   const closeModal = () => {
     setPopupType(false)
   }
-  const selectTag = (n) => {
+  const selectTag = (n: number) => {
     const element = tagsRef.current[n].current;
-    if(element.classList.contains('popup__info-tag--selected')){
+    if(element?.classList.contains('popup__info-tag--selected')){
       element.classList.remove('popup__info-tag--selected')
     } else {
-      tagsRef.current.forEach(e => e.current.classList.remove('popup__info-tag--selected'))
-      element.classList.add('popup__info-tag--selected')
+      tagsRef.current.forEach(e => e.current?.classList.remove('popup__info-tag--selected'))
+      element?.classList.add('popup__info-tag--selected')
     }
     validate()  
   }
   const changeDate = () => {
-    const inputValue = dateInputRef.current.value;
+    const inputValue:string = dateInputRef.current?.value ?? '';
     const dd = inputValue.slice(8, 10);
     const mm = inputValue.slice(5, 7);
     const yyyy = inputValue.slice(0, 4);
@@ -69,7 +79,7 @@ const Popup = ({
 
   
   if(popupType === 'modal'){
-    const createListItem = (taskData) => {
+    const createListItem = (taskData:TaskType) => {
       return (<ul className='modal__list' key={taskData.id}>{taskData.title}</ul>)
     }
     return (
@@ -105,6 +115,7 @@ const Popup = ({
       </section>
     );  
   }
+  return null
 }
 
 export default Popup;

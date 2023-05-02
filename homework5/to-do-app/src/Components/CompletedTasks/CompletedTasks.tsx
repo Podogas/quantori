@@ -1,8 +1,12 @@
+import { TaskType, moveTaskHandlerType } from "../../Utils/Interfaces";
 import TaskList from "../TaskList/TaskList";
 import './CompletedTasks.css'
 const CompletedTasks = ({
   completedTasks,
   moveTaskHandler
+}:{
+  completedTasks:TaskType[],
+  moveTaskHandler:moveTaskHandlerType  
 }) => {
     if(completedTasks.length === 0){ 
         return null
@@ -14,6 +18,7 @@ const CompletedTasks = ({
           tasks={completedTasks} 
           blockName='completed-tasks' 
           moveTaskHandler={moveTaskHandler}
+          deleteHandler={()=>{}}
         />
       </section>  
     );

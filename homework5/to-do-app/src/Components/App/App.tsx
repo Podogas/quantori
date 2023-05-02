@@ -7,20 +7,20 @@ import AllTasks from '../AllTasks/AllTasks';
 import CompletedTasks from '../CompletedTasks/CompletedTasks';
 import { deleteTask, getTasks, getWeather, onAcceptGeo, onDeclineGeo, postTask, updateTask } from '../../Api/Api';
 import { formatDate } from '../../Utils/Utils';
-import {TaskType,TasksType} from '../../Utils/Interfaces';
+import {TaskType, WeatherDataType, deleteHandlerType} from '../../Utils/Interfaces';
 const App = () => {
-  const [tasks, setTasks] = useState([]);
-  const [incompletedTasks, setIncompletedTasks] = useState([]);
-  const [completedTasks, setCompletedTasks] = useState([]);
-  const [filteredResults, setFilteredRefult] = useState([]);
+  const [tasks, setTasks] = useState<TaskType[]>([]);
+  const [incompletedTasks, setIncompletedTasks] = useState<TaskType[]>([]);
+  const [completedTasks, setCompletedTasks] = useState<TaskType[]>([]);
+  const [filteredResults, setFilteredRefult] = useState<TaskType[]>([]);
   const [filterOn, setFilterOn] = useState(false)
-  const [weather, setWeather] = useState({icon:{url:'',description:''}, locationName:'', temp:''});
-  const [popupType, setPopupType] = useState(false);
+  const [weather, setWeather] = useState<WeatherDataType | undefined>({icon:{url:'',description:''}, locationName:'', temp:''});
+  const [popupType, setPopupType] = useState<boolean | string>(false);
   const [tasksForToday, setTasksForToday] = useState([]);
 
-  const acceptGeoHandler = (position) => {
+  const acceptGeoHandler = (position:GeolocationPosition) => {
     onAcceptGeo(position)
-    .then(res => setWeather(res))
+    .then(res => setWeather(res)) 
     .catch(err => console.error(err.message))
   }
   const onDeclineGeoHandler = () => {
@@ -34,22 +34,22 @@ const App = () => {
     getTasks()
     .then( res => {
       setTasks(res)
-      setFilteredRefult(res.filter(task => task.isCompleted === false))
-      setIncompletedTasks(res.filter(task => task.isCompleted === false))
-      setCompletedTasks(res.filter(task => task.isCompleted === true))
-      setTasksForToday(res.filter(task => task.isCompleted === false && task.date === formatDate(new Date())))
+      setFilteredRefult(res.filter((task:TaskType) => task.isCompleted === false))
+      setIncompletedTasks(res.filter((task:TaskType) => task.isCompleted === false))
+      setCompletedTasks(res.filter((task:TaskType) => task.isCompleted === true))
+      setTasksForToday(res.filter((task:TaskType) => task.isCompleted === false && task.date === formatDate(new Date())))
     })
     .catch(err => console.error(err.message));
     navigator.geolocation.getCurrentPosition(acceptGeoHandler, onDeclineGeoHandler);  
   }, [])
 
   useEffect(() => {
-    setCompletedTasks(tasks.filter(task => task.isCompleted));
+    setCompletedTasks(tasks.filter((task:TaskType) => task.isCompleted));
     setFilterOn(false)
   },[tasks])
 
   useEffect(() => {
-    setIncompletedTasks(tasks.filter(task => !task.isCompleted));
+    setIncompletedTasks(tasks.filter((task:TaskType) => !task.isCompleted));
     setFilterOn(false)
   },[tasks])
 
@@ -61,8 +61,8 @@ const App = () => {
       }
   },[tasksForToday])
 
-  const moveTaskHandler = (task, checkboxEl) => {
-      const updatedTasks = tasks.map(t => {
+  const moveTaskHandler = (task:TaskType) => {
+      const updatedTasks:TaskType[] = tasks.map((t:TaskType) => {
         if(t.id !== task.id){
           return t;
         } else {
@@ -75,11 +75,12 @@ const App = () => {
       setFilterOn(false)    
   }
 
-  const deleteHandler = (tasks, id) => {
-    setIncompletedTasks(tasks);
+  const deleteHandler = (id:string) => {
+    const tasksAfterDeletion:TaskType[] = tasks.filter((a:TaskType) => a.id!==id)
+    setTasks(tasksAfterDeletion);
     deleteTask(id)
   }
-  const filterHandler = (value) => {
+  const filterHandler = (value:TaskType[]) => {
     if(value) {
       setFilterOn(true)
       setFilteredRefult(value)
@@ -88,7 +89,7 @@ const App = () => {
     }
     
   }
-  const addTaskHandler = (data) => {
+  const addTaskHandler = (data:TaskType) => {
     postTask(data)
     .then(res => {
       setTasks([...tasks, res])
@@ -107,14 +108,14 @@ const App = () => {
       <AllTasks 
         deleteHandler={deleteHandler} 
         incompletedTasks={incompletedTasks} 
-        setIncompletedTasks={setIncompletedTasks} 
+        // setIncompletedTasks={setIncompletedTasks} 
         filteredResults={filteredResults} 
         moveTaskHandler={moveTaskHandler} 
         filterOn={filterOn}
       />
       <CompletedTasks 
         completedTasks={completedTasks}
-        setCompletedTasks={setCompletedTasks} 
+        // setCompletedTasks={setCompletedTasks} 
         moveTaskHandler={moveTaskHandler}
       />
       {popupType ? 
