@@ -1,15 +1,6 @@
 {
   "tasks": [
     {
-      "updatedAt": 1682991141597,
-      "title": "1",
-      "isCompleted": false,
-      "tag": "home",
-      "date": "02.05.2023",
-      "prevTag": "home",
-      "id": 1
-    },
-    {
       "updatedAt": 1682991157541,
       "title": "123",
       "isCompleted": false,
@@ -26,6 +17,24 @@
       "date": "02.05.2023",
       "prevTag": "other",
       "id": 3
+    },
+    {
+      "updatedAt": 1683033173251,
+      "title": "12",
+      "isCompleted": true,
+      "tag": "work",
+      "date": "02.05.2023",
+      "prevTag": "work",
+      "id": 4
+    },
+    {
+      "updatedAt": 1683034098241,
+      "title": "123",
+      "isCompleted": false,
+      "tag": "home",
+      "date": "02.05.2023",
+      "prevTag": "home",
+      "id": 5
     }
   ]
 }

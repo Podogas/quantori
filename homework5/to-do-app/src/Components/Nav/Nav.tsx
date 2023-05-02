@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import './Nav.css';
 import { TaskType, filterHandlerType } from '../../Utils/Interfaces';
 const Nav = ({
@@ -24,9 +24,9 @@ const Nav = ({
   }
   const onInputChange = () => {
     const value = inputRef.current?.value
-    if(value?.replace(/\s/g, '') !== '') {
+    if(value && value.replace(/\s/g, '') !== '') {
       const filtered:TaskType[] = incompletedTasks.filter((a) => {
-        return a.title.toLowerCase().includes(value?.toLowerCase() ?? '')
+        return a.title.toLowerCase().includes(value.toLowerCase())
       })
       filterHandler(filtered);
     }

@@ -1,4 +1,4 @@
-import React,{ RefObject, SetStateAction, useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 import { TaskType, deleteHandlerType, moveTaskHandlerType } from '../../Utils/Interfaces';
 import './TaskList.css';
 const TaskList = ({
@@ -28,8 +28,7 @@ const TaskList = ({
         <div key={task.id} className={`${blockName}__task`}>
           <input 
             className={`${blockName}__task-checkbox`}
-            type="checkbox" 
-            // CHECK IF ITS BROKEN console
+            type="checkbox"
             ref={(el) => 
               { if(task.id){
                 const index:number = Number(task.id)

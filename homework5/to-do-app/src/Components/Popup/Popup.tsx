@@ -1,6 +1,6 @@
 import React, {useRef, useState} from 'react';
 import './Popup.css';
-import { formatDate } from '../../Utils/Utils';
+import { formatDate, getDayPart } from '../../Utils/Utils';
 import { TaskType, addTaskHandlerType } from '../../Utils/Interfaces';
 
 const Popup = ({
@@ -84,7 +84,7 @@ const Popup = ({
     }
     return (
       <section className='modal'>
-        <h2 className='modal__title'>good daypart</h2>
+        <h2 className='modal__title'>Good {getDayPart()}</h2>
         <p className='modal__list-caption'>You have the next planned tasks for today: </p>
         {tasksForToday.map(el => createListItem(el))}
         <button className='modal__button' type="button" onClick={closeModal}>Ok</button>

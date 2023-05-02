@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from 'react';
 import './WeatherWidget.css';
-import { getWeather } from '../../Api/Api';
 import { WeatherDataType } from '../../Utils/Interfaces';
 
 const WeatherWidget = ({blockName,weather}:{blockName:string,weather:WeatherDataType | undefined}) => {

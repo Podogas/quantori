@@ -1,4 +1,4 @@
-import { TaskType, WeatherApiResponseType, WeatherDataType } from "./Interfaces";
+import { WeatherApiResponseType, WeatherDataType } from "./Interfaces";
 const formateWeather = (weather:WeatherApiResponseType) => {
     if(weather){
         const _weatherObj:WeatherDataType = {
@@ -13,7 +13,7 @@ const formateWeather = (weather:WeatherApiResponseType) => {
     }
     return;
 }   
-function formatDate(day:Date){
+const formatDate = (day:Date) => {
     const yyyy = day.getFullYear();
     let mm: string | number = day.getMonth() + 1;
     let dd: string | number = day.getDate();
@@ -21,7 +21,7 @@ function formatDate(day:Date){
     if (mm < 10) mm = `0${mm}`;
     return `${dd}.${mm}.${yyyy}`;
 };
-function getDayPart(){
+const getDayPart = () => {
     let hour = new Date().getHours();    
     if(hour<5){
         return 'Night'
