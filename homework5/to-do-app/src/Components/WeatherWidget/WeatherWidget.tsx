@@ -1,7 +1,7 @@
 import './WeatherWidget.css';
 import { WeatherDataType } from '../../Utils/Interfaces';
 import { onAcceptGeo, onDeclineGeo } from '../../Api/Api';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const WeatherWidget = ({blockName}:{blockName:string}) => {
   const [weather, setWeather] = useState<WeatherDataType | undefined>({icon:{url:'',description:''}, locationName:'', temp:''});

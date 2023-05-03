@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import './App.css';
 import Header from '../Header/Header';
 import Nav from '../Nav/Nav';

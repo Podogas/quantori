@@ -1,8 +1,7 @@
-import {TaskType,WeatherDataType} from '../Utils/Interfaces';
+import {TaskType} from '../Utils/Interfaces';
 import  {weatherApiKey, weatherApiUrl, dbUrl} from '../Utils/env';
 import { formateWeather } from '../Utils/Utils';
 import { HttpErrorsHandler } from '../Utils/Errors';
-import { useState } from 'react';
 
 const httpHeader = {
     "Content-Type": "application/json",
