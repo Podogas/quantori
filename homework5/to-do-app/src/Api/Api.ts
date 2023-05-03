@@ -58,7 +58,6 @@ const updateTask = (data:TaskType,id:string|undefined) => {
     })
     .then((res) => {
         if(res.ok){
-            console.log(data)
             return res.json();
         } else {
             throw HttpErrorsHandler(res);
@@ -67,7 +66,7 @@ const updateTask = (data:TaskType,id:string|undefined) => {
     .then(res => res)
 }      
 
-const defaultPosition = 'Yerevan';
+const defaultPosition = 'Tbilisi';
 const onAcceptGeo = (position:GeolocationPosition) => {
     const positionQueryString = `${position.coords.latitude},${position.coords.longitude}`;
      return getWeather(positionQueryString)
@@ -90,7 +89,6 @@ const getWeather = (query?:string) => {
         }
     })
     .then((res) => {
-        console.log(res)
         return formateWeather(res)
     })
 }

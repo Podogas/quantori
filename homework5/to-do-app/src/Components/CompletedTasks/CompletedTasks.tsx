@@ -9,7 +9,6 @@ const CompletedTasks = ({
   completedTasks:TaskType[],
   moveTaskHandler:moveTaskHandlerType  
 }) => {
-  console.log('Completed tasks rerendered')
     if(completedTasks.length === 0){ 
         return null
     }

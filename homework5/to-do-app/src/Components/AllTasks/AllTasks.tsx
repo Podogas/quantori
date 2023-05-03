@@ -14,19 +14,6 @@ const AllTasks = ({
   moveTaskHandler:moveTaskHandlerType,
   deleteHandler:deleteHandlerType  
 }) => {
-  // if (filterOn) {
-  //   return (
-  //     <section className='all-tasks'>
-  //       <h3 className='all-tasks__title'>All Tasks</h3>
-  //       <TaskList 
-  //         tasks={filteredResults} 
-  //         blockName='all-tasks' 
-  //         moveTaskHandler={moveTaskHandler}
-  //         deleteHandler={deleteHandler}
-  //       />
-  //     </section>  
-  //   );
-  // } else {
     if(incompletedTasks.length === 0){ 
       return null
     }
@@ -45,8 +32,7 @@ const AllTasks = ({
           deleteHandler={deleteHandler}
         />
       </section>  
-    );
-  // }       
+    );      
 }
 
 export default AllTasks;

@@ -3,24 +3,14 @@ import './Nav.css';
 import { filterHandlerType } from '../../Utils/Interfaces';
 import React from 'react';
 const Nav = ({
-  // incompletedTasks, 
-  filterHandler, 
-  // filterOn, 
+  filterHandler,
   setPopupType
 }:{
-  // incompletedTasks:TaskType[], 
-  filterHandler:filterHandlerType, 
-  // filterOn:boolean, 
+  filterHandler:filterHandlerType,
   setPopupType: (value: string | boolean) => void 
 }) => {
-  console.log('nav rerenders')
   const inputRef = useRef<HTMLInputElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
-  // if(!filterOn){
-  //   if(inputRef.current?.value){
-  //     inputRef.current.value = '';
-  //   }  
-  // }
   const openPopup = () => {
     setPopupType('popup')
   }

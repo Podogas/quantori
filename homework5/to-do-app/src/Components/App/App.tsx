@@ -9,37 +9,13 @@ import { deleteTask, getTasks, postTask, updateTask } from '../../Api/Api';
 import { formatDate, isArraysEqual } from '../../Utils/Utils';
 import {TaskType} from '../../Utils/Interfaces';
 const App = () => {
-  console.log('App rendered');
   const [initialTasks, setInitialTasks] = useState<TaskType[]>([]);
   const [incompletedTasks, setIncompletedTasks] = useState<TaskType[]>([]);
   const [completedTasks, setCompletedTasks] = useState<TaskType[]>([]);
   const [filteredResults, setFilteredRefult] = useState<TaskType[]>([]);
-
   const [filterOn, setFilterOn] = useState(false)
-  // const [weather, setWeather] = useState<WeatherDataType | undefined>({icon:{url:'',description:''}, locationName:'', temp:''});
   const [popupType, setPopupType] = useState<boolean | string>(false);
   const [tasksForToday, setTasksForToday] = useState([]);
-  // const acceptGeoHandler = (position:GeolocationPosition) => {
-  //   onAcceptGeo(position)
-  //   .then(res => setWeather(res)) 
-  //   .catch(err => console.error(err.message))
-  // }
-  // const acceptGeoHandler = useCallback((position:GeolocationPosition) => {
-  //   onAcceptGeo(position)
-  //   .then(res => setWeather(res)) 
-  //   .catch(err => console.error(err.message))
-  // }, [])
-  // const onDeclineGeoHandler = () => {
-  //   onDeclineGeo();
-  //   getWeather()
-  //   .then(res => setWeather(res))
-  //   .catch(err => console.error(err.message))
-  // }
-  // const onDeclineGeoHandler = useCallback(() => {
-  //   onDeclineGeo()
-  //   .then(res => setWeather(res))
-  //   .catch(err => console.error(err.message))
-  // }, [])
 
   useEffect(() => {
     let isMounted = true;
@@ -51,34 +27,27 @@ const App = () => {
         task.isCompleted ? acc[0].push(task) : acc[1].push(task);
         return acc;
       }, [[], []]);
-      //setFilteredRefult(res.filter((task:TaskType) => task.isCompleted === false))
       setFilteredRefult(incompleted);
-      //res.filter((task:TaskType) => task.isCompleted === false)
       setIncompletedTasks(incompleted);
-      //res.filter((task:TaskType) => task.isCompleted === true)
       setCompletedTasks(completed);
-      //setTasksForToday(res.filter((task:TaskType) => task.isCompleted === false && task.date === formatDate(new Date())))
       setTasksForToday(incompleted.filter((task:TaskType) => task.date === formatDate(new Date())));
       }
     })
     .catch(err => console.error(err.message));
-    // navigator.geolocation.getCurrentPosition(acceptGeoHandler, onDeclineGeoHandler); 
     return () => {
       isMounted = false;
     };
   }, [])
 
-  useEffect(() => {
+useEffect(() => {
     setCompletedTasks(initialTasks.filter((task:TaskType) => task.isCompleted));
-    // setFilterOn(false)
   },[initialTasks])
 
-  useEffect(() => {
+useEffect(() => {
     setIncompletedTasks(initialTasks.filter((task:TaskType) => !task.isCompleted));
-    // setFilterOn(false)
   },[initialTasks])
 
-  useEffect(()=> {
+useEffect(()=> {
     let isMounted = true;
     const lastVisit = window.localStorage.getItem('last-visit');
       if(isMounted && lastVisit !== formatDate(new Date())){
@@ -89,20 +58,15 @@ const App = () => {
       isMounted = false;
     };
   },[tasksForToday])
-//   const moveTaskHandler = (task:TaskType) => {
-//     const updatedTasks:TaskType[] = tasks.map((t:TaskType) => {
-//       if(t.id !== task.id){
-//         return t;
-//       } else {
-//         return { ...t, isCompleted: !t.isCompleted };
-//       } 
-//     })
-//     task.isCompleted = !task.isCompleted;
-//     updateTask(task, task.id)
-//     setTasks(updatedTasks)
-//     setFilterOn(false)    
-// }
-  const moveTaskHandler = useCallback((task:TaskType) => {
+
+const addTaskHandler = useCallback((data:TaskType) => {
+    postTask(data)
+    .then(res => {
+      setIncompletedTasks([...incompletedTasks, res])
+      setPopupType(false)
+    })
+  }, [incompletedTasks])
+const moveTaskHandler = useCallback((task:TaskType) => {
     if(!task.isCompleted){
       const updatedIncompletedTasks = incompletedTasks.filter( t => t.id !== task.id);
       task.isCompleted = !task.isCompleted;
@@ -120,40 +84,16 @@ const App = () => {
       setIncompletedTasks(updatedIncompletedTasks);
       updateTask(task, task.id);
       return
-    }
-    
-      // const updatedTasks:TaskType[] = initialTasks.map((t:TaskType) => {
-      //   if(t.id !== task.id){
-      //     return t;
-      //   } else {
-      //     return { ...t, isCompleted: !t.isCompleted };
-      //   } 
-      // })
-      // task.isCompleted = !task.isCompleted;
-      // updateTask(task, task.id)
-      // setInitialTasks(updatedTasks)   
+    } 
   },[incompletedTasks, completedTasks])
 
-  // const deleteHandler = (id:string) => {
-  //   const tasksAfterDeletion:TaskType[] = tasks.filter((a:TaskType) => a.id!==id)
-  //   setTasks(tasksAfterDeletion);
-  //   deleteTask(id)
-  // }
-  const deleteHandler = useCallback((id:string) => {
+const deleteHandler = useCallback((id:string) => {
     const tasksAfterDeletion:TaskType[] = incompletedTasks.filter((a:TaskType) => a.id!==id)
     setIncompletedTasks(tasksAfterDeletion)
-    // setInitialTasks(tasksAfterDeletion);
     deleteTask(id)
   }, [incompletedTasks])
-  // const filterHandler = (value:TaskType[]) => {
-  //   if(value.length !== 0) {
-  //     setFilterOn(true)
-  //     setFilteredRefult(value)
-  //   } else {
-  //     setFilterOn(false)
-  //   }  
-  // }
-  const filterHandler = useCallback((value:string | undefined) => {
+
+const filterHandler = useCallback((value:string | undefined) => {
     if(value) {
       const filtered:TaskType[] = incompletedTasks.filter((a) => {
           return a.title.toLowerCase().includes(value.toLowerCase())
@@ -167,36 +107,13 @@ const App = () => {
     } else {
       setFilterOn(false)
     }  
-  }, [incompletedTasks, filterOn, filteredResults])
+  }, [incompletedTasks, filterOn, filteredResults]);
 
-
-
-
-
-
-  // const addTaskHandler = (data:TaskType) => {
-  //   postTask(data)
-  //   .then(res => {
-  //     setTasks([...tasks, res])
-  //     setPopupType(false)
-  //   })
-  // }
-  const addTaskHandler = useCallback((data:TaskType) => {
-    postTask(data)
-    .then(res => {
-      setIncompletedTasks([...incompletedTasks, res])
-      console.log(completedTasks)
-      // setInitialTasks([...initialTasks, res]) !!!
-      setPopupType(false)
-    })
-  }, [incompletedTasks])
   return (
     <>
       <Header/>
       <Nav 
-        // incompletedTasks={incompletedTasks}
         filterHandler={filterHandler}
-        // filterOn={filterOn}
         setPopupType={setPopupType}
       />
       <AllTasks 
