@@ -66,26 +66,27 @@ const addTaskHandler = useCallback((data:TaskType) => {
       setPopupType(false)
     })
   }, [incompletedTasks])
-const moveTaskHandler = useCallback((task:TaskType) => {
-    if(!task.isCompleted){
-      const updatedIncompletedTasks = incompletedTasks.filter( t => t.id !== task.id);
-      task.isCompleted = !task.isCompleted;
-      const updatedCompletedTasks = [...completedTasks, task];
-      setIncompletedTasks(updatedIncompletedTasks);
-      setCompletedTasks(updatedCompletedTasks);
-      updateTask(task, task.id);
-      return
-    }
-    if(task.isCompleted){
-      const updatedCompletedTasks = completedTasks.filter( t => t.id !== task.id);
-      task.isCompleted = !task.isCompleted;
-      const updatedIncompletedTasks = [...incompletedTasks, task];
-      setCompletedTasks(updatedCompletedTasks);
-      setIncompletedTasks(updatedIncompletedTasks);
-      updateTask(task, task.id);
-      return
-    } 
-  },[incompletedTasks, completedTasks])
+
+const moveTaskHandler = useCallback((task: TaskType) => {
+  const isTaskCompleted = task.isCompleted;
+  const updatedIncompletedTasks = incompletedTasks.filter(
+    (t) => t.id !== task.id
+  );
+  const updatedCompletedTasks = completedTasks.filter(
+    (t) => t.id !== task.id
+  );
+  task.isCompleted = !isTaskCompleted;
+  const updatedTask = { ...task };
+  if (!isTaskCompleted) {
+    updatedCompletedTasks.push(updatedTask);
+  } else {
+    updatedIncompletedTasks.push(updatedTask);
+  }
+  setIncompletedTasks(updatedIncompletedTasks);
+  setCompletedTasks(updatedCompletedTasks);
+  updateTask(updatedTask, task.id);
+}, [incompletedTasks, completedTasks]);
+
 
 const deleteHandler = useCallback((id:string) => {
     const tasksAfterDeletion:TaskType[] = incompletedTasks.filter((a:TaskType) => a.id!==id)

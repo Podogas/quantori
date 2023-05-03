@@ -19,20 +19,20 @@
       "id": 7
     },
     {
-      "updatedAt": 1683081579583,
-      "title": "Another Title",
-      "isCompleted": false,
-      "tag": "other",
+      "updatedAt": 1683118102037,
+      "title": "123123",
+      "isCompleted": true,
+      "tag": "home",
       "date": "03.05.2023",
-      "prevTag": "other",
+      "prevTag": "home",
       "id": 8
     },
     {
-      "updatedAt": 1683081616182,
-      "title": "Soooooooooooo loooooooooooooooong tiiiiiiiiitttllleeee",
+      "updatedAt": 1683118254676,
+      "title": "123123",
       "isCompleted": false,
       "tag": "home",
-      "date": "02.06.2023",
+      "date": "03.05.2023",
       "prevTag": "home",
       "id": 9
     }
