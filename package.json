@@ -1,5 +1,13 @@
 {
   "dependencies": {
     "json-server": "^0.17.3"
+  },
+  "main": "index.js",
+  "scripts": {
+    "webpack": "webpack"
+  },
+  "devDependencies": {
+    "webpack": "^5.80.0",
+    "webpack-cli": "^5.0.1"
   }
 }
