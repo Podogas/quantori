@@ -72,7 +72,7 @@ const onAcceptGeo = (position:GeolocationPosition) => {
      return getWeather(positionQueryString)
 }
 const onDeclineGeo = () => {
-    console.warn(`You have blocked site from getting your location, location is now set to default (${defaultPosition})`);
+    console.log(`You have blocked site from getting your location, location is now set to default (${defaultPosition})`);
     return getWeather();
 }
 const getWeather = (query?:string) => {
