@@ -10,5 +10,11 @@
     margin-bottom: 0.4rem;
 }
 
-
+.all-tasks__title--no-results {
+    font-weight: 700;
+    font-size: 1.4rem;
+    line-height: 3.3rem;
+    color: #7e7e7e;
+    margin-bottom: 0.4rem;
+}
 

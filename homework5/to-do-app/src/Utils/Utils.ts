@@ -1,4 +1,4 @@
-import { WeatherApiResponseType, WeatherDataType } from "./Interfaces";
+import { TaskType, WeatherApiResponseType, WeatherDataType } from "./Interfaces";
 const formateWeather = (weather:WeatherApiResponseType) => {
     if(weather){
         const _weatherObj:WeatherDataType = {
@@ -33,7 +33,16 @@ const getDayPart = () => {
         return 'Evening'
     } else {
         return 'Night'
-    }
-     
+    }    
 }
-export { formateWeather, formatDate, getDayPart};
+function isArraysEqual(a:TaskType[], b:TaskType[]) {
+    if (a === b) return true;
+    if (a == null || b == null) return false;
+    if (a.length !== b.length) return false;
+  
+    for (let i = 0; i < a.length; ++i) {
+      if (a[i] !== b[i]) return false;
+    }
+    return true;
+  }
+export { formateWeather, formatDate, getDayPart, isArraysEqual};

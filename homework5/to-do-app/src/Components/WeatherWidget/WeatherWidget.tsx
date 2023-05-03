@@ -4,6 +4,7 @@ import { onAcceptGeo, onDeclineGeo } from '../../Api/Api';
 import { useCallback, useEffect, useState } from 'react';
 
 const WeatherWidget = ({blockName}:{blockName:string}) => {
+  console.log('weatherWidget rendered')
   const [weather, setWeather] = useState<WeatherDataType | undefined>({icon:{url:'',description:''}, locationName:'', temp:''});
   const acceptGeoHandler = (position:GeolocationPosition) => {
     onAcceptGeo(position)

@@ -14,6 +14,9 @@
     width: 100%;
     margin-right: 4rem;
 }
+.nav__input:focus { 
+    outline: 1px solid #0053CF;
+}
 .nav__input::placeholder {
     font-family: 'Nunito','Open Sans', sans-serif;
     color: #838383;

@@ -67,7 +67,7 @@ interface addTaskHandlerType {
     (data:TaskType):void
 }
 interface filterHandlerType {
-    (value:TaskType[]):void
+    (value:string | undefined):void
 }
 export type {
     TaskType,

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import './App.css';
 import Header from '../Header/Header';
 import Nav from '../Nav/Nav';
@@ -6,14 +6,15 @@ import Popup from '../Popup/Popup';
 import AllTasks from '../AllTasks/AllTasks';
 import CompletedTasks from '../CompletedTasks/CompletedTasks';
 import { deleteTask, getTasks, postTask, updateTask } from '../../Api/Api';
-import { formatDate } from '../../Utils/Utils';
+import { formatDate, isArraysEqual } from '../../Utils/Utils';
 import {TaskType} from '../../Utils/Interfaces';
 const App = () => {
   console.log('App rendered');
-  const [tasks, setTasks] = useState<TaskType[]>([]);
+  const [initialTasks, setInitialTasks] = useState<TaskType[]>([]);
   const [incompletedTasks, setIncompletedTasks] = useState<TaskType[]>([]);
   const [completedTasks, setCompletedTasks] = useState<TaskType[]>([]);
   const [filteredResults, setFilteredRefult] = useState<TaskType[]>([]);
+
   const [filterOn, setFilterOn] = useState(false)
   // const [weather, setWeather] = useState<WeatherDataType | undefined>({icon:{url:'',description:''}, locationName:'', temp:''});
   const [popupType, setPopupType] = useState<boolean | string>(false);
@@ -45,7 +46,7 @@ const App = () => {
     getTasks()
     .then( res => {
       if (isMounted){
-      setTasks(res)
+      setInitialTasks(res)
       const [completed, incompleted] = res.reduce((acc:Array<TaskType[]>, task:TaskType) => {
         task.isCompleted ? acc[0].push(task) : acc[1].push(task);
         return acc;
@@ -68,14 +69,14 @@ const App = () => {
   }, [])
 
   useEffect(() => {
-    setCompletedTasks(tasks.filter((task:TaskType) => task.isCompleted));
-    setFilterOn(false)
-  },[tasks])
+    setCompletedTasks(initialTasks.filter((task:TaskType) => task.isCompleted));
+    // setFilterOn(false)
+  },[initialTasks])
 
   useEffect(() => {
-    setIncompletedTasks(tasks.filter((task:TaskType) => !task.isCompleted));
-    setFilterOn(false)
-  },[tasks])
+    setIncompletedTasks(initialTasks.filter((task:TaskType) => !task.isCompleted));
+    // setFilterOn(false)
+  },[initialTasks])
 
   useEffect(()=> {
     let isMounted = true;
@@ -102,28 +103,48 @@ const App = () => {
 //     setFilterOn(false)    
 // }
   const moveTaskHandler = useCallback((task:TaskType) => {
-      const updatedTasks:TaskType[] = tasks.map((t:TaskType) => {
-        if(t.id !== task.id){
-          return t;
-        } else {
-          return { ...t, isCompleted: !t.isCompleted };
-        } 
-      })
+    if(!task.isCompleted){
+      const updatedIncompletedTasks = incompletedTasks.filter( t => t.id !== task.id);
       task.isCompleted = !task.isCompleted;
-      updateTask(task, task.id)
-      setTasks(updatedTasks)
-      setFilterOn(false)    
-  }, [tasks])
+      const updatedCompletedTasks = [...completedTasks, task];
+      setIncompletedTasks(updatedIncompletedTasks);
+      setCompletedTasks(updatedCompletedTasks);
+      updateTask(task, task.id);
+      return
+    }
+    if(task.isCompleted){
+      const updatedCompletedTasks = completedTasks.filter( t => t.id !== task.id);
+      task.isCompleted = !task.isCompleted;
+      const updatedIncompletedTasks = [...incompletedTasks, task];
+      setCompletedTasks(updatedCompletedTasks);
+      setIncompletedTasks(updatedIncompletedTasks);
+      updateTask(task, task.id);
+      return
+    }
+    
+      // const updatedTasks:TaskType[] = initialTasks.map((t:TaskType) => {
+      //   if(t.id !== task.id){
+      //     return t;
+      //   } else {
+      //     return { ...t, isCompleted: !t.isCompleted };
+      //   } 
+      // })
+      // task.isCompleted = !task.isCompleted;
+      // updateTask(task, task.id)
+      // setInitialTasks(updatedTasks)   
+  },[incompletedTasks, completedTasks])
+
   // const deleteHandler = (id:string) => {
   //   const tasksAfterDeletion:TaskType[] = tasks.filter((a:TaskType) => a.id!==id)
   //   setTasks(tasksAfterDeletion);
   //   deleteTask(id)
   // }
   const deleteHandler = useCallback((id:string) => {
-    const tasksAfterDeletion:TaskType[] = tasks.filter((a:TaskType) => a.id!==id)
-    setTasks(tasksAfterDeletion);
+    const tasksAfterDeletion:TaskType[] = incompletedTasks.filter((a:TaskType) => a.id!==id)
+    setIncompletedTasks(tasksAfterDeletion)
+    // setInitialTasks(tasksAfterDeletion);
     deleteTask(id)
-  }, [tasks])
+  }, [incompletedTasks])
   // const filterHandler = (value:TaskType[]) => {
   //   if(value.length !== 0) {
   //     setFilterOn(true)
@@ -132,14 +153,27 @@ const App = () => {
   //     setFilterOn(false)
   //   }  
   // }
-  const filterHandler = useCallback((value:TaskType[]) => {
-    if(value.length !== 0) {
-      setFilterOn(true)
-      setFilteredRefult(value)
+  const filterHandler = useCallback((value:string | undefined) => {
+    if(value) {
+      const filtered:TaskType[] = incompletedTasks.filter((a) => {
+          return a.title.toLowerCase().includes(value.toLowerCase())
+          })
+      if(!filterOn) {
+        setFilterOn(true);
+      }
+      if(!isArraysEqual(filteredResults, filtered)){
+        setFilteredRefult(filtered)
+      }     
     } else {
       setFilterOn(false)
     }  
-  }, [])
+  }, [incompletedTasks, filterOn, filteredResults])
+
+
+
+
+
+
   // const addTaskHandler = (data:TaskType) => {
   //   postTask(data)
   //   .then(res => {
@@ -150,17 +184,19 @@ const App = () => {
   const addTaskHandler = useCallback((data:TaskType) => {
     postTask(data)
     .then(res => {
-      setTasks([...tasks, res])
+      setIncompletedTasks([...incompletedTasks, res])
+      console.log(completedTasks)
+      // setInitialTasks([...initialTasks, res]) !!!
       setPopupType(false)
     })
-  }, [tasks])
+  }, [incompletedTasks])
   return (
     <>
       <Header/>
       <Nav 
-        incompletedTasks={incompletedTasks}
+        // incompletedTasks={incompletedTasks}
         filterHandler={filterHandler}
-        filterOn={filterOn}
+        // filterOn={filterOn}
         setPopupType={setPopupType}
       />
       <AllTasks 
@@ -170,10 +206,10 @@ const App = () => {
         moveTaskHandler={moveTaskHandler} 
         filterOn={filterOn}
       />
-      {/* <CompletedTasks 
+      <CompletedTasks 
         completedTasks={completedTasks}
         moveTaskHandler={moveTaskHandler}
-      /> */}
+      />
       {popupType ? 
         <Popup 
           popupType={popupType}
