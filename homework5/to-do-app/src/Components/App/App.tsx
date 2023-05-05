@@ -50,7 +50,7 @@ useEffect(() => {
 useEffect(()=> {
     let isMounted = true;
     const lastVisit = window.localStorage.getItem('last-visit');
-      if(isMounted && lastVisit !== formatDate(new Date())){
+      if(isMounted && lastVisit && lastVisit !== formatDate(new Date())){
         setPopupType('modal');
         window.localStorage.setItem('last-visit', formatDate(new Date()));
       }
