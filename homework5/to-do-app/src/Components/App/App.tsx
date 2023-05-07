@@ -8,6 +8,9 @@ import CompletedTasks from '../CompletedTasks/CompletedTasks';
 import { deleteTask, getTasks, postTask, updateTask } from '../../Api/Api';
 import { formatDate, isArraysEqual } from '../../Utils/Utils';
 import {TaskType} from '../../Utils/Interfaces';
+import { useLocation } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+
 const App = () => {
   const [initialTasks, setInitialTasks] = useState<TaskType[]>([]);
   const [incompletedTasks, setIncompletedTasks] = useState<TaskType[]>([]);
@@ -16,6 +19,21 @@ const App = () => {
   const [filterOn, setFilterOn] = useState(false)
   const [popupType, setPopupType] = useState<boolean | string>(false);
   const [tasksForToday, setTasksForToday] = useState([]);
+  const [popupContent, setPopupContent] = useState<TaskType | undefined>();
+
+  const [pathName, setPathName] = useState(useLocation().pathname);
+  
+  ///
+const reduxTasks = useSelector(state => state);
+const dispatch = useDispatch();
+console.log(reduxTasks, 'REDUX')
+ 
+  // const filterByTag = () => {
+  //   switch(pathName.replace('/','')){
+  //     case('home'):
+
+  //   }
+  // }
 
   useEffect(() => {
     let isMounted = true;
@@ -31,6 +49,14 @@ const App = () => {
       setIncompletedTasks(incompleted);
       setCompletedTasks(completed);
       setTasksForToday(incompleted.filter((task:TaskType) => task.date === formatDate(new Date())));
+
+      //
+      dispatch({
+        type:'change_both',
+        completed: completed,
+        uncompleted:incompleted 
+      })
+      //
       }
     })
     .catch(err => console.error(err.message));
@@ -50,7 +76,7 @@ useEffect(() => {
 useEffect(()=> {
     let isMounted = true;
     const lastVisit = window.localStorage.getItem('last-visit');
-      if(isMounted && lastVisit !== formatDate(new Date())){
+      if(isMounted && lastVisit && lastVisit !== formatDate(new Date())){
         setPopupType('modal');
         window.localStorage.setItem('last-visit', formatDate(new Date()));
       }
@@ -93,27 +119,57 @@ const deleteHandler = useCallback((id:string) => {
     setIncompletedTasks(tasksAfterDeletion)
     deleteTask(id)
   }, [incompletedTasks])
+///
+const editTaskHandler = useCallback((task:TaskType, id:string|undefined) => {
+  updateTask(task,id)
+  .then(res => {
+    const updatedTasks = incompletedTasks.filter((t) => t.id !== id)
+    updatedTasks.push(res); 
+    setIncompletedTasks(updatedTasks)
+    setPopupType(false)
+  })
+  .catch(err => console.error(err))
+  
+}, [incompletedTasks])
 
-const filterHandler = useCallback((value:string | undefined) => {
-    if(value) {
+/// add filter for tasks by query and by tags////
+const filterHandler = useCallback((value:{title:string, tag:string} | undefined) => {
+  if(value){
+    if(value?.title.length !== 0) {
+     
       const filtered:TaskType[] = incompletedTasks.filter((a) => {
-          return a.title.toLowerCase().includes(value.toLowerCase())
+          return a.title.toLowerCase().includes(value.title.toLowerCase())
           })
-      if(!filterOn) {
-        setFilterOn(true);
-      }
-      if(!isArraysEqual(filteredResults, filtered)){
-        setFilteredRefult(filtered)
-      }     
-    } else {
+      // if(!isArraysEqual(filteredResults, filtered)){
+      // }      
+    }
+    if(value?.tag.length !== 0){
+    
+      const filtered:TaskType[] = incompletedTasks.filter((a) => {
+        return a.tag === value?.tag
+        })
+    // if(!isArraysEqual(filteredResults, filtered)){
+    
+    // }   
+    }
+    // if(!filterOn) {
+    //   setFilterOn(true);
+    // }
+    if(value?.title.length === 0 && value.tag.length === 0) {
+   
       setFilterOn(false)
-    }  
+    }
+  }
+  
+   
   }, [incompletedTasks, filterOn, filteredResults]);
 
   return (
     <>
       <Header/>
-      <Nav 
+      <Nav
+        pathName={pathName}
+        setPathName={setPathName}
         filterHandler={filterHandler}
         setPopupType={setPopupType}
       />
@@ -121,19 +177,26 @@ const filterHandler = useCallback((value:string | undefined) => {
         deleteHandler={deleteHandler} 
         incompletedTasks={incompletedTasks}
         filteredResults={filteredResults} 
-        moveTaskHandler={moveTaskHandler} 
+        moveTaskHandler={moveTaskHandler}
         filterOn={filterOn}
+        setPopupType={setPopupType}
+        setPopupContent={setPopupContent}
+
       />
       <CompletedTasks 
         completedTasks={completedTasks}
         moveTaskHandler={moveTaskHandler}
+        setPopupType={setPopupType}
+        setPopupContent={setPopupContent}
       />
       {popupType ? 
         <Popup 
           popupType={popupType}
+          popupContent={popupContent}
           setPopupType={setPopupType} 
           addTaskHandler={addTaskHandler} 
           tasksForToday={tasksForToday}
+          editTaskHandler={editTaskHandler}
         /> 
       : null
       }  

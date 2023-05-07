@@ -59,23 +59,26 @@ interface TaskType {
 interface deleteHandlerType {
     (id:string):void
 }
-interface moveTaskHandlerType {
+interface taskHandlerType {
     (task:TaskType):void
+}
+interface editTaskHandlerType {
+    (task:TaskType, id:string|undefined):void
 }
 
 interface addTaskHandlerType {
     (data:TaskType):void
 }
 interface filterHandlerType {
-    (value:string | undefined):void
+    (value:{title:string, tag:string} | undefined):void
 }
 export type {
     TaskType,
     WeatherDataType,
     WeatherApiResponseType,
     deleteHandlerType,
-    moveTaskHandlerType,
+    taskHandlerType,
     addTaskHandlerType,
-    filterHandlerType
-
+    filterHandlerType,
+    editTaskHandlerType
 };

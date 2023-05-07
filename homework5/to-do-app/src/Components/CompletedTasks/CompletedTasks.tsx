@@ -1,13 +1,17 @@
 import React from "react";
-import { TaskType, moveTaskHandlerType } from "../../Utils/Interfaces";
+import { TaskType, taskHandlerType } from "../../Utils/Interfaces";
 import TaskList from "../TaskList/TaskList";
 import './CompletedTasks.css'
 const CompletedTasks = ({
   completedTasks,
-  moveTaskHandler
+  moveTaskHandler,
+  setPopupType,
+  setPopupContent
 }:{
   completedTasks:TaskType[],
-  moveTaskHandler:moveTaskHandlerType  
+  moveTaskHandler:taskHandlerType,
+  setPopupType:(value: string | boolean) => void,
+  setPopupContent: (value: TaskType)=> void 
 }) => {
     if(completedTasks.length === 0){ 
         return null
@@ -20,6 +24,8 @@ const CompletedTasks = ({
           blockName='completed-tasks' 
           moveTaskHandler={moveTaskHandler}
           deleteHandler={()=>{}}
+          setPopupType={setPopupType}
+          setPopupContent={setPopupContent}
         />
       </section>  
     );

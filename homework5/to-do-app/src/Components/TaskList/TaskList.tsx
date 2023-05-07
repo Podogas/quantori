@@ -1,27 +1,35 @@
 import { useRef } from 'react';
-import { TaskType, deleteHandlerType, moveTaskHandlerType } from '../../Utils/Interfaces';
+import { TaskType, deleteHandlerType, taskHandlerType } from '../../Utils/Interfaces';
 import './TaskList.css';
 const TaskList = ({
   tasks, 
   blockName, 
   moveTaskHandler, 
-  deleteHandler
+  deleteHandler,
+  setPopupType,
+  setPopupContent
 }:{
   tasks:TaskType[],
   blockName:string, 
-  moveTaskHandler:moveTaskHandlerType, 
-  deleteHandler:deleteHandlerType  
+  moveTaskHandler:taskHandlerType, 
+  deleteHandler:deleteHandlerType ,
+  setPopupType:(value: string | boolean) => void,
+  setPopupContent: (value: TaskType)=> void
   }
 ) => {
     const deleteBtnRef = useRef<HTMLButtonElement>(null);
+    const editBtnRef = useRef<HTMLButtonElement>(null);
     const checkboxRef = useRef<(HTMLInputElement | undefined | null)[]>([]);
     
     const onDeleteClick = (id:string)=> {
-      
       deleteHandler(id)
     }
     const moveTask = (task:TaskType) => {
       moveTaskHandler(task)
+    }
+    const onEditClick = (task:TaskType) => {
+      setPopupContent(task);
+      setPopupType('edit')
     }
     const createTasks = (task:TaskType) => {
       return (
@@ -46,7 +54,12 @@ const TaskList = ({
               <span className={`${blockName}__task-date`}>{task.date}</span>
             </div>
           </div>
-          {task.isCompleted ? null : <button className={`${blockName}__task-button`} type="button" ref={deleteBtnRef} onClick={() => onDeleteClick(task.id??'')}></button>}            </div>
+          {task.isCompleted ? null : 
+          <div className={`${blockName}__task-buttons-wrapper`}>
+          <button className={`${blockName}__task-button ${blockName}__task-edit-button`} type="button" ref={editBtnRef} onClick={() => onEditClick(task)}></button>
+          <button className={`${blockName}__task-button ${blockName}__task-delete-button`} type="button" ref={deleteBtnRef} onClick={() => onDeleteClick(task.id??'')}></button>    
+          </div>}     
+        </div>
       );
     }
 

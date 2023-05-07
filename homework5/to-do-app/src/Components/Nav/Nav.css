@@ -1,8 +1,11 @@
 
 .nav {
     display: flex;
+    flex-direction: column;
+}
+.nav__search-form-wrapper {
+    display: flex;
     justify-content: space-between;
-
 }
 .nav__input {
     padding: 1.5rem 2.1rem;

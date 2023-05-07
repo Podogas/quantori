@@ -41,43 +41,6 @@
     align-items: center;
     margin-bottom: 9.2rem;
 }
-.popup__info-tags-wrapper {
-
-}
-.popup__info-tag {
-    cursor: pointer;
-    padding: 0.2rem 0.8rem;
-    border-radius: 0.6rem;
-    font-weight: 500;
-    font-size: 1.2rem;
-    line-height: 1.5rem;
-    margin-right: 1.2rem;
-}
-.popup__info-tag--health {
-    background-color: rgba(60, 134, 244, 0.31);
-    color: #0053CF;
-    border-color: #0053CF
-}
-
-.popup__info-tag--work {
-    background-color: #E8D7FF;
-    color: #9747FF;
-    border-color: #9747FF
-}
-.popup__info-tag--home {
-    background-color: #E2F6E2;
-    color: #639462;
-    border-color: #639462
-}
-.popup__info-tag--other {
-    background-color: #FFECC7;
-    color: #EA8C00;
-    border-color: #EA8C00;
-}
-.popup__info-tag--selected {
-  border-width: 1px;
-  border-style: solid;
-}
 .popup__info-date-input-wrapper{
     position: relative;
     width: 18%;
