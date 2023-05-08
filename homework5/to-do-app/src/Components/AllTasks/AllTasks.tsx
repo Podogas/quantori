@@ -1,9 +1,9 @@
-import { useSelector } from "react-redux";
+
 import { TaskType, deleteHandlerType, taskHandlerType } from "../../Utils/Interfaces";
+import { useAppSelector } from "../../store/store";
 import TaskList from "../TaskList/TaskList";
 import "./AllTasks.css";
 const AllTasks = ({
-  incompletedTasks,
   filterOn, 
   filteredResults,
   moveTaskHandler,
@@ -11,7 +11,6 @@ const AllTasks = ({
   setPopupType,
   setPopupContent
 }:{
-  incompletedTasks:TaskType[],
   filterOn:boolean, 
   filteredResults:TaskType[],
   moveTaskHandler:taskHandlerType,
@@ -19,15 +18,15 @@ const AllTasks = ({
   setPopupType:(value: string | boolean) => void,
   setPopupContent: (value: TaskType)=> void
 }) => {
+  const uncompletedTasks = useAppSelector((state) => state.tasks.uncompleted);
+  console.log(uncompletedTasks, "SELECTOR ALLTASKS")
   ///
   interface RootState {
     completed: TaskType[];
     uncompleted: TaskType[];
   }
-  const reduxUncompletedTasks = useSelector((state:RootState) => state.uncompleted);
-  console.log(reduxUncompletedTasks, 'All tasks')
-  ///  
-  if(incompletedTasks.length === 0){ 
+
+  if(uncompletedTasks.length === 0){ 
       return null
     }
     if(filterOn && filteredResults.length === 0){
@@ -39,7 +38,7 @@ const AllTasks = ({
       <section className='all-tasks'>
         <h3 className='all-tasks__title'>All Tasks</h3>
         <TaskList 
-          tasks={filterOn ? filteredResults : incompletedTasks} 
+          tasks={filterOn ? filteredResults : uncompletedTasks} 
           blockName='all-tasks' 
           moveTaskHandler={moveTaskHandler} 
           deleteHandler={deleteHandler}

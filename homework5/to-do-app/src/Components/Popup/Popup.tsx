@@ -1,21 +1,22 @@
 import React, {useEffect, useRef, useState} from 'react';
 import './Popup.css';
 import { formatDate, getDayPart } from '../../Utils/Utils';
-import { TaskType, addTaskHandlerType,editTaskHandlerType } from '../../Utils/Interfaces';
+import { TaskType,editTaskHandlerType } from '../../Utils/Interfaces';
 import Tags from '../Tags/Tags';
+import { postTask, updateTask } from '../../Api/Api';
+import { addUncompletedTask, editTask } from '../../store/features/tasksSlice';
+import { useAppDispatch } from '../../store/store';
 
 const Popup = ({
   popupType,
   popupContent, 
-  setPopupType, 
-  addTaskHandler, 
+  setPopupType,
   tasksForToday,
   editTaskHandler
 }:{
   popupType:string | boolean,
   popupContent: TaskType | undefined,
-  setPopupType: React.Dispatch<React.SetStateAction<string | boolean>>, 
-  addTaskHandler:addTaskHandlerType , 
+  setPopupType: React.Dispatch<React.SetStateAction<string | boolean>>,
   tasksForToday:TaskType[],
   editTaskHandler:editTaskHandlerType  
 }) => {
@@ -52,9 +53,11 @@ const Popup = ({
     }
     
   }
+  //
+  const dispatch = useAppDispatch();
   const addTask = () => {
     if(isPopupFormValid){
-      addTaskHandler({
+      const data = {
         updatedAt: Date.now(),
         title: inputRef.current?.value ?? '',
         isCompleted: false,
@@ -62,20 +65,41 @@ const Popup = ({
         date: date,
         prevTag: selectedTag
       }
-      )
+      postTask(data)
+      .then((res:TaskType) => {
+        dispatch(addUncompletedTask(res))
+        closePopup();
+      })
+      .catch(err => console.error(err))
+      
     }  
   }
   const onEditTask = () => {
     if(isPopupFormValid){
-      editTaskHandler({
+      const data = {
         updatedAt: Date.now(),
         title: inputRef.current?.value ?? '',
         isCompleted: false,
         tag: selectedTag,
         date: date,
-        prevTag: selectedTag
-      }, popupContent?.id
-      )
+        prevTag: selectedTag,
+        id: popupContent?.id
+      }
+      updateTask(data)
+      .then(res => {
+        dispatch(editTask(res))
+        closePopup();
+      })
+      .catch(err => console.error(err))
+      // editTaskHandler({
+      //   updatedAt: Date.now(),
+      //   title: inputRef.current?.value ?? '',
+      //   isCompleted: false,
+      //   tag: selectedTag,
+      //   date: date,
+      //   prevTag: selectedTag
+      // }, popupContent?.id
+      // )
     }  
   }
   const closePopup = () => {

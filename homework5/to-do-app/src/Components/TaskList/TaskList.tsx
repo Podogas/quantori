@@ -1,6 +1,9 @@
 import { useRef } from 'react';
 import { TaskType, deleteHandlerType, taskHandlerType } from '../../Utils/Interfaces';
 import './TaskList.css';
+import { deleteTask, updateTask } from '../../Api/Api';
+import { useAppDispatch } from '../../store/store';
+import { removeUncompletedTask, moveTasks } from '../../store/features/tasksSlice';
 const TaskList = ({
   tasks, 
   blockName, 
@@ -20,12 +23,25 @@ const TaskList = ({
     const deleteBtnRef = useRef<HTMLButtonElement>(null);
     const editBtnRef = useRef<HTMLButtonElement>(null);
     const checkboxRef = useRef<(HTMLInputElement | undefined | null)[]>([]);
-    
+    //
+
+    const dispatch = useAppDispatch();
     const onDeleteClick = (id:string)=> {
-      deleteHandler(id)
+      // deleteHandler(id)
+      deleteTask(id)
+      .then( res => {
+          dispatch(removeUncompletedTask(id))
+      })
+      .catch(err => console.error(err))
     }
     const moveTask = (task:TaskType) => {
-      moveTaskHandler(task)
+      //moveTaskHandler(task)
+      const updatedTask = { ...task, isCompleted: !task.isCompleted };
+      updateTask(updatedTask)
+      .then(res => {
+        dispatch(moveTasks(res))
+      })
+      .catch(err => console.error(err))
     }
     const onEditClick = (task:TaskType) => {
       setPopupContent(task);

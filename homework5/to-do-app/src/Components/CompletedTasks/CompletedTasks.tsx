@@ -2,17 +2,18 @@ import React from "react";
 import { TaskType, taskHandlerType } from "../../Utils/Interfaces";
 import TaskList from "../TaskList/TaskList";
 import './CompletedTasks.css'
+import { useAppSelector } from "../../store/store";
 const CompletedTasks = ({
-  completedTasks,
   moveTaskHandler,
   setPopupType,
   setPopupContent
 }:{
-  completedTasks:TaskType[],
   moveTaskHandler:taskHandlerType,
   setPopupType:(value: string | boolean) => void,
   setPopupContent: (value: TaskType)=> void 
 }) => {
+  const completedTasks = useAppSelector((state) => state.tasks.completed);
+  console.log(completedTasks, "SELECTOR completed")
     if(completedTasks.length === 0){ 
         return null
     }

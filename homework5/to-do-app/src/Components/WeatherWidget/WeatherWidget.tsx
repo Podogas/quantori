@@ -3,21 +3,25 @@ import { WeatherDataType } from '../../Utils/Interfaces';
 import { onAcceptGeo, onDeclineGeo } from '../../Api/Api';
 import { useEffect, useState } from 'react';
 
+
+
 const WeatherWidget = ({blockName}:{blockName:string}) => {
-  const [weather, setWeather] = useState<WeatherDataType | undefined>({icon:{url:'',description:''}, locationName:'', temp:''});
+  const [weather, setWeather] = useState<WeatherDataType | undefined>(undefined);
+  
   const acceptGeoHandler = (position:GeolocationPosition) => {
     onAcceptGeo(position)
-    .then(res => setWeather(res)) 
-    .catch(err => console.error(err.message))
+    .then(res => setWeather(res))
+    .catch(err => console.error(err))
   }
   const onDeclineGeoHandler = () => {
     onDeclineGeo()
     .then(res => setWeather(res))
-    .catch(err => console.error(err.message))
+    .catch(err => console.error(err))
   }
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(acceptGeoHandler, onDeclineGeoHandler); 
   }, [])
+
   if(weather){
     return (
       <div className={`${blockName}__weather-widget`}>

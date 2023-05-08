@@ -1,76 +1,40 @@
 {
   "tasks": [
     {
-      "updatedAt": 1683414506485,
-      "title": "Task number0",
-      "isCompleted": true,
-      "tag": "other",
-      "date": "06.05.2023",
-      "prevTag": "other",
-      "id": 1
-    },
-    {
-      "updatedAt": 1683414496985,
-      "title": "Task number2",
+      "updatedAt": 1683511302201,
+      "title": "2",
       "isCompleted": false,
       "tag": "work",
-      "date": "25.05.2023",
+      "date": "08.05.2023",
       "prevTag": "work",
       "id": 2
     },
     {
-      "updatedAt": 1683420468096,
-      "title": "123123",
+      "updatedAt": 1683511305499,
+      "title": "3",
       "isCompleted": false,
       "tag": "home",
-      "date": "06.05.2023",
+      "date": "08.05.2023",
       "prevTag": "home",
       "id": 3
     },
     {
-      "updatedAt": 1683421798157,
-      "title": "123",
-      "isCompleted": false,
-      "tag": "health",
-      "date": "07.05.2023",
-      "prevTag": "health",
+      "updatedAt": 1683511308674,
+      "title": "4",
+      "isCompleted": true,
+      "tag": "other",
+      "date": "08.05.2023",
+      "prevTag": "other",
       "id": 4
     },
     {
-      "updatedAt": 1683421801844,
-      "title": "123",
-      "isCompleted": false,
-      "tag": "work",
-      "date": "07.05.2023",
-      "prevTag": "work",
+      "updatedAt": 1683511312531,
+      "title": "5",
+      "isCompleted": true,
+      "tag": "health",
+      "date": "08.05.2023",
+      "prevTag": "health",
       "id": 5
-    },
-    {
-      "updatedAt": 1683421804630,
-      "title": "123123",
-      "isCompleted": false,
-      "tag": "home",
-      "date": "07.05.2023",
-      "prevTag": "home",
-      "id": 6
-    },
-    {
-      "updatedAt": 1683421807620,
-      "title": "123123",
-      "isCompleted": false,
-      "tag": "other",
-      "date": "07.05.2023",
-      "prevTag": "other",
-      "id": 7
-    },
-    {
-      "updatedAt": 1683421812726,
-      "title": "123123",
-      "isCompleted": false,
-      "tag": "other",
-      "date": "07.05.2023",
-      "prevTag": "other",
-      "id": 8
     }
   ]
 }

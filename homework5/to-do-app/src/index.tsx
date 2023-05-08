@@ -5,20 +5,17 @@ import App from './Components/App/App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import tasksReducer from './redux/tasksReducer';
-import { createStore } from '@reduxjs/toolkit';
-
+import {store} from './store/store';
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
-const store = createStore(tasksReducer)
 root.render(
   
   <React.StrictMode>
     <BrowserRouter>
-      <Provider store={store}>
+      <Provider store={store}>  
         <App />
-      </Provider>
+      </Provider>  
     </BrowserRouter> 
   </React.StrictMode>
 );

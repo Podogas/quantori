@@ -10,6 +10,8 @@ import { formatDate, isArraysEqual } from '../../Utils/Utils';
 import {TaskType} from '../../Utils/Interfaces';
 import { useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../store/store';
+import { fetchTasks } from '../../store/features/tasksSlice';
 
 const App = () => {
   const [initialTasks, setInitialTasks] = useState<TaskType[]>([]);
@@ -24,9 +26,10 @@ const App = () => {
   const [pathName, setPathName] = useState(useLocation().pathname);
   
   ///
-const reduxTasks = useSelector(state => state);
-const dispatch = useDispatch();
-console.log(reduxTasks, 'REDUX')
+   const dispatch = useAppDispatch();
+   useEffect(() => {
+     dispatch(fetchTasks())
+   },[]);
  
   // const filterByTag = () => {
   //   switch(pathName.replace('/','')){
@@ -34,7 +37,11 @@ console.log(reduxTasks, 'REDUX')
 
   //   }
   // }
+  const tasks = useAppSelector((state) => state.tasks);
+  console.log(tasks, "SELECTOR")
 
+
+  //
   useEffect(() => {
     let isMounted = true;
     getTasks()
@@ -51,11 +58,7 @@ console.log(reduxTasks, 'REDUX')
       setTasksForToday(incompleted.filter((task:TaskType) => task.date === formatDate(new Date())));
 
       //
-      dispatch({
-        type:'change_both',
-        completed: completed,
-        uncompleted:incompleted 
-      })
+    
       //
       }
     })
@@ -110,7 +113,7 @@ const moveTaskHandler = useCallback((task: TaskType) => {
   }
   setIncompletedTasks(updatedIncompletedTasks);
   setCompletedTasks(updatedCompletedTasks);
-  updateTask(updatedTask, task.id);
+  updateTask(updatedTask);
 }, [incompletedTasks, completedTasks]);
 
 
@@ -121,7 +124,7 @@ const deleteHandler = useCallback((id:string) => {
   }, [incompletedTasks])
 ///
 const editTaskHandler = useCallback((task:TaskType, id:string|undefined) => {
-  updateTask(task,id)
+  updateTask(task)
   .then(res => {
     const updatedTasks = incompletedTasks.filter((t) => t.id !== id)
     updatedTasks.push(res); 
@@ -174,8 +177,7 @@ const filterHandler = useCallback((value:{title:string, tag:string} | undefined)
         setPopupType={setPopupType}
       />
       <AllTasks 
-        deleteHandler={deleteHandler} 
-        incompletedTasks={incompletedTasks}
+        deleteHandler={deleteHandler}
         filteredResults={filteredResults} 
         moveTaskHandler={moveTaskHandler}
         filterOn={filterOn}
@@ -184,7 +186,6 @@ const filterHandler = useCallback((value:{title:string, tag:string} | undefined)
 
       />
       <CompletedTasks 
-        completedTasks={completedTasks}
         moveTaskHandler={moveTaskHandler}
         setPopupType={setPopupType}
         setPopupContent={setPopupContent}
@@ -194,7 +195,6 @@ const filterHandler = useCallback((value:{title:string, tag:string} | undefined)
           popupType={popupType}
           popupContent={popupContent}
           setPopupType={setPopupType} 
-          addTaskHandler={addTaskHandler} 
           tasksForToday={tasksForToday}
           editTaskHandler={editTaskHandler}
         /> 

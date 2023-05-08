@@ -49,8 +49,8 @@ const deleteTask = (id:string) => {
     })
     .then(res => res)
 }
-const updateTask = (data:TaskType,id:string|undefined) => {
-    return fetch( `${dbUrl}/tasks/${id}`, {
+const updateTask = (data:TaskType) => {
+    return fetch( `${dbUrl}/tasks/${data.id}`, {
         method: "PUT",
         headers: httpHeader,
         body: JSON.stringify(data), 

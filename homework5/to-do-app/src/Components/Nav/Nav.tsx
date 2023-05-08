@@ -4,7 +4,6 @@ import { filterHandlerType } from '../../Utils/Interfaces';
 import React from 'react';
 import Tags from '../Tags/Tags';
 import { useNavigate } from 'react-router';
-import { title } from 'process';
 const Nav = ({
   pathName,
   setPathName,
