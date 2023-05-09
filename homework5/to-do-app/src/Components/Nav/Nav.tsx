@@ -3,16 +3,19 @@ import './Nav.css';
 import React from 'react';
 import Tags from '../Tags/Tags';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { TaskType } from '../../Utils/Interfaces';
 const Nav = ({
   //pathName,
   //setPathName,
   setFilter,
-  setPopupType
+  setPopupType,
+  setPopupContent
 }:{
   //pathName:string,
   //setPathName:(value: string) => void 
   setFilter:({tag, query}:{tag:string, query:string}) => void,
-  setPopupType: (value: string | boolean) => void 
+  setPopupType: (value: string | boolean) => void,
+  setPopupContent: (value: undefined | TaskType | TaskType[]) => void 
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -59,10 +62,9 @@ useEffect(()=> {
 },[])
 
   const openPopup = () => {
+    setPopupContent(undefined)
     setPopupType('popup')
-  }
-  const onFocusOut = () => {
-    if(inputRef.current){inputRef.current.value = ''};
+    console.log('click')
   }
   const onInputChange = () => {
     const value = inputRef.current?.value
@@ -79,7 +81,7 @@ useEffect(()=> {
   return (
     <nav className='nav'>
       <div className='nav__search-form-wrapper'>
-      <input  className="nav__input" ref={inputRef} onChange={onInputChange} onBlur={onFocusOut} placeholder="Search Task" type="text" value={query}/>
+      <input  className="nav__input" ref={inputRef} onChange={onInputChange} placeholder="Search Task" type="text" value={query}/>
       <button className='nav__button' type="button" onClick={openPopup} ref={buttonRef}>+ New Task</button>
       </div>
       <Tags onSelectTag={onSelectTag} blockName='nav' initialSelectedTag={tag}/>

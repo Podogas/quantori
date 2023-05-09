@@ -10,7 +10,7 @@ import { formatDate, isArraysEqual } from '../../Utils/Utils';
 import {TaskType} from '../../Utils/Interfaces';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../store/store';
-import { fetchTasks } from '../../store/features/tasksSlice';
+import { fetchTasks, updateTasksList } from '../../store/features/tasksSlice';
 
 const App = () => {
   // const [initialTasks, setInitialTasks] = useState<TaskType[]>([]);
@@ -25,38 +25,118 @@ const App = () => {
   // const [pathName, setPathName] = useState(useLocation().pathname);
   
   ///
-  const showModal = () => {
-  }
-   const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
+  const tasks = useAppSelector((state) => state.tasks);
+  const handleStorage = (e:StorageEvent) => {
+    if (e.key === "tasks" && e.newValue) {
+      console.log(JSON.parse(e.newValue), 'NEW Value')
+      dispatch(updateTasksList(JSON.parse(e.newValue)));
+    }
+  };
+   
    useEffect(() => {
      dispatch(fetchTasks())
+     .then(res => shouldShowModal(res.payload))
+     window.addEventListener("storage", handleStorage);
+     return () => {
+       window.removeEventListener("storage", handleStorage);
+     };
    },[]);
 
-   const tasks = useAppSelector((state) => state.tasks);
-   
-   
-   useEffect(() => {
+ 
+  const shouldShowModal = (tasks:TaskType[]) => {
     const lastVisit = window.localStorage.getItem('last-visit');
     if( lastVisit && lastVisit !== formatDate(new Date())){
-      const tasksForToday = tasks.uncompleted.filter(task => task.date === lastVisit)
+      const tasksForToday = tasks.filter(task => task.date === lastVisit && task.isCompleted === false)
       if(tasksForToday.length !== 0){
         setPopupContent(tasksForToday)
-        setPopupType('modal');
-        
+        setPopupType('modal');  
+        window.localStorage.setItem('last-visit', formatDate(new Date()));
       }
     } if (!lastVisit){
-      const tasksForToday = tasks.uncompleted.filter(task => task.date === formatDate(new Date()))
+      const tasksForToday = tasks.filter(task => task.date === formatDate(new Date()) && task.isCompleted === false)
+      console.log(tasksForToday, tasks,'tasks for today')
       if(tasksForToday.length !== 0){
+        console.log('show')
         setPopupContent(tasksForToday)
-        setPopupType('modal');
-        
+        setPopupType('modal'); 
+        window.localStorage.setItem('last-visit', formatDate(new Date()));
       }
-      console.log('set lastVisit')
     }
-    // window.localStorage.setItem('last-visit', formatDate(new Date())); 
+  }
+  
 
+
+   useEffect(() => {
+    console.log(tasks,'tasks changed?')
+    localStorage.setItem("tasks", JSON.stringify(tasks));
   },[tasks]);
  
+  useEffect(()=> {
+    console.log(popupType, popupContent,'POPUPTYPE')
+    if(!popupType){
+      console.log('popupcontent now undefined'
+      )
+      setPopupContent(undefined)
+    }
+  },[popupType])
+
+  return (
+    <Routes>
+      <Route path="/tasks/*" element={
+      <>
+        <Header/>
+        <Nav
+          //pathName={pathName}
+          //setPathName={setPathName}
+          setPopupContent={setPopupContent}
+          setFilter={setFilter}
+          setPopupType={setPopupType}
+        />
+        <AllTasks 
+          // deleteHandler={deleteHandler}
+          // filteredResults={filteredResults} 
+          // moveTaskHandler={moveTaskHandler}
+          // filterOn={filterOn}
+          filter={filter}
+          setPopupType={setPopupType}
+          setPopupContent={setPopupContent}
+
+        />
+        <CompletedTasks 
+          // moveTaskHandler={moveTaskHandler}
+          setPopupType={setPopupType}
+          setPopupContent={setPopupContent}
+        />
+        {popupType ? 
+          <Popup 
+            popupType={popupType}
+            popupContent={popupContent}
+            setPopupType={setPopupType} 
+            // tasksForToday={tasksForToday}
+            // editTaskHandler={editTaskHandler}
+          /> 
+        : null
+        }
+      </>
+      }/> 
+      <Route path="*" element={<Navigate to="/tasks" />} />
+    </Routes>
+  );
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
   // const filterByTag = () => {
   //   switch(pathName.replace('/','')){
   //     case('home'):
@@ -168,48 +248,7 @@ const App = () => {
 
 
 
-  return (
-    <Routes>
-      <Route path="/tasks/*" element={
-      <>
-        <Header/>
-        <Nav
-          //pathName={pathName}
-          //setPathName={setPathName}
-          setFilter={setFilter}
-          setPopupType={setPopupType}
-        />
-        <AllTasks 
-          // deleteHandler={deleteHandler}
-          // filteredResults={filteredResults} 
-          // moveTaskHandler={moveTaskHandler}
-          // filterOn={filterOn}
-          filter={filter}
-          setPopupType={setPopupType}
-          setPopupContent={setPopupContent}
 
-        />
-        <CompletedTasks 
-          // moveTaskHandler={moveTaskHandler}
-          setPopupType={setPopupType}
-          setPopupContent={setPopupContent}
-        />
-        {popupType ? 
-          <Popup 
-            popupType={popupType}
-            popupContent={popupContent}
-            setPopupType={setPopupType} 
-            // tasksForToday={tasksForToday}
-            // editTaskHandler={editTaskHandler}
-          /> 
-        : null
-        }
-      </>
-      }/> 
-      <Route path="*" element={<Navigate to="/tasks" />} />
-    </Routes>
-  );
-}
 
 export default App;
 

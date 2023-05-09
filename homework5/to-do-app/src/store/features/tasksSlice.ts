@@ -29,6 +29,10 @@ export const taskSlice = createSlice({
   name: "task",
   initialState,
   reducers: {
+    updateTasksList: (state, action) => {
+      state.completed = action.payload.completed;
+      state.uncompleted = action.payload.uncompleted;
+    },
     addUncompletedTask: (state, action: PayloadAction<TaskType>) => {
         console.log('catch add task', action.payload)
       state.uncompleted.push(action.payload);
@@ -74,6 +78,6 @@ export const taskSlice = createSlice({
 });
 
 export default taskSlice.reducer;
-export const { addUncompletedTask, removeUncompletedTask, moveTasks, editTask } = taskSlice.actions;
+export const { addUncompletedTask, removeUncompletedTask, moveTasks, editTask, updateTasksList} = taskSlice.actions;
 
 

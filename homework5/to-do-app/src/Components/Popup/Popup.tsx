@@ -31,7 +31,6 @@ const Popup = ({
   const [selectedTag, setSelectedTag] = useState<string>('');
 
   const dispatch = useAppDispatch();
-
   const isPopupContentArray = Array.isArray(popupContent);
   const closePopup = () => {
     setPopupType(false)
@@ -190,16 +189,13 @@ return
     const createListItem = (taskData:TaskType) => {
       return (<ul className='modal__list' key={taskData.id}>{taskData.title}</ul>)
     }
-    const closeModal = () => {
-      window.localStorage.setItem('last-visit', formatDate(new Date()));
-      closePopup(); 
-    }
+    
     return (
       <section className='modal'>
         <h2 className='modal__title'>Good {getDayPart()}</h2>
         <p className='modal__list-caption'>You have the next planned tasks for today: </p>
         {tasksForToday.map(el => createListItem(el))}
-        <button className='modal__button' type="button" onClick={closeModal}>Ok</button>
+        <button className='modal__button' type="button" onClick={closePopup}>Ok</button>
       </section>
     );  
   } 

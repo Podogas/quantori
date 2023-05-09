@@ -1,58 +1,22 @@
 {
   "tasks": [
     {
-      "updatedAt": 1683511302201,
-      "title": "2",
-      "isCompleted": false,
-      "tag": "work",
-      "date": "08.05.2023",
-      "prevTag": "work",
+      "updatedAt": 1683668364191,
+      "title": "123",
+      "isCompleted": true,
+      "tag": "home",
+      "date": "10.05.2023",
+      "prevTag": "home",
       "id": 2
     },
     {
-      "updatedAt": 1683511305499,
-      "title": "3",
-      "isCompleted": false,
-      "tag": "home",
-      "date": "08.05.2023",
-      "prevTag": "home",
-      "id": 3
-    },
-    {
-      "updatedAt": 1683511308674,
-      "title": "4",
-      "isCompleted": false,
-      "tag": "other",
-      "date": "08.05.2023",
-      "prevTag": "other",
-      "id": 4
-    },
-    {
-      "updatedAt": 1683551273364,
-      "title": "new",
-      "isCompleted": false,
-      "tag": "work",
-      "date": "08.05.2023",
-      "prevTag": "work",
-      "id": 6
-    },
-    {
-      "updatedAt": 1683647040413,
+      "updatedAt": 1683673287088,
       "title": "123",
       "isCompleted": false,
-      "tag": "other",
-      "date": "23.05.2023",
-      "prevTag": "other",
-      "id": 10
-    },
-    {
-      "updatedAt": 1683656561395,
-      "title": "3123",
-      "isCompleted": true,
-      "tag": "health",
-      "date": "18.05.2023",
-      "prevTag": "health",
-      "id": 13
+      "tag": "home",
+      "date": "10.05.2023",
+      "prevTag": "home",
+      "id": 3
     }
   ]
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { } from "react";
 import { TaskType, taskHandlerType } from "../../Utils/Interfaces";
 import TaskList from "../TaskList/TaskList";
 import './CompletedTasks.css'
@@ -13,7 +13,7 @@ const CompletedTasks = ({
   setPopupContent: (value: TaskType)=> void 
 }) => {
   const completedTasks = useAppSelector((state) => state.tasks.completed);
-
+    
     if(completedTasks.length === 0){ 
         return null
     }
