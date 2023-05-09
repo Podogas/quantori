@@ -1,0 +1,37 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 4.4rem 0;
+}
+.header__title {
+    font-weight: 700;
+    font-size: 3.2rem;
+    line-height: 3.6rem;
+    color: #1D1D1D;
+}
+.header__weather-widget {
+    padding: 1rem 2.2rem;
+    display: flex;
+    align-items: center;
+    min-width: 332px;
+    box-sizing: border-box;
+   
+}
+.header__weather-widget-icon {
+    width: 4.4rem;
+}
+.header__weather-widget-tempreture {
+    margin-left: 1rem;
+    font-size: 1.8rem;
+    line-height: 3.6rem;
+    font-weight: 700;
+}
+.header__weather-widget-location {
+   margin-left: auto;
+   transform: translateX(-2rem);
+   font-weight: 500;
+   font-size: 1.8rem;
+   line-height: 2;
+   color: #838383;
+}
