@@ -70,7 +70,7 @@ interface addTaskHandlerType {
     (data:TaskType):void
 }
 interface filterHandlerType {
-    (value:{title:string, tag:string} | undefined):void
+    (tag:string | undefined, query:string | undefined):void
 }
 export type {
     TaskType,

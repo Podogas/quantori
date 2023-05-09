@@ -7,15 +7,15 @@ import { removeUncompletedTask, moveTasks } from '../../store/features/tasksSlic
 const TaskList = ({
   tasks, 
   blockName, 
-  moveTaskHandler, 
-  deleteHandler,
+  // moveTaskHandler, 
+  // deleteHandler,
   setPopupType,
   setPopupContent
 }:{
   tasks:TaskType[],
   blockName:string, 
-  moveTaskHandler:taskHandlerType, 
-  deleteHandler:deleteHandlerType ,
+  // moveTaskHandler:taskHandlerType, 
+  // deleteHandler:deleteHandlerType ,
   setPopupType:(value: string | boolean) => void,
   setPopupContent: (value: TaskType)=> void
   }

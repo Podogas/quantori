@@ -11,14 +11,14 @@ const Popup = ({
   popupType,
   popupContent, 
   setPopupType,
-  tasksForToday,
-  editTaskHandler
+  // tasksForToday,
+  // editTaskHandler
 }:{
   popupType:string | boolean,
   popupContent: TaskType | undefined,
   setPopupType: React.Dispatch<React.SetStateAction<string | boolean>>,
-  tasksForToday:TaskType[],
-  editTaskHandler:editTaskHandlerType  
+  // tasksForToday:TaskType[],
+  // editTaskHandler:editTaskHandlerType  
 }) => {
   const getInitialDate = () => {
     if(popupContent?.date){
@@ -129,7 +129,7 @@ const Popup = ({
       <section className='modal'>
         <h2 className='modal__title'>Good {getDayPart()}</h2>
         <p className='modal__list-caption'>You have the next planned tasks for today: </p>
-        {tasksForToday.map(el => createListItem(el))}
+        {/* {tasksForToday.map(el => createListItem(el))} */}
         <button className='modal__button' type="button" onClick={closeModal}>Ok</button>
       </section>
     );  

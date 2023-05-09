@@ -4,16 +4,16 @@ import TaskList from "../TaskList/TaskList";
 import './CompletedTasks.css'
 import { useAppSelector } from "../../store/store";
 const CompletedTasks = ({
-  moveTaskHandler,
+  // moveTaskHandler,
   setPopupType,
   setPopupContent
 }:{
-  moveTaskHandler:taskHandlerType,
+  // moveTaskHandler:taskHandlerType,
   setPopupType:(value: string | boolean) => void,
   setPopupContent: (value: TaskType)=> void 
 }) => {
   const completedTasks = useAppSelector((state) => state.tasks.completed);
-  console.log(completedTasks, "SELECTOR completed")
+
     if(completedTasks.length === 0){ 
         return null
     }
@@ -23,8 +23,8 @@ const CompletedTasks = ({
         <TaskList 
           tasks={completedTasks} 
           blockName='completed-tasks' 
-          moveTaskHandler={moveTaskHandler}
-          deleteHandler={()=>{}}
+          // moveTaskHandler={moveTaskHandler}
+          // deleteHandler={()=>{}}
           setPopupType={setPopupType}
           setPopupContent={setPopupContent}
         />
