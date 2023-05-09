@@ -33,7 +33,7 @@ const AllTasks = ({
         }
         setFilteredTasks(filtered);
       }
-  },[filter])
+  },[filter, uncompletedTasks])
 
   if(uncompletedTasks.length === 0){ 
     return null

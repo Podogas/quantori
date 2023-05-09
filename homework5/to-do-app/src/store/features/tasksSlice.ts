@@ -16,10 +16,10 @@ const initialState: TasksState = {
 
 export const fetchTasks = createAsyncThunk(
   "tasks/get",
-  async (thunkAPI) => {
+  async () => {
     const response = await fetch(`${dbUrl}/tasks`, {
       method: "GET",
-    });
+    })
     const res = response.json();
     return res;
   },
