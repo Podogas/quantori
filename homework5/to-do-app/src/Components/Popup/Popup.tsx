@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import './Popup.css';
 import { formatDate, getDayPart } from '../../Utils/Utils';
 import { TaskType } from '../../Utils/Interfaces';
@@ -31,7 +31,7 @@ const Popup = ({
   const closePopup = () => {
     setPopupType(false)
   }
-  const validate = () => {
+  const validate = useCallback(() => {
     if(addBtnRef.current && inputRef.current && dateInputRef.current){
       addBtnRef.current.classList.add('popup__buttons-add--disabled')
       const inputValue = inputRef.current.value;
@@ -45,10 +45,10 @@ const Popup = ({
         }
       }
     }  
-  }
+  },[date, isPopupContentArray, popupContent, popupType, selectedTag])
   useEffect(()=> {
     validate()
-  },[selectedTag, date])
+  },[selectedTag, date, validate])
   useEffect(()=> {
     if(!isPopupContentArray){
       setDate(popupContent?.date || formatDate(new Date()))
@@ -56,7 +56,7 @@ const Popup = ({
         setSelectedTag(popupContent?.tag);
       }
     }  
-  },[])
+  },[isPopupContentArray, popupContent])
   // IF NOT MODAL
   if(!isPopupContentArray){
     const onSelectTag = (tag:string): void => {
