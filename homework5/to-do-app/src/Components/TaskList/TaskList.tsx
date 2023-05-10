@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { TaskType, deleteHandlerType, taskHandlerType } from '../../Utils/Interfaces';
+import { TaskType } from '../../Utils/Interfaces';
 import './TaskList.css';
 import { deleteTask, updateTask } from '../../Api/Api';
 import { useAppDispatch } from '../../store/store';
@@ -7,15 +7,11 @@ import { removeUncompletedTask, moveTasks } from '../../store/features/tasksSlic
 const TaskList = ({
   tasks, 
   blockName, 
-  // moveTaskHandler, 
-  // deleteHandler,
   setPopupType,
   setPopupContent
 }:{
   tasks:TaskType[],
-  blockName:string, 
-  // moveTaskHandler:taskHandlerType, 
-  // deleteHandler:deleteHandlerType ,
+  blockName:string,
   setPopupType:(value: string | boolean) => void,
   setPopupContent: (value: TaskType)=> void
   }
@@ -23,11 +19,9 @@ const TaskList = ({
     const deleteBtnRef = useRef<HTMLButtonElement>(null);
     const editBtnRef = useRef<HTMLButtonElement>(null);
     const checkboxRef = useRef<(HTMLInputElement | undefined | null)[]>([]);
-    //
-
     const dispatch = useAppDispatch();
+    
     const onDeleteClick = (id:string)=> {
-      // deleteHandler(id)
       deleteTask(id)
       .then( res => {
           dispatch(removeUncompletedTask(id))
@@ -35,7 +29,6 @@ const TaskList = ({
       .catch(err => console.error(err))
     }
     const moveTask = (task:TaskType) => {
-      //moveTaskHandler(task)
       const updatedTask = { ...task, isCompleted: !task.isCompleted };
       updateTask(updatedTask)
       .then(res => {
@@ -81,4 +74,4 @@ const TaskList = ({
 
   return (<> {tasks.map((task:TaskType) => createTasks(task)) }</>)
 }
-export default TaskList;
+export {TaskList};

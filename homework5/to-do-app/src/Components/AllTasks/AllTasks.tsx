@@ -1,8 +1,8 @@
 
 import { useEffect, useState } from "react";
-import { TaskType, deleteHandlerType, taskHandlerType } from "../../Utils/Interfaces";
+import { TaskType } from "../../Utils/Interfaces";
 import { useAppSelector } from "../../store/store";
-import TaskList from "../TaskList/TaskList";
+import {TaskList} from "../TaskList/TaskList";
 import "./AllTasks.css";
 const AllTasks = ({
   filter,
@@ -16,7 +16,7 @@ const AllTasks = ({
 
   const uncompletedTasks = useAppSelector((state) => state.tasks.uncompleted);
   const [filteredTasks, setFilteredTasks] = useState<undefined | TaskType[]>(undefined);
-
+  
   useEffect(()=> {
     const tag = filter.tag;
     const query = filter.query;
@@ -60,4 +60,4 @@ const AllTasks = ({
   );      
 }
 
-export default AllTasks;
+export {AllTasks};

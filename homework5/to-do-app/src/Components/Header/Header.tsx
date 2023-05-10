@@ -1,4 +1,3 @@
-import React from 'react';
 import './Header.css';
 import WeatherWidget from '../WeatherWidget/WeatherWidget';
 const Header = () => {
@@ -10,6 +9,6 @@ const Header = () => {
   );
 }
 
-export default React.memo(Header);
+export {Header};
 
 
