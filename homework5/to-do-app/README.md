@@ -15,7 +15,7 @@ The page will reload if you make edits.\
 You will also see any lint errors in the console.
 ### `npm serve`
 
-Runs the json-server at port 3004.\
+Runs the json-server at port 3004
 ### `npm test`
 
 Launches the test runner in the interactive watch mode.\
