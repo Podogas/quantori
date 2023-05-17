@@ -1,122 +1,262 @@
-import React, {useRef, useState} from 'react';
-import './Popup.css';
-import { formatDate, getDayPart } from '../../Utils/Utils';
-import { TaskType, addTaskHandlerType } from '../../Utils/Interfaces';
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import "./Popup.css";
+import { formatDate, getDayPart } from "../../Utils/Utils";
+import { TaskType } from "../../Utils/Interfaces";
+import { Tags } from "../Tags/Tags";
+import { postTask, updateTask } from "../../Api/Api";
+import { addUncompletedTask, editTask } from "../../store/features/tasksSlice";
+import { useAppDispatch } from "../../store/store";
 
 const Popup = ({
-  popupType, 
-  setPopupType, 
-  addTaskHandler, 
-  tasksForToday
-}:{
-  popupType:string | boolean, 
-  setPopupType: React.Dispatch<React.SetStateAction<string | boolean>>, 
-  addTaskHandler:addTaskHandlerType , 
-  tasksForToday:TaskType[]  
+  popupType,
+  popupContent,
+  setPopupType,
+}: {
+  popupType: string | boolean;
+  popupContent: TaskType | TaskType[] | undefined;
+  setPopupType: React.Dispatch<React.SetStateAction<string | boolean>>;
 }) => {
-  const [date, setDate] = useState(formatDate(new Date()));
-  const [isPopupFormValid, setIsPopupformValid] = useState(false);
-  const [selectedTag, setSelectedTag] = useState<string>('');
-  const tagsRef = useRef<Array<React.RefObject<HTMLSpanElement>>>([...Array(4)].map(() => React.createRef<HTMLSpanElement>()));
+  const popupWindowRef = useRef<HTMLElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const dateInputRef = useRef<HTMLInputElement>(null);
   const addBtnRef = useRef<HTMLButtonElement>(null);
   const cancelBtnRef = useRef(null);
 
-  const validate = () => {
-    if(addBtnRef.current && inputRef.current){
-      addBtnRef.current.classList.add('popup__buttons-add--disabled')
-    const inputValue = inputRef.current.value;
-    const tag = tagsRef.current.filter((e) => e.current?.classList.contains('popup__info-tag--selected'));
-    if(tag.length !==0){
-      const tagText = tag[0].current?.innerText ?? '';
-      if(inputValue.replace(/\s/g, '') !== ''){
-        addBtnRef.current.classList.remove('popup__buttons-add--disabled')
-        setSelectedTag(tagText);
-        setIsPopupformValid(true);
-      }
-    }
-    }
-    
-  }
-  const addTask = () => {
-    if(isPopupFormValid){
-      addTaskHandler({
-        updatedAt: Date.now(),
-        title: inputRef.current?.value ?? '',
-        isCompleted: false,
-        tag: selectedTag,
-        date: date,
-        prevTag: selectedTag
-      }
-      )
-    }  
-  }
+  const [date, setDate] = useState("");
+  const [isPopupFormValid, setIsPopupformValid] = useState(false);
+  const [selectedTag, setSelectedTag] = useState<string>("");
+
+  const dispatch = useAppDispatch();
+  const isPopupContentArray = Array.isArray(popupContent);
   const closePopup = () => {
-    setPopupType(false)
-  }
-  const closeModal = () => {
-    setPopupType(false)
-  }
-  const selectTag = (n: number) => {
-    const element = tagsRef.current[n].current;
-    if(element?.classList.contains('popup__info-tag--selected')){
-      element.classList.remove('popup__info-tag--selected')
-    } else {
-      tagsRef.current.forEach(e => e.current?.classList.remove('popup__info-tag--selected'))
-      element?.classList.add('popup__info-tag--selected')
+    setPopupType(false);
+  };
+  const validate = useCallback(() => {
+    if (addBtnRef.current && inputRef.current && dateInputRef.current) {
+      addBtnRef.current.classList.add("popup__buttons-add--disabled");
+      const inputValue = inputRef.current.value;
+      if (selectedTag.length !== 0 && date && !isPopupContentArray) {
+        if (
+          (inputValue.replace(/\s/g, "") !== "" &&
+            inputValue !== popupContent?.title) ||
+          (date !== popupContent?.date && popupType === "edit") ||
+          (selectedTag !== popupContent?.tag && popupType === "edit")
+        ) {
+          addBtnRef.current.classList.remove("popup__buttons-add--disabled");
+          setIsPopupformValid(true);
+        }
+      }
     }
-    validate()  
-  }
-  const changeDate = () => {
-    const inputValue:string = dateInputRef.current?.value ?? '';
-    const dd = inputValue.slice(8, 10);
-    const mm = inputValue.slice(5, 7);
-    const yyyy = inputValue.slice(0, 4);
-    setDate(`${dd}.${mm}.${yyyy}`);
+  }, [date, isPopupContentArray, popupContent, popupType, selectedTag]);
+  useEffect(() => {
     validate();
-  }
-
-  
-  if(popupType === 'modal'){
-    const createListItem = (taskData:TaskType) => {
-      return (<ul className='modal__list' key={taskData.id}>{taskData.title}</ul>)
+  }, [selectedTag, date, validate]);
+  useEffect(() => {
+    if (!isPopupContentArray) {
+      setDate(popupContent?.date || formatDate(new Date()));
+      if (popupContent?.tag) {
+        setSelectedTag(popupContent?.tag);
+      }
     }
+  }, [isPopupContentArray, popupContent]);
+
+  // IF NOT MODAL
+  if (!isPopupContentArray) {
+    
+    const onSelectTag = (tag: string): void => {
+      setSelectedTag(tag);
+    };
+    const onChangeDate = () => {
+      const inputValue: string = dateInputRef.current?.value ?? "";
+      const dd = inputValue.slice(8, 10);
+      const mm = inputValue.slice(5, 7);
+      const yyyy = inputValue.slice(0, 4);
+      const formatedDate = `${dd}.${mm}.${yyyy}`;
+      setDate(formatedDate);
+      validate();
+    };
+
+    //   POPUP
+    if (popupType === "popup") {
+      const addTask = () => {
+        if (isPopupFormValid) {
+          const data = {
+            updatedAt: Date.now(),
+            title: inputRef.current?.value ?? "",
+            isCompleted: false,
+            tag: selectedTag,
+            date: date,
+            prevTag: selectedTag,
+          };
+          postTask(data)
+            .then((res: TaskType) => {
+              dispatch(addUncompletedTask(res));
+              closePopup();
+            })
+            .catch((err) => console.error(err));
+        }
+      };
+  
+      return (
+        <div className="popup-wrapper">
+        <section className="popup" ref={popupWindowRef}>
+          <h2 className="popup__title">Add New Task</h2>
+          <input
+            className="popup__input"
+            type="text"
+            placeholder="Task Title"
+            ref={inputRef}
+            defaultValue=""
+            onChange={validate}
+          />
+          <div className="popup__info-wrapper">
+            <Tags
+              onSelectTag={onSelectTag}
+              blockName="popup"
+              initialSelectedTag=""
+            />
+            <div className="popup__info-date-input-wrapper">
+              {date}
+              <input
+                className="popup__info-date-input"
+                type="date"
+                ref={dateInputRef}
+                onChange={onChangeDate}
+              />
+            </div>
+          </div>
+          <div className="popup__buttons-wrapper">
+            <button
+              className="popup__buttons popup__buttons-cancel"
+              type="button"
+              ref={cancelBtnRef}
+              onClick={closePopup}
+            >
+              Cancel
+            </button>
+            <button
+              className="popup__buttons popup__buttons-add popup__buttons-add--disabled"
+              type="button"
+              ref={addBtnRef}
+              onClick={addTask}
+            >
+              Add Task
+            </button>
+          </div>
+        </section>
+        </div>
+      );
+    }
+
+    // EDIT
+    if (popupType === "edit") {
+      const onEditTask = () => {
+        if (isPopupFormValid) {
+          const data = {
+            updatedAt: Date.now(),
+            title: inputRef.current?.value ?? "",
+            isCompleted: false,
+            tag: selectedTag,
+            date: date,
+            prevTag: selectedTag,
+            id: popupContent?.id,
+          };
+          updateTask(data)
+            .then((res) => {
+              dispatch(editTask(res));
+              closePopup();
+            })
+            .catch((err) => console.error(err));
+        }
+      };
+      const formatDateForInput = (date: string | undefined) => {
+        if (date) {
+          const dd = date.slice(0, 2);
+          const mm = date.slice(3, 5);
+          const yyyy = date.slice(6, 10);
+          return `${yyyy}-${mm}-${dd}`;
+        }
+        return;
+      };
+      return (
+        <div className="popup-wrapper">
+        <section className="popup"  ref={popupWindowRef}>
+          <h2 className="popup__title">Edit Task</h2>
+          <input
+            className="popup__input"
+            type="text"
+            placeholder="Task Title"
+            ref={inputRef}
+            onChange={validate}
+            defaultValue={popupContent?.title}
+          />
+          <div className="popup__info-wrapper">
+            <Tags
+              onSelectTag={onSelectTag}
+              blockName="popup"
+              initialSelectedTag={popupContent?.tag}
+            />
+            <div className="popup__info-date-input-wrapper">
+              {date}
+              <input
+                className="popup__info-date-input"
+                type="date"
+                ref={dateInputRef}
+                onChange={onChangeDate}
+                defaultValue={formatDateForInput(popupContent?.date)}
+              />
+            </div>
+          </div>
+          <div className="popup__buttons-wrapper">
+            <button
+              className="popup__buttons popup__buttons-cancel"
+              type="button"
+              ref={cancelBtnRef}
+              onClick={closePopup}
+            >
+              Cancel
+            </button>
+            <button
+              className="popup__buttons popup__buttons-add"
+              type="button"
+              ref={addBtnRef}
+              onClick={onEditTask}
+            >
+              Edit Task
+            </button>
+          </div>
+        </section>
+        </div>
+      );
+    }
+  }
+  // MODAL
+  if (popupType === "modal" && Array.isArray(popupContent)) {
+    const tasksForToday = popupContent;
+    const createListItem = (taskData: TaskType) => {
+      return (
+        <ul className="modal__list" key={taskData.id}>
+          {taskData.title}
+        </ul>
+      );
+    };
+
     return (
-      <section className='modal'>
-        <h2 className='modal__title'>Good {getDayPart()}</h2>
-        <p className='modal__list-caption'>You have the next planned tasks for today: </p>
-        {tasksForToday.map(el => createListItem(el))}
-        <button className='modal__button' type="button" onClick={closeModal}>Ok</button>
+      <div className="popup-wrapper">
+      <section className="modal"  ref={popupWindowRef}>
+        <h2 className="modal__title">Good {getDayPart()}</h2>
+        <p className="modal__list-caption">
+          You have the next planned tasks for today:{" "}
+        </p>
+        {tasksForToday.map((el) => createListItem(el))}
+        <button className="modal__button" type="button" onClick={closePopup}>
+          Ok
+        </button>
       </section>
-    );  
+      </div>
+    );
   }
-  if(popupType === 'popup'){
-    return (      
-      <section className='popup'>
-      <h2 className='popup__title'>Add New Task</h2>
-      <input className="popup__input" type="text" placeholder='Task Title' ref={inputRef} onChange={validate}/>
-      <div className='popup__info-wrapper'>
-      <div className='popup__info-tags-wrapper'>
-        <span className='popup__info-tag popup__info-tag--health' ref={tagsRef.current[0] } onClick={() => {selectTag(0)}}>health</span>
-        <span className='popup__info-tag popup__info-tag--work'ref={tagsRef.current[1]}  onClick={() => {selectTag(1)}}>work</span>
-        <span className='popup__info-tag popup__info-tag--home'ref={tagsRef.current[2]}  onClick={() => {selectTag(2)}}>home</span>
-        <span className='popup__info-tag popup__info-tag--other'ref={tagsRef.current[3]}  onClick={() => {selectTag(3)}}>other</span>
-      </div>
-      <div className='popup__info-date-input-wrapper'>
-        {date}
-        <input className='popup__info-date-input' type="date" ref={dateInputRef} onChange={changeDate}/>
-      </div>
-      </div>
-      <div className='popup__buttons-wrapper'>
-        <button className='popup__buttons popup__buttons-cancel' type='button' ref={cancelBtnRef} onClick={closePopup}>Cancel</button>
-        <button className='popup__buttons popup__buttons-add popup__buttons-add--disabled' type='button' ref={addBtnRef} onClick={addTask}>Add Task</button>
-      </div>
-      </section>
-    );  
-  }
-  return null
-}
+  return null;
+};
 
-export default Popup;
-
+export { Popup };

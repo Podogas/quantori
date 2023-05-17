@@ -1,8 +1,11 @@
 
 .nav {
     display: flex;
+    flex-direction: column;
+}
+.nav__search-form-wrapper {
+    display: flex;
     justify-content: space-between;
-
 }
 .nav__input {
     padding: 1.5rem 2.1rem;
@@ -43,4 +46,19 @@
 }
 .nav__button:hover {
     background-color: rgba(60, 134, 244, 0.35);
+}
+@media screen and (max-width: 700px)  {
+    .nav__search-form-wrapper{
+        flex-direction: column;
+    }
+    .nav__input{
+        box-sizing: border-box;
+        width: 100%;
+        margin: 0;
+        margin-bottom: 2rem;
+    }
+    .nav__button{
+        width: 100%;
+        margin-bottom: 2rem;
+    }
 }

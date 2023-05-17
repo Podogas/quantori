@@ -75,9 +75,13 @@
     line-height: 1.6rem;
     color: #838383;
 }
+.all-tasks__task-buttons-wrapper {
+    margin-left: auto;
+    min-width: 4rem;
+}
 .all-tasks__task-button {
     cursor: pointer;
-    background-image: url(./assets/Delete.svg);
+    background-color: initial;
     width: 1.6rem;
     height: 1.6rem;
     background-size: contain;
@@ -86,11 +90,20 @@
     margin-left: auto;
     margin-right: 0.8rem;
 }
-.all-tasks__task-button:hover {
+.all-tasks__task-delete-button:hover {
     background-image: url(./assets/Delete-blue.svg);
-    background-size: contain;
 }
-
+.all-tasks__task-delete-button {
+    background-image: url(./assets/Delete.svg);
+    margin: 0;
+}
+.all-tasks__task-edit-button {
+    justify-self: end;
+    background-image: url(./assets/Edit.svg);
+}
+.all-tasks__task-edit-button:hover {
+    background-image: url(./assets/Edit-blue.svg);
+}
 
 .completed-tasks__task {
     display: flex;
