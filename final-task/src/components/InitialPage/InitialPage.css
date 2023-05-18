@@ -1,0 +1,36 @@
+:root {
+    --title-color: #000000;
+    --subtitle-color: #616161;
+    --btn-color: #FFFFFF;
+    --btn-text-color: #175BC0;
+}
+
+.initialPage {
+    margin-left: 66.4%;
+    padding-top: 16.2rem;
+}
+.initialPage__title {
+    font-weight: 600;
+    font-size: 3.2rem;
+    line-height: 1.36;
+    color: var(--title-color);
+    margin-bottom: 1.1rem;
+}
+.initialPage__subtitle {
+    font-weight: 300;
+    font-size: 1.4rem;
+    line-height: 1.36;
+    color: var(--subtitle-color);
+    margin-bottom: 3rem;
+    max-width: 30rem;
+}
+.initialPage__button {
+    font-weight: 700;
+    font-size: 1.2rem;
+    line-height: 1.36;
+    padding: 1.6rem 6.2rem;
+    border-radius: 2.4rem;
+    color: var(--btn-text-color);
+    background-color: var(--btn-color);
+    border: none;
+}
