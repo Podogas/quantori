@@ -1,6 +1,6 @@
 import './LoginForm.css';
 
-const LoginForm = () => {
+const LoginForm = ({setFormToShow}:{setFormToShow:(string:string)=>void}) => {
 
     return (
         <>
@@ -18,7 +18,7 @@ const LoginForm = () => {
                 <button className='loginForm__button' type='button'>Login</button>
             </form>
             <p className='loginForm__caption'>Don’t have an account? 
-                <a className='loginForm__caption-link'> Sign up</a>
+                <a onClick={() => {setFormToShow('sign-up')}} className='loginForm__caption-link'> Sign up</a>
             </p>
         </>
     )

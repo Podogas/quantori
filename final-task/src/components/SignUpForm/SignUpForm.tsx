@@ -1,6 +1,6 @@
 import './SignUpForm.css';
 
-const SignUpForm = () => {
+const SignUpForm = ({setFormToShow}:{setFormToShow:(string:string)=>void}) => {
 
     return (
         <>
@@ -21,7 +21,7 @@ const SignUpForm = () => {
                 <button className='SignUpForm__button' type='button'>Create Account</button>
             </form>
             <p className='SignUpForm__caption'>Already have an account?  
-                <a className='SignUpForm__caption-link'> Login</a>
+                <a onClick={() => {setFormToShow('login')}} className='SignUpForm__caption-link'> Login</a>
             </p>
         </>
     )
