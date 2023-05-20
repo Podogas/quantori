@@ -21,7 +21,8 @@ const SignUpForm = ({setFormToShow}:{setFormToShow:(string:string)=>void}) => {
     const navigate = useNavigate();
     // TODO mb create functions that returns related error messages. Refactor ugly ternary operators in jsx.
     // TODO Some trash code here, wtf is this catch block? and this JSX is the ternary hell, and why so many states? Refactor this!!!!
-    const onSignUpClick = () => {
+    const onSignUpSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
         console.log('SIGN-UP')
         if(emailInputRef.current && passInputRef.current){
             const emailValue = emailInputRef.current.value;
@@ -89,7 +90,7 @@ const SignUpForm = ({setFormToShow}:{setFormToShow:(string:string)=>void}) => {
     return (
         <>
             <h3 className='SignUpForm__title'>Sign up</h3>
-            <form action="" className='SignUpForm'>
+            <form action="" className='SignUpForm' onSubmit={onSignUpSubmit}>
                 <label className='SignUpForm__label'>Email</label>
                 <input 
                     className={
@@ -156,9 +157,8 @@ const SignUpForm = ({setFormToShow}:{setFormToShow:(string:string)=>void}) => {
                         SignUpForm__button
                         ${ isEmailInputValid&&isPassInputValid&&isPassRepeatInputValid ? 'SignUpForm__button--valid' : ''}
                     `} 
-                    type='button' 
+                    type='submit' 
                     disabled={isEmailInputValid&&isPassInputValid&&isPassRepeatInputValid ? false : true}
-                    onClick={onSignUpClick}
                 >
                     Create Account
                 </button>

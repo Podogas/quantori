@@ -20,7 +20,8 @@ const LoginForm = ({setFormToShow}:{setFormToShow:(string:string)=>void}) => {
     //refactoring zone
 
     // TODO mb create functions that returns related error messages. Refactor ugly ternary operators in jsx.
-    const onLoginClick = () => {
+    const onLoginSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
         console.log('SIGN-UP')
         if(emailInputRef.current && passInputRef.current){
             const emailValue = emailInputRef.current.value;
@@ -71,7 +72,7 @@ const LoginForm = ({setFormToShow}:{setFormToShow:(string:string)=>void}) => {
         <>
             <h3 className='loginForm__title'>Login</h3>
             
-            <form action="" className='loginForm'>
+            <form action="" className='loginForm' onSubmit={onLoginSubmit}>
                 <label className='loginForm__label'>Email</label>
                 <input 
                     className={
@@ -122,9 +123,8 @@ const LoginForm = ({setFormToShow}:{setFormToShow:(string:string)=>void}) => {
                         `loginForm__button 
                         ${ isEmailInputValid&&isPassInputValid ? 'loginForm__button--valid' : ''}
                         `} 
-                    type='button'
+                    type='submit'
                     disabled={isEmailInputValid&&isPassInputValid? false : true}
-                    onClick={onLoginClick}
                     >Login</button>
             </form>
             <p className='loginForm__caption'>Don’t have an account? 
