@@ -5,37 +5,57 @@ import { Route, Routes } from "react-router-dom";
 import { SearchPage } from './components/SearchPage/SearchPage';
 import { ProtectedRoute } from "./components/ProtectedRoute/ProtectedRoute";
 import { Main } from './components/Main/Main';
-import { auth } from "./utils/FirebaseApp";
 
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { useAppDispatch, useAppSelector } from "./store/store";
+import { auth } from "./utils/FirebaseApp";
+import { setUser } from "./store/features/userSlice";
 const App = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-// Fix this routes!!!
-  useEffect(()=>{
-    if(auth.currentUser){
-      setIsLoggedIn(true)
-      console.log('logged')
+
+
+  const [isAuthPending, setIsAuthPending] = useState(true);
+  const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.user);
+  
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      const userObj = {
+        email: user.email,
+        isAuth: true
+      }
+      dispatch(setUser(userObj));
     } else {
-      setIsLoggedIn(false)
-      console.log('notlogged')
+      const userObj = {
+        email: '',
+        isAuth: false
+      }
+      dispatch(setUser(userObj));
     }
-    
-  },[isLoggedIn])
+    setIsAuthPending(false);
+  });
   return (
     <Fragment>
+      {isAuthPending ? null :
       <Routes>
       <Route
-        path='/*'
-        element={<Main/>}
-      />
+                    path='/*'
+                    element={
+                      <ProtectedRoute redirect='/search' condition={!user.isAuth}>
+                        <Main/>
+                      </ProtectedRoute>
+                    }
+                />  
       <Route
                     path='/search'
                     element={
-                      <ProtectedRoute redirect='/auth' condition={isLoggedIn}>
+                      <ProtectedRoute redirect='/auth' condition={user.isAuth}>
                         <SearchPage/>
                       </ProtectedRoute>
                     }
                 />     
-      </Routes>            
+      </Routes> 
+}
+                 
     </Fragment>
   )
 }

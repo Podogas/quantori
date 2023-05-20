@@ -1,9 +1,12 @@
 import './Header.css';
 import { auth } from "../../utils/FirebaseApp";
+import { Fragment, useState, useEffect } from "react";
 import { Logout } from '../../api/auth';
+import { useAppDispatch, useAppSelector } from "../../store/store";
 const Header = () => {
 //change <a> 
-const email = auth.currentUser?.email;
+const email = useAppSelector((state) => state.user.email);
+
 const onLogoutClick = () => {
     console.log('123');
     Logout().then(() => {
