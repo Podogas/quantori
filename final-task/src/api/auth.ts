@@ -1,4 +1,4 @@
-import {  createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import {  createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { auth } from '../utils/FirebaseApp';
 
 const SignUp = (email:string, password:string) => {
@@ -7,5 +7,7 @@ const SignUp = (email:string, password:string) => {
 const Login = (email:string, password:string) => {
    return signInWithEmailAndPassword(auth, email, password)
 }
-
-export {SignUp, Login};
+const Logout = () => {
+   return signOut(auth)
+}
+export {SignUp, Login, Logout};

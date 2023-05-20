@@ -1,4 +1,5 @@
 import { getAuth } from "firebase/auth";
+import { Header } from "../Header/Header";
 const SearchPage = () => {
    
 
@@ -6,7 +7,7 @@ const SearchPage = () => {
     const user = auth.currentUser;
     console.log(user)
     return(
-        <h2>Hi! I am Search Page</h2>
+        <Header/>
     )
 }
 export {SearchPage};
