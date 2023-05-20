@@ -6,6 +6,12 @@
 }
 
 .initialPage {
+    height: 100vh;
+    background-image: url(./assessments/main_page_background.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.initialPage__content-wrapper{
     margin-left: 66.4%;
     padding-top: 16.2rem;
 }

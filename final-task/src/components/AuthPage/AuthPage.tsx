@@ -6,12 +6,14 @@ import {SignUpForm} from '../SignUpForm/SignUpForm';
 const AuthPage = () => {
     const [formToShow, setFormToShow] = useState('login');
     return (
-        <section className='authPopup'>
+        <div  className='authPage__wrapper'>
+        <section className='authPage__popup'>
             {formToShow === 'login' 
                 ? <LoginForm setFormToShow={setFormToShow}/> 
                 : <SignUpForm setFormToShow={setFormToShow}/>
             }    
         </section>
+        </div>
     )
 }
 

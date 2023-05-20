@@ -1,0 +1,30 @@
+.not-found{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+.not-found__title{
+    font-weight: 600;
+    font-size: 7.2rem;
+    line-height: 1;
+    color: #000000;
+}
+.not-found__description{
+    margin: 0 0 2.4rem 0;
+    font-weight: 600;
+    font-size: 1.6rem;
+    line-height: 1;
+    color: #9F9F9F;
+}
+.not-found__button{
+    background-color: #D8E7FF;
+    border-radius: 2.4rem;
+    padding: 1.6rem 3.5rem;
+    font-weight: 700;
+    font-size: 1.2rem;
+    line-height: 1.6rem; 
+    color: #000000; 
+    cursor: pointer; 
+}

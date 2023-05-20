@@ -1,4 +1,10 @@
-.authPopup {
+.authPage__wrapper {
+   height: 100vh;
+   background-image: url(./assessments/main_page_background.jpg);
+   background-size: cover;
+   background-repeat: no-repeat;
+}
+.authPage__popup {
    position: fixed;
    width: 31%; 
    padding: 2.8rem 3rem;
