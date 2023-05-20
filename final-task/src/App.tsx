@@ -1,10 +1,10 @@
 import "./App.css"
 
-import { Fragment } from "react"
+import { Fragment } from "react";
 
 import { Main } from './components/Main/Main';
 const App = () => {
-  console.log('app')
+
   return (
     <Fragment>
       <Main/>
@@ -13,3 +13,5 @@ const App = () => {
 }
 
 export default App
+
+

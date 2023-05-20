@@ -1,5 +1,7 @@
 import './SignUpForm.css';
 import {useRef, useState} from 'react';
+import { SignUp } from '../../api/auth';
+import { useNavigate } from 'react-router-dom';
 
 const SignUpForm = ({setFormToShow}:{setFormToShow:(string:string)=>void}) => {
 
@@ -12,11 +14,34 @@ const SignUpForm = ({setFormToShow}:{setFormToShow:(string:string)=>void}) => {
     const [isEmailErrorShown, setIsEmailErrorShown] = useState(false);
     const [isPassErrorShown, setIsPassErrorShown] = useState(false);
     const [isPassRepeatErrorShown, setIsPassRepeatErrorShown] = useState(false);
+    const [isFormResponseError, setIsFormResponseError] = useState(false);
+    const [formResponseError, setFormResponseError] = useState('')
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const passRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
+    const navigate = useNavigate();
     // TODO mb create functions that returns related error messages. Refactor ugly ternary operators in jsx.
-    const signUp = () => {
+    // TODO Some trash code here, wtf is this catch block? and this JSX is the ternary hell, and why so many states? Refactor this!!!!
+    const onSignUpClick = () => {
         console.log('SIGN-UP')
+        if(emailInputRef.current && passInputRef.current){
+            const emailValue = emailInputRef.current.value;
+            const passValue = passInputRef.current.value;
+            SignUp(emailValue, passValue)
+            .then(res => {
+                console.log(res)
+                navigate('/search')
+            })
+            .catch(err => {
+                console.log(err.code)
+                if(err.code === 'auth/email-already-in-use'){
+                    setIsFormResponseError(true);
+                    setIsEmailInputValid(false)
+                    setIsEmailErrorShown(true)
+                    setFormResponseError('This Email already in use!')
+                }
+            })
+        }
+        
     }
     const validateEmail = () => {
         if(emailInputRef.current){
@@ -28,6 +53,10 @@ const SignUpForm = ({setFormToShow}:{setFormToShow:(string:string)=>void}) => {
                 setIsEmailInputValid(false);
                 setIsEmailErrorShown(true);
                }
+        }
+        if(formResponseError !== ''){
+            setFormResponseError('');
+            setIsFormResponseError(false);
         }
     }
     const validatePass = () => {
@@ -110,10 +139,18 @@ const SignUpForm = ({setFormToShow}:{setFormToShow:(string:string)=>void}) => {
                     ref={passRepeatInputRef}
                     onChange={validateRepeatPass}
                 />
-                <p className='SignUpForm__validation-error-message'>
+                <p className={`
+                    SignUpForm__validation-error-message
+                    ${isFormResponseError ? 'SignUpForm__validation-error-message--hidden' : ''}
+                    `}>
                     {isPassRepeatErrorShown ? 'Passwords do not match' : ''}
                 </p>
-                <p className='SignUpForm__response-error-message SignUpForm__response-error-message--hidden'>Login failed! Please,  check you password and email and try again</p>
+                <p className={`
+                    SignUpForm__response-error-message
+                    ${isFormResponseError ? '' : 'SignUpForm__response-error-message--hidden'}
+                    `}>
+                    {formResponseError}
+                </p>
                 <button 
                     className={`
                         SignUpForm__button
@@ -121,7 +158,7 @@ const SignUpForm = ({setFormToShow}:{setFormToShow:(string:string)=>void}) => {
                     `} 
                     type='button' 
                     disabled={isEmailInputValid&&isPassInputValid&&isPassRepeatInputValid ? false : true}
-                    onClick={signUp}
+                    onClick={onSignUpClick}
                 >
                     Create Account
                 </button>
