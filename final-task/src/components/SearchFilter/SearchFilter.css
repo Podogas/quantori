@@ -1,0 +1,11 @@
+.search-filter__button {
+    cursor: pointer;
+    width: 4rem;
+    height: 4rem;
+    padding: 0;
+    background-color: #D8E7FF;
+    background-image: url(./assessments/icon_options.svg);
+    background-size: 50%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
