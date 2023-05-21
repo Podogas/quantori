@@ -38,3 +38,6 @@
     background-color: #D8E7FF;
     cursor: pointer;
 }
+.search-bar__button:focus {
+    outline: 1px solid #3C86F4;
+}
