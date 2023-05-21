@@ -9,3 +9,18 @@
     background-position: center;
     background-repeat: no-repeat;
 }
+.search-filter__button--opened {
+    background-color: #3C86F4;
+    background-image: url(./assessments/icon_options--white.svg);
+}
+.search-filter__button--applied::after {
+    content: '';
+    display: block;
+    border-radius: 100%;
+    position: absolute;
+    top: -0.3rem;
+    right: -0.3rem;
+    width: 1.2rem;
+    height: 1.2rem;
+    background-color: #3C86F4;
+}
