@@ -1,18 +1,34 @@
 import './SearchBar.css';
 import { useState, useRef } from "react";
 import { SearchFilter } from "../SearchFilter/SearchFilter";
+import { getSearchResults, getNextChunk } from '../../api/uniprot';
+import { useAppDispatch, useAppSelector } from "../../store/store";
+import {resetProteinData, setProteinChunk} from '../../store/features/proteinsSlice';
 const SearchBar = () => {
     const [filter, setFilter] = useState<{}>({});
     const [query, setQuery] = useState('*')
     const inputRef = useRef<HTMLInputElement | null>(null);
 
+    const dispatch = useAppDispatch();
+
+    
+
     const search = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if(inputRef.current){
-            console.log('searching', inputRef.current.value)
+
+        dispatch(resetProteinData())
+            console.log('searching', query)
+            getSearchResults(query)
+            .then(res => {
+                if(res){
+                    dispatch(setProteinChunk(res))
+                }
+                
+            })
+            .catch(err => console.log(err, 'error while fetching in searchbar'))
         }
         
-    }
+    
 
     const onFocusOut = () => {
         if(inputRef.current){
