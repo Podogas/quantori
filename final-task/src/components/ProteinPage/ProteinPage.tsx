@@ -1,7 +1,7 @@
 import "./ProteinPage.css";
 import { useLocation } from 'react-router-dom';
 import {useEffect, useState} from 'react';
-import { getProtein } from "../../api/uniprot";
+import { getProtein, getProteinPublications } from "../../api/uniprot";
 import { Header } from "../Header/Header";
 import { ProteinDetails } from "../ProteinDetails/ProteinDetails";
 import { FeatureViewer } from "../FeatureViewer/FeatureViewer";
@@ -43,18 +43,65 @@ interface Protein {
     }
 }
 
+interface Citation {
+    id: string;
+    citationType: string;
+    authors: string[];
+    citationCrossReferences: { database: string; id: string }[];
+    title: string;
+    publicationDate: string;
+    journal: string;
+    firstPage: string;
+    lastPage: string;
+    volume: string;
+    completeAuthorList: boolean;
+    literatureAbstract: string;
+  }
+  
+  interface Source {
+    name: string;
+  }
+  
+  interface Reference {
+    source: Source;
+    citationId: string;
+    sourceCategories: string[];
+    referencePositions: string[];
+    referenceNumber: number;
+  }
+  
+  interface Statistics {
+    reviewedProteinCount: number;
+    unreviewedProteinCount: number;
+    computationallyMappedProteinCount: number;
+    communityMappedProteinCount: number;
+  }
+  
+  interface ProteinPublication {
+    citation: Citation;
+    references: Reference[];
+    statistics: Statistics;
+  }
+
 const ProteinPage = () => {
     //REDO PATH AND ROUTING
     const location = useLocation();
     const path = location.pathname.slice(10);
     //
     const [protein, setProtein] = useState<Protein|null>(null);
+    const [proteinPublications, setProteinPublications] = useState<ProteinPublication[]|null>(null);
     const [selectedTab, setSelectedTab] = useState('details');
     useEffect(() => {
+        console.log(path)
         getProtein(path)
         .then(res => {
             console.log(res);
             setProtein(res)
+        })
+        getProteinPublications(path)
+        .then(res => {
+            console.log(res, "res");
+            setProteinPublications(res)
         })
     },[])
     if(protein){
@@ -67,7 +114,7 @@ const ProteinPage = () => {
                 
             }
             if(selectedTab === 'publications'){
-                return <ProteinPublications protein={protein}/>
+                return <ProteinPublications proteinPublications={proteinPublications}/>
             }
         }
         return(

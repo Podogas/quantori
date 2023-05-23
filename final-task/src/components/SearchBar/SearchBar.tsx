@@ -15,7 +15,8 @@ const SearchBar = () => {
 
     const search = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
+        
+        
         dispatch(resetProteinData())
             console.log('searching', query)
             getSearchResults(query)

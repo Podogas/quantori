@@ -40,7 +40,7 @@ const SearchResults = () => {
         const entryNames = data.uniProtkbId;
         const genes = data.genes.map((g) => g.geneName.value)
         const organism = data.organism.scientificName;
-        const subcellularLocations = data.comments.map(l => l.subcellularLocations.map(v => v.location.value))
+        const subcellularLocations = data.comments[0] ? data.comments[0].subcellularLocations.map(v => v.location.value):null
         const length = data.sequence.length
         return(
             <div className='search-results__table-row' key={data.uniProtkbId} >

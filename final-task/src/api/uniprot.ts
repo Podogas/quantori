@@ -87,4 +87,20 @@ const getProtein = (id:string) => {
     .then((res) => res);
 }
 
-export {getFacets, getSearchResults, getNextChunk, getProtein}
+const getProteinPublications = (id:string) => {
+  const url = `https://rest.uniprot.org/uniprotkb/${id}/publications`;
+    return fetch(url, {
+      method: "GET",
+      headers: httpHeader,
+    })
+    .then((res) => {
+      if (res.ok) {
+        return res.json();
+      } else {
+        // throw HttpErrorsHandler(res);
+        console.log('smth went wrong')
+      }
+    })
+    .then((res) => res.results);
+}
+export {getFacets, getSearchResults, getNextChunk, getProtein, getProteinPublications}
