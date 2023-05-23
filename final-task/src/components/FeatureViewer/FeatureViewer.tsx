@@ -1,12 +1,15 @@
 
- 
- const FeatureViewer = () => {
+ import "./FeatureViewer.css"
+ import {useEffect} from 'react';
+ import ReactDOM from "react-dom/client";
+ const FeatureViewer = ({entry}:{entry:string}) => {
+    
     return(
-        <>
-            <h1>Feature</h1>
-        </>
-        
+        <protvista-uniprot accession={entry} />
     )
+  
+    // window.customElements.define('protvista-uniprot', ProtvistaUniprot);
+    
  }
 
  export {FeatureViewer};

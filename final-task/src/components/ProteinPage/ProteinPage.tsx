@@ -63,7 +63,8 @@ const ProteinPage = () => {
                 return <ProteinDetails protein={protein}/>
             }
             if(selectedTab === 'feature-viewer'){
-                return <FeatureViewer />
+                return <FeatureViewer entry={protein.primaryAccession} />
+                
             }
             if(selectedTab === 'publications'){
                 return <ProteinPublications protein={protein}/>
