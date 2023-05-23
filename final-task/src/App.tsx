@@ -6,6 +6,7 @@ import { SearchPage } from './components/SearchPage/SearchPage';
 import { ProtectedRoute } from "./components/ProtectedRoute/ProtectedRoute";
 import {InitialPage} from './components/InitialPage/InitialPage';
 import { AuthPage } from './components/AuthPage/AuthPage';
+import { ProteinPage } from "./components/ProteinPage/ProteinPage";
 
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useAppDispatch, useAppSelector } from "./store/store";
@@ -61,6 +62,14 @@ const App = () => {
           element={
           <ProtectedRoute redirect='/auth' condition={user.isAuth}>
             <SearchPage/>
+          </ProtectedRoute>
+          }
+        />
+        <Route
+          path='/proteins/*'
+          element={
+          <ProtectedRoute redirect='/auth' condition={user.isAuth}>
+            <ProteinPage/>
           </ProtectedRoute>
           }
         />

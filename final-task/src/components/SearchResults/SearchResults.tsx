@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from '../../store/store';
 import { getNextChunk } from '../../api/uniprot';
 import { setProteinChunk} from '../../store/features/proteinsSlice';
 import {useEffect, useRef, useState, useMemo} from 'react';
+import { useNavigate } from 'react-router-dom';
 const SearchResults = () => {
     const proteins = useAppSelector((state) => state.proteins);
     interface Genes {
@@ -31,6 +32,8 @@ const SearchResults = () => {
 
 
     }
+    
+    const navigate = useNavigate();
     const getTableRow = (data:Protein, index:number) => {
         const number = index;
         const entry = data.primaryAccession;
@@ -40,10 +43,10 @@ const SearchResults = () => {
         const subcellularLocations = data.comments.map(l => l.subcellularLocations.map(v => v.location.value))
         const length = data.sequence.length
         return(
-            <div className='search-results__table-row' key={data.uniProtkbId}>
-                    <div className='table__cell table__cell__number'>{index}</div>
-                    <div className='table__cell table__cell__entry'>{data.primaryAccession}</div>
-                    <div className='table__cell table__cell__entry-names'>{data.uniProtkbId}</div>
+            <div className='search-results__table-row' key={data.uniProtkbId} >
+                    <div className='table__cell table__cell__number'>{number}</div>
+                    <div className='table__cell table__cell__entry' onClick={()=>{navigate(`/proteins/${entry}`)}}>{entry}</div>
+                    <div className='table__cell table__cell__entry-names'>{entryNames}</div>
                     <div className='table__cell table__cell__genes'>{genes}</div>
                     <div className='table__cell table__cell__organism'>
                         <span className='table__cell__organism-label'>{organism}</span>
@@ -66,6 +69,7 @@ const SearchResults = () => {
     
     const nextUrl = useAppSelector((state) => state.proteins.next);
     const newChunck = () => {
+        console.log('NEW CHUNCK')
         if(nextUrl){
             getNextChunk(nextUrl)
             .then(res => {
@@ -80,6 +84,7 @@ const SearchResults = () => {
     const ref2 = useRef(null);
     const [isIntersecting, setIsIntersecting] = useState(false);
     useEffect(()=>{
+        console.log('isIntersecting changed')
         if(isIntersecting){
             newChunck();
         }

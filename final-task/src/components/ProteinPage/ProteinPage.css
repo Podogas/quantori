@@ -1,0 +1,60 @@
+.protein{
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+.protein__title{
+   font-weight: 600;
+   font-size: 2.2rem;
+   line-height: 3rem;
+   color: #000000;
+   margin-top: 3rem;
+   margin-bottom: 1.2rem;
+}
+.protein__title-tag{
+    margin-left: 1.2rem;
+    font-weight: 400;
+    font-size: 1.4rem;
+    line-height: 1.9rem;
+    padding: 0.2rem 1.2rem;
+    color: #2B2B2B;
+    background-color: #D8E7FF;
+    border-radius: 1.2rem;
+}
+.protein__description{
+
+
+}
+.protein__description-title-paragraph{
+    color: #616161;
+    font-weight: 600;
+    font-size: 1.2rem;
+    line-height: 1.6rem;
+    margin: 0;
+    margin-bottom: 4px;
+}
+.protein__description-paragraph{
+    color: #2B2B2B;
+    font-weight: 400;
+    font-size: 1.2rem;
+    line-height: 1.6rem;
+    margin: 0;
+    margin-bottom: 0.7rem;
+}
+.protein__tabs{
+    margin-top: 0.6rem;
+    margin-bottom: 1rem;  
+}
+.protein__tabs-tab-btn{
+    background-color: transparent;
+    color: #9F9F9F;
+    font-size: 1.6rem;
+    font-weight: 600;
+    line-height: 1.9rem;
+
+}
+.protein__tabs-tab-btn--selected{
+    color: #3C86F4;
+    border-bottom: 2px solid #3C86F4;
+    border-radius: unset;
+} 
