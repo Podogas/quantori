@@ -1,7 +1,6 @@
 
  import "./FeatureViewer.css"
- import {useEffect} from 'react';
- import ReactDOM from "react-dom/client";
+ import '../../protvista-uniprot.d.ts';
  const FeatureViewer = ({entry}:{entry:string}) => {
     
     return(

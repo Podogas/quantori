@@ -49,6 +49,7 @@
     margin:0 1px;
     padding: 0 1.2rem;
     justify-content: space-between;
+    display: flex;
 } 
 .table__cell-header{
     background-color: #F5F5F5;
@@ -112,7 +113,7 @@
     line-height: 1.9rem;
 } 
 .table__cell__organism{
-    min-width: 16.4rem;
+    width: 16.4rem;
     color: #2B2B2B;
     font-size: 1.4rem;
     line-height: 1.9rem;

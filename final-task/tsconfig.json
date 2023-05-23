@@ -25,6 +25,6 @@
     },
     "allowSyntheticDefaultImports": true
   },
-  "include": ["src"],
+  "include": ["src", "protvista-uniprot.d.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
