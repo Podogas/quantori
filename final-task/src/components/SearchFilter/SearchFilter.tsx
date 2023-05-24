@@ -26,17 +26,23 @@ const SearchFilter = ({setFilter, filter ,query}:{setFilter:React.Dispatch<React
     const [proteinsWithOptions, setProteinsWithOptions] = useState<Option[]>([]);
     const [annotationScoreOptions, setAnnotationScoreOptions] = useState<Option[]>([]);
     // States that store filter options
-    const [selectedGeneName, setSelectedGeneName] = useState<string | undefined>(undefined);
-    const [selectedLengthFrom, setSelectedLengthFrom] = useState<string | undefined>(undefined);
-    const [selectedLengthTo, setSelectedLengthTo] = useState<string | undefined>(undefined);
-    const [selectedModelOrganism, setSelectedModelOrganism] = useState<string | undefined>(undefined);
-    const [selectedProteinsWith, setSelectedProteinsWith] = useState<string | undefined>(undefined);
-    const [selectedAnnotationScore, setSelectedAnnotationScore] = useState<string | undefined>(undefined);
+    const [selectedGeneName, setSelectedGeneName] = useState<string | undefined>(filter.gene);
+    const [selectedLengthFrom, setSelectedLengthFrom] = useState<string | undefined>(filter.lengthFrom);
+    const [selectedLengthTo, setSelectedLengthTo] = useState<string | undefined>(filter.lengthTo);
+    const [selectedModelOrganism, setSelectedModelOrganism] = useState<string | undefined>(filter.organism);
+    const [selectedProteinsWith, setSelectedProteinsWith] = useState<string | undefined>(filter.protetinsWith);
+    const [selectedAnnotationScore, setSelectedAnnotationScore] = useState<string | undefined>(filter.annotationScore);
 
     const geneNameInputRef = useRef<HTMLInputElement | null>(null);
     const lengthFromInputRef = useRef<HTMLInputElement | null>(null);
     const lengthToInputRef = useRef<HTMLInputElement | null>(null);
 // TEST ZONE
+        // setSelectedModelOrganism(filter.organism);
+        // setSelectedProteinsWith(filter.protetinsWith)
+        // setSelectedAnnotationScore(filter.annotationScore)
+        // setSelectedGeneName(filter.gene)
+        // setSelectedLengthFrom(filter.lengthFrom)
+        // setSelectedLengthTo(filter.lengthTo)
     useEffect(() => {
         getFacets(query)
         .then(res => {
@@ -52,42 +58,28 @@ const SearchFilter = ({setFilter, filter ,query}:{setFilter:React.Dispatch<React
     },[query])
 
     const onInputChange = (ref: React.RefObject<HTMLInputElement>) => {
+        console.log(selectedModelOrganism, selectedProteinsWith, selectedAnnotationScore, selectedGeneName, selectedLengthFrom, selectedLengthTo, 'onchangeInput');
         const name = ref.current?.name;
-        const value = ref.current?.value;
-        console.log(value)
-        if(value?.replace(/\s/g, '') !== ''){
-            if(name === 'gene'){
-                setSelectedGeneName(value);
-            }
-            if(name === 'length-from'){
-                setSelectedLengthFrom(value);
-            }
-            if(name === 'length-to'){
-                setSelectedLengthTo(value);
-            }
-        } else {
-            if(name === 'gene'){
-                setSelectedGeneName(undefined);
-            }
-            if(name === 'length-from'){
-                setSelectedLengthFrom(undefined);
-            }
-            if(name === 'length-to'){
-                setSelectedLengthTo(undefined);
-            }
+        const value = ref.current?.value.replace(/\s/g, '') !== '' ? ref.current?.value : undefined
+        if(name === 'gene'){
+            setSelectedGeneName(value);
         }
+        if(name === 'length-from'){
+            setSelectedLengthFrom(value);
+        }
+        if(name === 'length-to'){
+            setSelectedLengthTo(value);
+        }     
     }
-    const resetSelected = () => {
-        setSelectedGeneName(undefined);
-        setSelectedLengthFrom(undefined);
-        setSelectedLengthTo(undefined);
-        setSelectedModelOrganism(undefined);
-        setSelectedProteinsWith(undefined);
-        setSelectedAnnotationScore(undefined);
-    }
+   
     const onToggleFilters = () => {
+        setSelectedModelOrganism(filter.organism)
+        setSelectedProteinsWith(filter.protetinsWith)
+        setSelectedAnnotationScore(filter.annotationScore)
+        setSelectedGeneName(filter.gene)
+        setSelectedLengthFrom(filter.lengthFrom)
+        setSelectedLengthTo(filter.lengthTo)
         setIsFiltersOpened(!isFiltersOpened);
-        resetSelected();
     }
     const onClose = () => {
         const filterObj = {
@@ -98,10 +90,11 @@ const SearchFilter = ({setFilter, filter ,query}:{setFilter:React.Dispatch<React
             annotationScore: undefined,
             protetinsWith: undefined
           }
-        resetSelected();
+         
         setIsFiltersOpened(false);
         setIsFilterApplied(false);
         setIsButtonActive(false);
+        console.log(filterObj)
         setFilter(filterObj);
     }
     const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -114,6 +107,7 @@ const SearchFilter = ({setFilter, filter ,query}:{setFilter:React.Dispatch<React
             annotationScore: selectedAnnotationScore,
             protetinsWith: selectedProteinsWith
           }
+
         console.log(selectedModelOrganism, selectedProteinsWith, selectedAnnotationScore, selectedGeneName, selectedLengthFrom, selectedLengthTo);
         setIsFiltersOpened(false);
         setIsFilterApplied(true);
@@ -125,12 +119,22 @@ const SearchFilter = ({setFilter, filter ,query}:{setFilter:React.Dispatch<React
         console.log(selectedModelOrganism, selectedProteinsWith, selectedAnnotationScore, selectedGeneName, selectedLengthFrom, selectedLengthTo);
         if(selectedModelOrganism || selectedProteinsWith || selectedAnnotationScore || selectedGeneName || selectedLengthFrom || selectedLengthTo){
             setIsButtonActive(true);
-        } else {
+            if(selectedModelOrganism === filter.organism && selectedProteinsWith === filter.protetinsWith 
+                && selectedAnnotationScore === filter.annotationScore && selectedGeneName === filter.gene && selectedLengthFrom === filter.lengthFrom 
+                && selectedLengthTo === filter.lengthTo){
+                    console.log(selectedModelOrganism, filter.organism, 'wtf')
+                    setIsButtonActive(false);
+                }
+        }
+         
+        else {
             setIsButtonActive(false);
         }
-    },[selectedModelOrganism, selectedProteinsWith, selectedAnnotationScore, selectedGeneName, selectedLengthFrom, selectedLengthTo])
+        
+    },[selectedModelOrganism, selectedProteinsWith,selectedAnnotationScore,selectedGeneName,selectedLengthFrom,selectedLengthTo])
     
     if(isFiltersOpened){
+
         return(
             <>
             <button className='search-filter__button search-filter__button--opened' type="button" onClick={onToggleFilters}></button>
@@ -164,7 +168,7 @@ const SearchFilter = ({setFilter, filter ,query}:{setFilter:React.Dispatch<React
                     </div>
                     <div className="search-filter-btn__wrapper">    
                         <button className="search-filter-btn search-filter-cancel-btn" type="button" onClick={onClose}>Cancel</button>
-                        <button className={`search-filter-btn search-filter-apply-btn ${isButtonActive ? "":'search-filter-apply-btn--disabled'}`} type="submit">Apply filters</button>
+                        <button className={`search-filter-btn search-filter-apply-btn ${isButtonActive ? "":'search-filter-apply-btn--disabled'}`} type="submit" disabled={isButtonActive ? false : true}>Apply filters</button>
                     </div>    
                 </form>
             </div>

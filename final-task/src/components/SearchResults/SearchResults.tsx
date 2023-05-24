@@ -44,7 +44,15 @@ const SearchResults = () => {
         const entryNames = data.uniProtkbId;
         const genes = data.genes.map((g) => { return g.geneName ? g.geneName.value : g.orderedLocusNames.value} )
         const organism = data.organism.scientificName;
-        const subcellularLocations = data.comments[0] ? data.comments[0].subcellularLocations.map(v => v.location.value):null
+        const subcellularLocations = () => { 
+            if(data.comments){
+                if(data.comments[0]){
+                    if(data.comments[0].subcellularLocations){
+                        return data.comments[0].subcellularLocations.map(v => v.location.value)
+                    }
+                }
+            return null} 
+        }
         const length = data.sequence.length
         return(
             <div className='search-results__table-row' key={data.uniProtkbId} >
@@ -56,7 +64,7 @@ const SearchResults = () => {
                         <span className='table__cell__organism-label'>{organism}</span>
                     </div>
                     <div className='table__cell table__cell__subcellular'>
-                        <div className='table__cell__subcellular-overflow-box'>{subcellularLocations}</div>
+                        <div className='table__cell__subcellular-overflow-box'>{subcellularLocations()}</div>
                     </div>
                     <div className='table__cell table__cell__length'>{length}</div>
                 </div>
