@@ -7,6 +7,9 @@ import { useNavigate } from 'react-router-dom';
 const SearchResults = () => {
     const proteins = useAppSelector((state) => state.proteins);
     interface Genes {
+        orderedLocusNames: {
+            value: string
+        }
         geneName: {
             value: string
         }
@@ -35,10 +38,11 @@ const SearchResults = () => {
     
     const navigate = useNavigate();
     const getTableRow = (data:Protein, index:number) => {
-        const number = index;
+        console.log(data, index ,"GET TABLE ROW")
+        const number = index+1;
         const entry = data.primaryAccession;
         const entryNames = data.uniProtkbId;
-        const genes = data.genes.map((g) => g.geneName.value)
+        const genes = data.genes.map((g) => { return g.geneName ? g.geneName.value : g.orderedLocusNames.value} )
         const organism = data.organism.scientificName;
         const subcellularLocations = data.comments[0] ? data.comments[0].subcellularLocations.map(v => v.location.value):null
         const length = data.sequence.length
@@ -58,9 +62,7 @@ const SearchResults = () => {
                 </div>
         )
     }
-    useEffect(()=> {
-        console.log(proteins, 'PROTEINS')
-    },[ proteins])
+   
 
 
     ///
@@ -69,7 +71,6 @@ const SearchResults = () => {
     
     const nextUrl = useAppSelector((state) => state.proteins.next);
     const newChunck = () => {
-        console.log('NEW CHUNCK')
         if(nextUrl){
             getNextChunk(nextUrl)
             .then(res => {
@@ -77,14 +78,12 @@ const SearchResults = () => {
                 dispatch(setProteinChunk(res))
             }
         })
-        console.log(nextUrl)
     }
 }
     ///
     const ref2 = useRef(null);
     const [isIntersecting, setIsIntersecting] = useState(false);
     useEffect(()=>{
-        console.log('isIntersecting changed')
         if(isIntersecting){
             newChunck();
         }
@@ -98,7 +97,6 @@ const SearchResults = () => {
           [],
         );
     useEffect(() => {
-        console.log(ref2,'REF 2 CHANGED')
         if(ref2.current){
                 observer.observe(ref2.current);
             }
@@ -111,7 +109,6 @@ const SearchResults = () => {
       
       ///
 if(proteins.proteins.length !== 0){
-    console.log(proteins)
     return (
         <section className='search-results'>
             <h3 className='search-results__quantity'>{`${proteins.totalResultsCount} Search Results ${proteins.query !== '' ? `for ${proteins.query}` : ''}`}</h3>

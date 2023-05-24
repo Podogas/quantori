@@ -11,8 +11,9 @@ const formatNextLink = (str:string | null) => {
     }
     return null;
 }
-const getSearchResults = (query: string) => {
-    const url = `${initialUrl}&query=${query}`;
+const getSearchResults = (query: string, filters:string) => {
+    const url = `${initialUrl}&query=(${query})${filters}`;
+    console.log(url)
     return fetch(url, {
       method: "GET",
       headers: httpHeader,
