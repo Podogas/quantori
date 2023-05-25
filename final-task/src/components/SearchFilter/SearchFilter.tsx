@@ -44,7 +44,9 @@ const SearchFilter = ({setFilter, filter ,query}:{setFilter:React.Dispatch<React
         // setSelectedLengthFrom(filter.lengthFrom)
         // setSelectedLengthTo(filter.lengthTo)
     useEffect(() => {
-        getFacets(query)
+        const filters = 
+        `${filter.gene ? ` AND (gene:${filter.gene})` : ''}${filter.organism ? ` AND (model_organism:${filter.organism})` : ''}${filter.annotationScore ? ` AND (annotation_score:${filter.annotationScore})` : ''}${filter.lengthFrom && filter.lengthTo  ? ` AND length:%5B${filter.lengthFrom} TO ${filter.lengthTo}%5D` : ''}${filter.lengthFrom && !filter.lengthTo  ? `mass:%5B${filter.lengthFrom} TO *%5D` : ''}${!filter.lengthFrom && filter.lengthTo  ? ` AND length:%5B1 TO ${filter.lengthTo}%5D` : ''}`
+        getFacets(query, filters)
         .then(res => {
         console.log(query, res, 'trying to get facets');
         const modelOrganism = res.facets[0]
@@ -55,7 +57,7 @@ const SearchFilter = ({setFilter, filter ,query}:{setFilter:React.Dispatch<React
         setAnnotationScoreOptions(annotationScore.values);
     })
     .catch(err => console.warn(err))
-    },[query])
+    },[query, filter])
 
     const onInputChange = (ref: React.RefObject<HTMLInputElement>) => {
         console.log(selectedModelOrganism, selectedProteinsWith, selectedAnnotationScore, selectedGeneName, selectedLengthFrom, selectedLengthTo, 'onchangeInput');

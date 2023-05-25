@@ -2,10 +2,18 @@ import './SearchResults.css';
 import { useAppDispatch, useAppSelector } from '../../store/store';
 import { getNextChunk } from '../../api/uniprot';
 import { setProteinChunk} from '../../store/features/proteinsSlice';
-import {useEffect, useRef, useState, useMemo} from 'react';
+import {useEffect, useRef, useState, useMemo, useCallback} from 'react';
 import { useNavigate } from 'react-router-dom';
-const SearchResults = () => {
+const SearchResults = ({setSortingQuery}:{setSortingQuery:React.Dispatch<React.SetStateAction<string>>}) => {
     const proteins = useAppSelector((state) => state.proteins);
+    const accessionSortBtnRef = useRef<HTMLButtonElement | null>(null);
+    const idSortBtnRef = useRef<HTMLButtonElement | null>(null);
+    const geneSortBtnRef = useRef<HTMLButtonElement | null>(null);
+    const organismSortBtnRef = useRef<HTMLButtonElement | null>(null);
+    const lengthSortBtnRef = useRef<HTMLButtonElement | null>(null);
+    const [sortingBy, setSortingBy] = useState<HTMLButtonElement  | null>(null);
+    const [sortingType, setSortingType] = useState<string | undefined>(undefined);
+
     interface Genes {
         orderedLocusNames: {
             value: string
@@ -31,20 +39,26 @@ const SearchResults = () => {
             length: string
         },
         genes: Genes[],
-
-
-
     }
     
     const navigate = useNavigate();
     const getTableRow = (data:Protein, index:number) => {
-        console.log(data, index ,"GET TABLE ROW")
+        // console.log(data, index ,"GET TABLE ROW")
         const number = index+1;
         const entry = data.primaryAccession;
         const entryNames = data.uniProtkbId;
-        const genes = data.genes.map((g) => { return g.geneName ? g.geneName.value : g.orderedLocusNames.value} )
+        const genes = () => {
+            if(data.genes){
+              return  data.genes.map((g) => { 
+                if(g.geneName) {
+                    return g.geneName.value;
+                } return ''})
+            }
+        } 
+        
         const organism = data.organism.scientificName;
         const subcellularLocations = () => { 
+            console.log(data.comments)
             if(data.comments){
                 if(data.comments[0]){
                     if(data.comments[0].subcellularLocations){
@@ -59,7 +73,7 @@ const SearchResults = () => {
                     <div className='table__cell table__cell__number'>{number}</div>
                     <div className='table__cell table__cell__entry' onClick={()=>{navigate(`/proteins/${entry}`)}}>{entry}</div>
                     <div className='table__cell table__cell__entry-names'>{entryNames}</div>
-                    <div className='table__cell table__cell__genes'>{genes}</div>
+                    <div className='table__cell table__cell__genes'>{genes()}</div>
                     <div className='table__cell table__cell__organism'>
                         <span className='table__cell__organism-label'>{organism}</span>
                     </div>
@@ -70,8 +84,40 @@ const SearchResults = () => {
                 </div>
         )
     }
-   
-
+    const toggleSortingType = () => {
+            if(sortingType){
+                console.log(sortingType, 'here')
+                sortingType === 'asc'?
+                setSortingType('desc'):
+                setSortingType(undefined);
+            } else {
+                setSortingType('asc');
+            }
+    }
+    const sortRsults = (ref:React.RefObject<HTMLButtonElement>) => {
+        const btn = ref.current;
+        if(btn){
+            if(btn !== sortingBy){
+                console.log(sortingBy, btn, 'BNT != to SortingBy');
+                setSortingBy(btn)
+                setSortingType('asc');
+            } else {
+                toggleSortingType();
+            }
+            
+            }       
+    }    
+    
+    useEffect(()=> {
+        if(sortingType){
+            console.log(sortingType, sortingBy?.name, 'fetch for sorting')
+            const sortingQueryStr = `&sort=${sortingBy?.name} ${sortingType}`
+            setSortingQuery(sortingQueryStr)
+        } else {
+            console.log('fetch without sorting')
+            setSortingQuery('');
+        }
+    }, [sortingType, sortingBy])
 
     ///
     const dispatch = useAppDispatch();
@@ -125,26 +171,76 @@ if(proteins.proteins.length !== 0){
                     <div className='table__cell table__cell__number table__cell-header'>#</div>
                     <div className='table__cell table__cell__entry table__cell-header'>
                         <span className="table__cell-header-text">Entry</span>
-                        <button className='table__cell-header-sort-btn' type='button'></button>
+                        <button 
+                            className={
+                                `table__cell-header-sort-btn ${sortingBy?.name === 'accession' ?
+                                 `${sortingType ? `table__cell-header-sort-btn--${sortingType}-sorting` : ''}` : ''}`
+                                }
+                            type='button' 
+                            name='accession' 
+                            ref={accessionSortBtnRef} 
+                            onClick={()=>{sortRsults(accessionSortBtnRef)}}
+                        >    
+                        </button>
                     </div>
                     <div className='table__cell table__cell__entry-names table__cell-header'>
                         <span className="table__cell-header-text">Entry Names</span>
-                        <button className='table__cell-header-sort-btn' type='button'></button>
+                        <button 
+                            className={
+                                `table__cell-header-sort-btn ${sortingBy?.name === 'id' ?
+                                 `${sortingType ? `table__cell-header-sort-btn--${sortingType}-sorting` : ''}` : ''}`
+                                }
+                            type='button' 
+                            name='id' 
+                            ref={idSortBtnRef} 
+                            onClick={()=>{sortRsults(idSortBtnRef)}}
+                        >    
+                        </button>
                     </div>
                     <div className='table__cell table__cell__genes table__cell-header'>
                         <span className="table__cell-header-text">Genes</span>
-                        <button className='table__cell-header-sort-btn' type='button'></button>
+                        <button 
+                            className={
+                                `table__cell-header-sort-btn ${sortingBy?.name === 'gene' ?
+                                 `${sortingType ? `table__cell-header-sort-btn--${sortingType}-sorting` : ''}` : ''}`
+                                }
+                            type='button' 
+                            name='gene' 
+                            ref={geneSortBtnRef} 
+                            onClick={()=>{sortRsults(geneSortBtnRef)}}
+                        >
+                        </button>
                     </div>
                     <div className='table__cell table__cell__organism table__cell-header'>
                         <span className="table__cell-header-text">Organism</span>
-                        <button className='table__cell-header-sort-btn' type='button'></button>
+                        <button 
+                            className={
+                                `table__cell-header-sort-btn ${sortingBy?.name === 'organism_name' ?
+                                 `${sortingType ? `table__cell-header-sort-btn--${sortingType}-sorting` : ''}` : ''}`
+                                }
+                            type='button' 
+                            name='organism_name' 
+                            ref={organismSortBtnRef} 
+                            onClick={()=>{sortRsults(organismSortBtnRef)}}
+                        >
+                        </button>
                     </div>
                     <div className='table__cell table__cell__subcellular table__cell-header'>
                         <span className="table__cell-header-text">Subcellular Location</span>
                     </div>
                     <div className='table__cell table__cell__length table__cell-header'>
                         <span className="table__cell-header-text">Length</span>
-                        <button className='table__cell-header-sort-btn' type='button'></button>
+                        <button 
+                            className={
+                                `table__cell-header-sort-btn ${sortingBy?.name === 'length' ?
+                                 `${sortingType ? `table__cell-header-sort-btn--${sortingType}-sorting` : ''}` : ''}`
+                                }
+                            type='button' 
+                            name='length' 
+                            ref={lengthSortBtnRef} 
+                            onClick={()=>{sortRsults(lengthSortBtnRef)}}
+                        >
+                        </button>
                     </div>
                 </div>
                 {proteins.proteins.map((el, i) => getTableRow(el, i))}

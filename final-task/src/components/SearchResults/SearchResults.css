@@ -162,3 +162,11 @@
     line-height: 1.9rem;
     font-weight: 400;
 }
+
+.table__cell-header-sort-btn--asc-sorting{
+    background-image: url(./assessments/sort-icon-active.svg);
+}
+.table__cell-header-sort-btn--desc-sorting{
+    background-image: url(./assessments/sort-icon-active.svg);
+    transform: rotate(180deg);
+}

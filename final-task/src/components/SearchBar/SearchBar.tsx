@@ -13,7 +13,17 @@ interface FiltrObjT  {
     annotationScore: undefined | string,
     protetinsWith: undefined | string
   }
-const SearchBar = () => {
+const SearchBar = ({
+    setFilterQuery, 
+    setQuery,
+    query
+    }:{
+    setFilterQuery:React.Dispatch<React.SetStateAction<string>>,
+    setQuery:React.Dispatch<React.SetStateAction<string>>,
+    query:string
+    }
+    ) => {
+
     const [filter, setFilter] = useState<FiltrObjT>({
         gene: undefined,
         organism: undefined,
@@ -22,14 +32,12 @@ const SearchBar = () => {
         annotationScore: undefined,
         protetinsWith: undefined
       });
-    const [query, setQuery] = useState('*')
+    
     const inputRef = useRef<HTMLInputElement | null>(null);
 
-    const dispatch = useAppDispatch();
+    // const dispatch = useAppDispatch();
     /// TEST ZONE
-    useEffect(()=>{
-        console.log(filter)
-    },[filter])
+    
     
     const checkAndSetQuery = () => {
         if(inputRef.current){
@@ -49,20 +57,21 @@ const SearchBar = () => {
     useEffect(()=>{
         const filters = 
         `${filter.gene ? ` AND (gene:${filter.gene})` : ''}${filter.organism ? ` AND (model_organism:${filter.organism})` : ''}${filter.annotationScore ? ` AND (annotation_score:${filter.annotationScore})` : ''}${filter.lengthFrom && filter.lengthTo  ? ` AND length:%5B${filter.lengthFrom} TO ${filter.lengthTo}%5D` : ''}${filter.lengthFrom && !filter.lengthTo  ? `mass:%5B${filter.lengthFrom} TO *%5D` : ''}${!filter.lengthFrom && filter.lengthTo  ? ` AND length:%5B1 TO ${filter.lengthTo}%5D` : ''}`
-     //%5D url should be encoded   
+        setFilterQuery(filters);
+        //%5D url should be encoded   
           
-        console.log('searching', query)
-        getSearchResults(query, filters)
-        .then(res => {
-            console.warn(res)
-            if(res){
-                dispatch(resetProteinData())
-                console.log(res, 'fetch result')
-                dispatch(setProteinChunk(res))
-            }            
-        })
-        .catch(err => console.log(err, 'error while fetching in searchbar'))
-    },[query, filter])
+        // console.log('searching', query)
+        // getSearchResults(query, filters)
+        // .then(res => {
+        //     console.warn(res)
+        //     if(res){
+        //         dispatch(resetProteinData())
+        //         console.log(res, 'fetch result')
+        //         dispatch(setProteinChunk(res))
+        //     }            
+        // })
+        // .catch(err => console.log(err, 'error while fetching in searchbar'))
+    },[ filter])
         
     
 

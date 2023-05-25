@@ -136,8 +136,14 @@ const ProteinPage = () => {
                 <div className="protein__description">
                     <p className="protein__description-title-paragraph">Protein</p>
                     <p className="protein__description-paragraph">{protein.proteinDescription.recommendedName ? protein.proteinDescription.recommendedName.fullName.value : protein.proteinDescription.submissionNames[0].fullName.value}</p>
-                    <p className="protein__description-title-paragraph">Gene</p>
-                    <p className="protein__description-paragraph">{protein.genes.map(g => g.geneName.value)}</p>
+                    {protein.genes ?
+                    <>
+                        <p className="protein__description-title-paragraph">Gene</p>
+                        <p className="protein__description-paragraph">{protein.genes.map(g => g.geneName.value)}</p>
+                    </>  
+                        : null
+                    }
+                    
                 </div>
                 <nav className="protein__tabs">
                     <button className={

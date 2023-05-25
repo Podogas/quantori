@@ -11,8 +11,8 @@ const formatNextLink = (str:string | null) => {
     }
     return null;
 }
-const getSearchResults = (query: string, filters:string) => {
-    const url = `${initialUrl}&query=(${query})${filters}`;
+const getSearchResults = (query: string, filters:string, sortingQuery:string) => {
+    const url = `${initialUrl}&query=(${query})${filters}${sortingQuery}`;
     console.log(url)
     return fetch(url, {
       method: "GET",
@@ -54,8 +54,8 @@ const getNextChunk = (url:string) => {
     }); 
 }  
 
-const getFacets = (query:string) => {
-    const url = `https://rest.uniprot.org/uniprotkb/search?facets=model_organism,proteins_with,annotation_score&query=(${query})`;
+const getFacets = (query:string, filters:string) => {
+    const url = `https://rest.uniprot.org/uniprotkb/search?facets=model_organism,proteins_with,annotation_score&query=(${query})${filters}`;
     return fetch(url, {
         method: "GET",
         headers: httpHeader,
