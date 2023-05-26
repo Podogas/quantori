@@ -10,7 +10,7 @@ interface FiltrObjT  {
     annotationScore: undefined | string,
     protetinsWith: undefined | string
   }
-const SearchFilter = ({setFilter, filter ,query}:{setFilter:React.Dispatch<React.SetStateAction<FiltrObjT>>, filter:FiltrObjT,query:string}) => {
+const SearchFilter = ({setFilter, filter ,query}:{setFilter:React.Dispatch<React.SetStateAction<FiltrObjT>>, filter:FiltrObjT,query:string | undefined}) => {
     
     interface Option {
         count: number;
@@ -46,9 +46,9 @@ const SearchFilter = ({setFilter, filter ,query}:{setFilter:React.Dispatch<React
     useEffect(() => {
         const filters = 
         `${filter.gene ? ` AND (gene:${filter.gene})` : ''}${filter.organism ? ` AND (model_organism:${filter.organism})` : ''}${filter.annotationScore ? ` AND (annotation_score:${filter.annotationScore})` : ''}${filter.lengthFrom && filter.lengthTo  ? ` AND length:%5B${filter.lengthFrom} TO ${filter.lengthTo}%5D` : ''}${filter.lengthFrom && !filter.lengthTo  ? `mass:%5B${filter.lengthFrom} TO *%5D` : ''}${!filter.lengthFrom && filter.lengthTo  ? ` AND length:%5B1 TO ${filter.lengthTo}%5D` : ''}`
-        getFacets(query, filters)
+        if(query){
+            getFacets(query, filters)
         .then(res => {
-        console.log(query, res, 'trying to get facets');
         const modelOrganism = res.facets[0]
         const proteinsWith = res.facets[1]
         const annotationScore = res.facets[2]
@@ -57,10 +57,12 @@ const SearchFilter = ({setFilter, filter ,query}:{setFilter:React.Dispatch<React
         setAnnotationScoreOptions(annotationScore.values);
     })
     .catch(err => console.warn(err))
+        }
+        
     },[query, filter])
 
     const onInputChange = (ref: React.RefObject<HTMLInputElement>) => {
-        console.log(selectedModelOrganism, selectedProteinsWith, selectedAnnotationScore, selectedGeneName, selectedLengthFrom, selectedLengthTo, 'onchangeInput');
+        
         const name = ref.current?.name;
         const value = ref.current?.value.replace(/\s/g, '') !== '' ? ref.current?.value : undefined
         if(name === 'gene'){
@@ -96,7 +98,6 @@ const SearchFilter = ({setFilter, filter ,query}:{setFilter:React.Dispatch<React
         setIsFiltersOpened(false);
         setIsFilterApplied(false);
         setIsButtonActive(false);
-        console.log(filterObj)
         setFilter(filterObj);
     }
     const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -110,7 +111,6 @@ const SearchFilter = ({setFilter, filter ,query}:{setFilter:React.Dispatch<React
             protetinsWith: selectedProteinsWith
           }
 
-        console.log(selectedModelOrganism, selectedProteinsWith, selectedAnnotationScore, selectedGeneName, selectedLengthFrom, selectedLengthTo);
         setIsFiltersOpened(false);
         setIsFilterApplied(true);
         setIsButtonActive(false);
@@ -118,13 +118,11 @@ const SearchFilter = ({setFilter, filter ,query}:{setFilter:React.Dispatch<React
 
     }
     useEffect(()=>{ 
-        console.log(selectedModelOrganism, selectedProteinsWith, selectedAnnotationScore, selectedGeneName, selectedLengthFrom, selectedLengthTo);
         if(selectedModelOrganism || selectedProteinsWith || selectedAnnotationScore || selectedGeneName || selectedLengthFrom || selectedLengthTo){
             setIsButtonActive(true);
             if(selectedModelOrganism === filter.organism && selectedProteinsWith === filter.protetinsWith 
                 && selectedAnnotationScore === filter.annotationScore && selectedGeneName === filter.gene && selectedLengthFrom === filter.lengthFrom 
                 && selectedLengthTo === filter.lengthTo){
-                    console.log(selectedModelOrganism, filter.organism, 'wtf')
                     setIsButtonActive(false);
                 }
         }

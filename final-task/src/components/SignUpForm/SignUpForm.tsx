@@ -29,11 +29,9 @@ const SignUpForm = ({setFormToShow}:{setFormToShow:(string:string)=>void}) => {
             const passValue = passInputRef.current.value;
             SignUp(emailValue, passValue)
             .then(res => {
-                console.log(res)
                 navigate('/search')
             })
             .catch(err => {
-                console.log(err.code)
                 if(err.code === 'auth/email-already-in-use'){
                     setIsFormResponseError(true);
                     setIsEmailInputValid(false)

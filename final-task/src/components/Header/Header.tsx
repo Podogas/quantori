@@ -9,9 +9,7 @@ const Header = () => {
 const email = useAppSelector((state) => state.user.email);
 const navigate = useNavigate();
 const onLogoutClick = () => {
-    console.log('123');
     Logout().then(() => {
-        console.log('signedout')
         navigate('/')
       }).catch((error) => {
         console.log(error, 'ERROR WHILE SIGNOUT')

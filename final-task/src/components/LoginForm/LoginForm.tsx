@@ -22,7 +22,6 @@ const LoginForm = ({setFormToShow}:{setFormToShow:(string:string)=>void}) => {
     // TODO mb create functions that returns related error messages. Refactor ugly ternary operators in jsx.
     const onLoginSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log('SIGN-UP')
         if(emailInputRef.current && passInputRef.current){
             const emailValue = emailInputRef.current.value;
             const passValue = passInputRef.current.value;

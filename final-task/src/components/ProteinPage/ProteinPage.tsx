@@ -100,15 +100,12 @@ const ProteinPage = () => {
     const [proteinPublications, setProteinPublications] = useState<ProteinPublication[]|null>(null);
     const [selectedTab, setSelectedTab] = useState('details');
     useEffect(() => {
-        console.log(path)
         getProtein(path)
         .then(res => {
-            console.log(res);
             setProtein(res)
         })
         getProteinPublications(path)
         .then(res => {
-            console.log(res, "res");
             setProteinPublications(res)
         })
     },[])
@@ -125,7 +122,7 @@ const ProteinPage = () => {
                 return <ProteinPublications proteinPublications={proteinPublications}/>
             }
         }
-        console.log(protein.proteinDescription, 'DESC')
+        
         return(
             <>
             <Header/>

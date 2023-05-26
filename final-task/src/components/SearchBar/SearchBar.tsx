@@ -1,9 +1,6 @@
 import './SearchBar.css';
 import { useState, useRef, useEffect } from "react";
 import { SearchFilter } from "../SearchFilter/SearchFilter";
-import { getSearchResults, getNextChunk } from '../../api/uniprot';
-import { useAppDispatch, useAppSelector } from "../../store/store";
-import {resetProteinData, setProteinChunk} from '../../store/features/proteinsSlice';
 
 interface FiltrObjT  {
     gene: undefined | string,
@@ -19,8 +16,8 @@ const SearchBar = ({
     query
     }:{
     setFilterQuery:React.Dispatch<React.SetStateAction<string>>,
-    setQuery:React.Dispatch<React.SetStateAction<string>>,
-    query:string
+    setQuery:React.Dispatch<React.SetStateAction<string | undefined>>,
+    query:string|undefined
     }
     ) => {
 
@@ -58,19 +55,7 @@ const SearchBar = ({
         const filters = 
         `${filter.gene ? ` AND (gene:${filter.gene})` : ''}${filter.organism ? ` AND (model_organism:${filter.organism})` : ''}${filter.annotationScore ? ` AND (annotation_score:${filter.annotationScore})` : ''}${filter.lengthFrom && filter.lengthTo  ? ` AND length:%5B${filter.lengthFrom} TO ${filter.lengthTo}%5D` : ''}${filter.lengthFrom && !filter.lengthTo  ? `mass:%5B${filter.lengthFrom} TO *%5D` : ''}${!filter.lengthFrom && filter.lengthTo  ? ` AND length:%5B1 TO ${filter.lengthTo}%5D` : ''}`
         setFilterQuery(filters);
-        //%5D url should be encoded   
-          
-        // console.log('searching', query)
-        // getSearchResults(query, filters)
-        // .then(res => {
-        //     console.warn(res)
-        //     if(res){
-        //         dispatch(resetProteinData())
-        //         console.log(res, 'fetch result')
-        //         dispatch(setProteinChunk(res))
-        //     }            
-        // })
-        // .catch(err => console.log(err, 'error while fetching in searchbar'))
+        
     },[ filter])
         
     

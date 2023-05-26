@@ -40,9 +40,7 @@ interface Citation {
     statistics: Statistics;
   }
 const ProteinPublications = ({proteinPublications}:{proteinPublications:ProteinPublication[]|null }) => {
-    console.log(proteinPublications,'publications')
     const renderCards =(publication:ProteinPublication) => {
-        console.log(publication)
         const title = publication.citation.title;
         const authors = publication.citation.authors ?  publication.citation.authors.join(', ') : undefined;
         const categories = publication.references[0].sourceCategories ? publication.references[0].sourceCategories.join(', ') : undefined;

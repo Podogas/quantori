@@ -11,9 +11,9 @@ const formatNextLink = (str:string | null) => {
     }
     return null;
 }
-const getSearchResults = (query: string, filters:string, sortingQuery:string) => {
+const getSearchResults = (query: string | undefined, filters:string, sortingQuery:string) => {
+  console.log('getSearchResults')
     const url = `${initialUrl}&query=(${query})${filters}${sortingQuery}`;
-    console.log(url)
     return fetch(url, {
       method: "GET",
       headers: httpHeader,
@@ -25,7 +25,7 @@ const getSearchResults = (query: string, filters:string, sortingQuery:string) =>
           const totalResultsCount = res.headers.get("X-Total-Results");
           return resultPromise.then((result) => {
             const proteins:[] = result.results;
-            return { proteins, next, totalResultsCount, query };
+            return { proteins, next, totalResultsCount, query, url };
           });
         } else {
           console.log(res, "something went wrong");
@@ -33,6 +33,7 @@ const getSearchResults = (query: string, filters:string, sortingQuery:string) =>
       });
   };
 const getNextChunk = (url:string) => {
+  console.log('getNextChunk')
     return fetch(url, {
         method: "GET",
         headers: httpHeader,
@@ -45,7 +46,7 @@ const getNextChunk = (url:string) => {
             const totalResultsCount = res.headers.get("X-Total-Results");
             return resultPromise.then((result) => {
               const proteins:[] = result.results;
-              return { proteins, next, totalResultsCount, query };
+              return { proteins, next, totalResultsCount, query, url };
             });
           } else {
             console.log(res, "something went wrong");
@@ -55,6 +56,7 @@ const getNextChunk = (url:string) => {
 }  
 
 const getFacets = (query:string, filters:string) => {
+  console.log('getSearchFacets')
     const url = `https://rest.uniprot.org/uniprotkb/search?facets=model_organism,proteins_with,annotation_score&query=(${query})${filters}`;
     return fetch(url, {
         method: "GET",
@@ -72,6 +74,7 @@ const getFacets = (query:string, filters:string) => {
 }
 
 const getProtein = (id:string) => {
+  console.log('getSearchProtein')
   const url = 'https://rest.uniprot.org/uniprotkb/';
     return fetch(url+id, {
       method: "GET",
