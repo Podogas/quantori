@@ -38,6 +38,7 @@ import InfiniteLoader from "react-window-infinite-loader";
 import { FixedSizeList as List } from "react-window";
 import { CSSProperties } from "react";
 import { useNavigate } from "react-router-dom";
+import AutoSizer from "react-virtualized-auto-sizer";
 import "./SearchResults.css";
 
 const SearchResultsTable = ({
@@ -145,6 +146,8 @@ const SearchResultsTable = ({
 
   };
   return (
+    <AutoSizer>
+  {({ height, width }) => (
     <InfiniteLoader
       isItemLoaded={isItemLoaded}
       itemCount={itemCount}
@@ -152,10 +155,10 @@ const SearchResultsTable = ({
     >
       {({ onItemsRendered, ref }) => (
         <List
-          height={300}
+          height={height ? 528 : 0}
           itemCount={itemCount}
-          itemSize={25}
-          width={1024}
+          itemSize={height ? height/11 : 48}
+          width={width || 0}
           onItemsRendered={onItemsRendered}
           ref={ref}
         >
@@ -163,6 +166,8 @@ const SearchResultsTable = ({
         </List>
       )}
     </InfiniteLoader>
+     )}
+     </AutoSizer>
   );
 };
 export { SearchResultsTable };

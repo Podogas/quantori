@@ -270,7 +270,12 @@ const SearchResults = ({
             />
           </div>
         ) : (
-          <h1>No results</h1>
+            <div className="empty-search-results">
+            <p className="empty-search-results__description">No search results for your request</p>
+            <p className="empty-search-results__description">
+              Please change try different keywords, or clear filters.
+            </p>
+          </div>
         )}
       </section>
     );
