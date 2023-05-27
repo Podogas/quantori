@@ -77,6 +77,7 @@ const SearchFilter = ({setFilter, filter ,query}:{setFilter:React.Dispatch<React
     }
    
     const onToggleFilters = () => {
+        console.log(123)
         setSelectedModelOrganism(filter.organism)
         setSelectedProteinsWith(filter.protetinsWith)
         setSelectedAnnotationScore(filter.annotationScore)
@@ -133,7 +134,7 @@ const SearchFilter = ({setFilter, filter ,query}:{setFilter:React.Dispatch<React
         
     },[selectedModelOrganism, selectedProteinsWith,selectedAnnotationScore,selectedGeneName,selectedLengthFrom,selectedLengthTo])
     
-    if(isFiltersOpened){
+    if(isFiltersOpened && query){
 
         return(
             <>
@@ -177,7 +178,7 @@ const SearchFilter = ({setFilter, filter ,query}:{setFilter:React.Dispatch<React
         )
     } else {
         return (
-            <button className={`search-filter__button ${isFilterApplied ? 'search-filter__button--applied': ''}`} type="button" onClick={onToggleFilters}></button>
+            <button className={`search-filter__button ${isFilterApplied ? 'search-filter__button--applied': ''} `} type="button" onClick={onToggleFilters} disabled={query ? false : true}></button>
         )
     }
     

@@ -56,11 +56,8 @@ const SearchPage = () => {
 
   useEffect(() => {
     if (query) {
-      console.log(query, "query");
       const searchUrl = `${baseSearchUrl}&query=(${query})${filterQuery}${sortingQuery}`;
-      if (query) {
         setInitialSearchUrl(searchUrl);
-      }
     }
   }, [query, filterQuery, sortingQuery]);
 
