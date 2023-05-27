@@ -11,15 +11,36 @@ const formatNextLink = (str:string | null) => {
     }
     return null;
 }
-const getSearchResults = (query: string | undefined, filters:string, sortingQuery:string) => {
+const getSearchResults = (url:string, query:string) => {
   console.log('getSearchResults')
-    const url = `${initialUrl}&query=(${query})${filters}${sortingQuery}`;
     return fetch(url, {
       method: "GET",
       headers: httpHeader,
     })
       .then((res) => {
         if (res.ok) {
+          const resultPromise = res.json();
+          const next = formatNextLink(res.headers.get("link"));
+          const totalResultsCount = Number(res.headers.get("X-Total-Results"));
+          return resultPromise.then((result) => {
+            const proteins:[] = result.results;
+            return { proteins, next, totalResultsCount, query };
+          });
+        } else {
+          console.log(res, "something went wrong");
+        }
+      });
+  };
+const getChunk = (url:string) => {
+  console.log('getNextChunk', url)
+
+    return fetch(url, {
+      method: "GET",
+      headers: httpHeader,
+    })
+      .then((res) => {
+        if (res.ok) {
+          const query = undefined;
           const resultPromise = res.json();
           const next = formatNextLink(res.headers.get("link"));
           const totalResultsCount = res.headers.get("X-Total-Results");
@@ -30,30 +51,10 @@ const getSearchResults = (query: string | undefined, filters:string, sortingQuer
         } else {
           console.log(res, "something went wrong");
         }
-      });
-  };
-const getNextChunk = (url:string) => {
-  console.log('getNextChunk')
-    return fetch(url, {
-        method: "GET",
-        headers: httpHeader,
-      })
-        .then((res) => {
-          if (res.ok) {
-            const query = undefined;
-            const resultPromise = res.json();
-            const next = formatNextLink(res.headers.get("link"));
-            const totalResultsCount = res.headers.get("X-Total-Results");
-            return resultPromise.then((result) => {
-              const proteins:[] = result.results;
-              return { proteins, next, totalResultsCount, query, url };
-            });
-          } else {
-            console.log(res, "something went wrong");
-          }
-          
-    }); 
-}  
+        
+  })
+  }
+ 
 
 const getFacets = (query:string, filters:string) => {
   console.log('getSearchFacets')
@@ -107,4 +108,4 @@ const getProteinPublications = (id:string) => {
     })
     .then((res) => res.results);
 }
-export {getFacets, getSearchResults, getNextChunk, getProtein, getProteinPublications}
+export {getFacets, getSearchResults, getChunk, getProtein, getProteinPublications}
