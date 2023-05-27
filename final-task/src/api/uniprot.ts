@@ -11,6 +11,7 @@ const formatNextLink = (str:string | null) => {
     }
     return null;
 }
+// basically the same fn as getChunk the only thing is a query. so mb make getChunk 
 const getSearchResults = (url:string, query:string) => {
   console.log('getSearchResults')
     return fetch(url, {
@@ -54,8 +55,6 @@ const getChunk = (url:string) => {
         
   })
   }
- 
-
 const getFacets = (query:string, filters:string) => {
   console.log('getSearchFacets')
     const url = `https://rest.uniprot.org/uniprotkb/search?facets=model_organism,proteins_with,annotation_score&query=(${query})${filters}`;

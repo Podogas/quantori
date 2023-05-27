@@ -91,6 +91,7 @@ const SearchResults = ({
   };
 
   useEffect(() => {
+    //is it really needed?
     setRefreshTable(refreshTable + 1);
     if (initialSearchUrl && query) {
       console.log("url changed", initialSearchUrl);
@@ -141,6 +142,7 @@ const SearchResults = ({
     } else {
       setSortingQuery("");
     }
+    //mb add return just for folowing some conventions)
   }, [sortingType, sortingBy]);
 
   if (initialSearchUrl) {
