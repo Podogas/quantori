@@ -1,8 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { auth } from "../../utils/FirebaseApp";
 const initialState = {
-    isAuth: false,
-    email: ''
+    email: '',
+    uid: '',
+    isLoggedIn: false
 };
 
 const userSlice = createSlice({
@@ -10,9 +11,18 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, action) => {
-      const { email, isAuth } = action.payload;
-      state.isAuth = isAuth;
-      state.email = email;
+      console.log(action.payload, 'slice')
+      if(action.payload){
+        const { email, uid } = action.payload;
+        state.email = email;
+        state.uid = uid;
+        state.isLoggedIn = true
+      } else {
+        state.email = '';
+        state.uid = '';
+        state.isLoggedIn = false
+      }
+      
     }
 }
 });

@@ -1,93 +1,82 @@
-import "./App.css"
+import "./App.css";
 
 import { Fragment, useState, useEffect } from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
-import { SearchPage } from './components/SearchPage/SearchPage';
+import { SearchPage } from "./components/SearchPage/SearchPage";
 import { ProtectedRoute } from "./components/ProtectedRoute/ProtectedRoute";
-import {InitialPage} from './components/InitialPage/InitialPage';
-import { AuthPage } from './components/AuthPage/AuthPage';
+import { InitialPage } from "./components/InitialPage/InitialPage";
+import { AuthPage } from "./components/AuthPage/AuthPage";
 import { ProteinPage } from "./components/ProteinPage/ProteinPage";
 
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import {
+  CheckAuthState,
+  SaveUserToLocalstorage,
+  RemoveUserLocalstorage,
+} from "./api/auth";
 import { useAppDispatch, useAppSelector } from "./store/store";
-import { auth } from "./utils/FirebaseApp";
 import { setUser } from "./store/features/userSlice";
 import { NotFoundPage } from "./components/NotFoundPage/NotFoundPage";
+
 const App = () => {
-
-
-  const [isAuthPending, setIsAuthPending] = useState(true);
   const dispatch = useAppDispatch();
-  const user = useAppSelector((state) => state.user);
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      const userObj = {
-        email: user.email,
-        isAuth: true
-      }
-      dispatch(setUser(userObj));
-      
+  const userLoggedIn = useAppSelector(state => state.user.isLoggedIn);
+  const [authPending, setAuthPending] = useState(true);
+  useEffect(() => {
+    console.log("useEffect APP");
+    const userAuth = CheckAuthState();
+    if (userAuth) {
+      console.log(userAuth, 'user')
+      dispatch(setUser(userAuth));
+      setAuthPending(false);
     } else {
-      const userObj = {
-        email: '',
-        isAuth: false
-      }
-      dispatch(setUser(userObj));
+      dispatch(setUser(undefined));
+      setAuthPending(false);
     }
-    setIsAuthPending(false);
-  });
-
+  }, []);
+// mb add preloader istead of null
   return (
     <Fragment>
-      {isAuthPending ? null :
-      <Routes>
-        <Route
-          path='/'
-          element={
-            <ProtectedRoute redirect='/search' condition={!user.isAuth}>
-              <InitialPage/>
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path='/auth'
-          element={
-            <ProtectedRoute redirect='/search' condition={!user.isAuth}>
-              <AuthPage/>
-            </ProtectedRoute>
-          }
-        />          
-        <Route
-          path='/search'
-          element={
-          <ProtectedRoute redirect='/auth' condition={user.isAuth}>
-            <SearchPage/>
-          </ProtectedRoute>
-          }
-        />
-        <Route
-          path='/proteins/*'
-          element={
-          <ProtectedRoute redirect='/auth' condition={user.isAuth}>
-            <ProteinPage/>
-          </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/not-found"
-          element={<NotFoundPage/>}
-        />  
-        <Route
-          path="/*"
-          element={<Navigate to={'/not-found'} replace/>}
-        />                 
-      </Routes> 
+      {authPending ? null : 
+        <Routes>
+          <Route
+            path="/auth"
+            element={
+              <ProtectedRoute redirect="/search" condition={!userLoggedIn}>
+                <AuthPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute redirect="/search" condition={!userLoggedIn}>
+                <InitialPage />
+              </ProtectedRoute>
+            }
+          />
+          
+          <Route
+            path="/search"
+            element={
+              <ProtectedRoute redirect="/" condition={userLoggedIn}>
+                <SearchPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/proteins/*"
+            element={
+              <ProtectedRoute redirect="/" condition={userLoggedIn}>
+                <ProteinPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/not-found" element={<NotFoundPage />} />
+          <Route path="/*" element={<Navigate to={"/not-found"} replace />} />
+        </Routes>
 }
-                 
     </Fragment>
-  )
-}
+  );
+};
 
-export default App
-
-
+export default App;

@@ -2,6 +2,8 @@ import './LoginForm.css';
 import {useRef, useState} from 'react';
 import { Login } from '../../api/auth';
 import { useNavigate } from 'react-router-dom';
+import { useAppDispatch } from '../../store/store';
+import { setUser } from "../../store/features/userSlice";
 
 const LoginForm = ({setFormToShow}:{setFormToShow:(string:string)=>void}) => {
 
@@ -12,11 +14,13 @@ const LoginForm = ({setFormToShow}:{setFormToShow:(string:string)=>void}) => {
     const [isEmailErrorShown, setIsEmailErrorShown] = useState(false);
     const [isPassErrorShown, setIsPassErrorShown] = useState(false);
     const [isFormResponseError, setIsFormResponseError] = useState(false);
+    const [formResponseError, setFormResponseError] = useState('')
+
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const passRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
     const navigate = useNavigate();
-
-
+    const dispatch = useAppDispatch();
+    
     //refactoring zone
 
     // TODO mb create functions that returns related error messages. Refactor ugly ternary operators in jsx.
@@ -28,11 +32,17 @@ const LoginForm = ({setFormToShow}:{setFormToShow:(string:string)=>void}) => {
             Login(emailValue, passValue)
             .then(res => {
                 console.log(res)
-                navigate('/search')
+                dispatch(setUser(res));
+                navigate('/search');
             })
             .catch(err => {
-                console.log(err.code)
+                if(err.code === 'auth/user-not-found'){
+                    setFormResponseError('This E-mail is already in use');
+                } else {
+                    setFormResponseError('Login failed! Please,  check you password and email and try again')
                     setIsFormResponseError(true);
+                }
+                
             })
         }
         
@@ -51,6 +61,7 @@ const LoginForm = ({setFormToShow}:{setFormToShow:(string:string)=>void}) => {
         if(isFormResponseError){
             setIsFormResponseError(false)
         }
+
     }
     const validatePass = () => {
         if(passInputRef.current) {
@@ -115,7 +126,7 @@ const LoginForm = ({setFormToShow}:{setFormToShow:(string:string)=>void}) => {
                     loginForm__response-error-message
                     ${isFormResponseError ? '' : 'loginForm__response-error-message--hidden'}
                 `}>
-                    Login failed! Please,  check you password and email and try again
+                    {formResponseError}
                 </p>
                 <button 
                     className={
