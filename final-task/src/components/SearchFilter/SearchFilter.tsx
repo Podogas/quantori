@@ -103,6 +103,7 @@ const SearchFilter = ({setFilter, filter ,query}:{setFilter:React.Dispatch<React
     }
     const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        console.log({d: selectedProteinsWith})
         const filterObj = {
             gene: selectedGeneName,
             organism: selectedModelOrganism,

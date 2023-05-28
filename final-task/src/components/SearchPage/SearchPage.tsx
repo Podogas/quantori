@@ -44,6 +44,7 @@ import { baseSearchUrl } from "../../utils/UniprotUrls";
 
 import { getSearchResults } from "../../api/uniprot";
 import { useAppDispatch, useAppSelector } from "../../store/store";
+import { useLocation,  useNavigate } from "react-router-dom";
 
 const SearchPage = () => {
   const [query, setQuery] = useState<undefined | string>(undefined);
@@ -52,12 +53,18 @@ const SearchPage = () => {
   const [initialSearchUrl, setInitialSearchUrl] = useState<string | undefined>(
     undefined
   );
-  const dispatch = useAppDispatch();
-
+  const location = useLocation();
+  const navigate = useNavigate();
+  const path = location.pathname;
+  const search = location.search.replace('?q=', '');
+  useEffect(() => {
+    setQuery(decodeURIComponent(search))
+  },[])
   useEffect(() => {
     if (query) {
       const searchUrl = `${baseSearchUrl}&query=(${query})${filterQuery}${sortingQuery}`;
         setInitialSearchUrl(searchUrl);
+        navigate({ pathname: path,search: `q=${query}`});
     }
   }, [query, filterQuery, sortingQuery]);
 

@@ -1,5 +1,5 @@
 import "./ProteinPage.css";
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import {useEffect, useState} from 'react';
 import { getProtein, getProteinPublications } from "../../api/uniprot";
 import { Header } from "../Header/Header";
@@ -94,7 +94,8 @@ interface Citation {
 const ProteinPage = () => {
     //REDO PATH AND ROUTING
     const location = useLocation();
-    const path = location.pathname.slice(10);
+    const path = location.pathname.replace('/proteins', '');
+    const navigate = useNavigate();
     //
     const [protein, setProtein] = useState<Protein|null>(null);
     const [proteinPublications, setProteinPublications] = useState<ProteinPublication[]|null>(null);
@@ -102,11 +103,20 @@ const ProteinPage = () => {
     useEffect(() => {
         getProtein(path)
         .then(res => {
-            setProtein(res)
+            setProtein(res)    
+        })
+        .catch(err => {
+            console.warn(err, 222);
+            navigate('/not-found')
         })
         getProteinPublications(path)
         .then(res => {
             setProteinPublications(res)
+        })
+        // add error handlers for uniprot
+        .catch(err => {
+            console.warn(err);
+            navigate('/not-found')
         })
     },[])
     if(protein){
