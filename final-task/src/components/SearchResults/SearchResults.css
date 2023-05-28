@@ -168,4 +168,12 @@
     background-image: url(./assessments/sort-icon-active.svg);
     transform: rotate(180deg);
 }
+.search-results__preloader {
+    width: 100%;
+    height: 10vh;
+    margin-top: 30vh;
+    background-image: url('./assessments/loader.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+}
 

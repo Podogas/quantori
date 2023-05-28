@@ -36,7 +36,7 @@ interface ResT {
 
 import InfiniteLoader from "react-window-infinite-loader";
 import { FixedSizeList as List } from "react-window";
-import { CSSProperties } from "react";
+import { CSSProperties, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AutoSizer from "react-virtualized-auto-sizer";
 import "./SearchResults.css";
@@ -54,14 +54,14 @@ const SearchResultsTable = ({
   items,
 
   // Callback function responsible for loading the next page of items.
-  loadNextPage,
+  loadNextPage
 }: {
   hasNextPage: boolean;
   isNextPageLoading: boolean;
   items: Protein[];
   loadNextPage: () => void;
-}) => {
-    
+}) => { 
+  
   const navigate = useNavigate();
   // If there are more items to be loaded then add an extra row to hold a loading indicator.
   console.log(items, hasNextPage);

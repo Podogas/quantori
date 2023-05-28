@@ -47,6 +47,7 @@ import { useAppDispatch, useAppSelector } from "../../store/store";
 import { useLocation,  useNavigate } from "react-router-dom";
 
 const SearchPage = () => {
+  const isBadUrl = /[<>#"{}|\\^~[\]`]+/;
   const [query, setQuery] = useState<undefined | string>(undefined);
   const [filterQuery, setFilterQuery] = useState("");
   const [sortingQuery, setSortingQuery] = useState("");
@@ -64,7 +65,8 @@ const SearchPage = () => {
     if (query) {
       const searchUrl = `${baseSearchUrl}&query=(${query})${filterQuery}${sortingQuery}`;
         setInitialSearchUrl(searchUrl);
-        navigate({ pathname: path,search: `q=${query}`});
+        const urlSearchQuery = isBadUrl.test(query) ?  encodeURIComponent(query) : query
+        navigate({ pathname: path,search: `q=${urlSearchQuery}`});
     }
   }, [query, filterQuery, sortingQuery]);
 

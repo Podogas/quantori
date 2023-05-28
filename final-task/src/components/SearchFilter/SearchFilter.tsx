@@ -49,12 +49,14 @@ const SearchFilter = ({setFilter, filter ,query}:{setFilter:React.Dispatch<React
         if(query){
             getFacets(query, filters)
         .then(res => {
+            if(res.facets){
         const modelOrganism = res.facets[0]
         const proteinsWith = res.facets[1]
         const annotationScore = res.facets[2]
         setModelOrganismOptions(modelOrganism.values);
         setProteinsWithOptions(proteinsWith.values);
         setAnnotationScoreOptions(annotationScore.values);
+        }
     })
     .catch(err => console.warn(err))
         }

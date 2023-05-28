@@ -39,6 +39,7 @@ import {
   useEffect,
   useRef,
   useState,
+  useCallback,
   useLayoutEffect,
   CSSProperties,
 } from "react";
@@ -55,6 +56,7 @@ const SearchResults = ({
   initialSearchUrl: undefined | string;
   query: string | undefined;
 }) => {
+  console.log('RERENDER')
   const proteins = useAppSelector((state) => state.proteins);
   const accessionSortBtnRef = useRef<HTMLButtonElement | null>(null);
   const idSortBtnRef = useRef<HTMLButtonElement | null>(null);
@@ -70,29 +72,31 @@ const SearchResults = ({
   const [searchResultQuery, setSearchResultQuery] = useState("");
   const [nextUrl, setNextUrl] = useState<string | null>(null);
   const [refreshTable, setRefreshTable] = useState(0);
-
+  const [isResultsPending, setIsResultsPending] = useState(true);
   const loadNextPage = () => {
+    setIsNextPageLoading(true)
     console.log(nextUrl, "nextUrl");
     console.log("loadNextPage");
-    setIsNextPageLoading(true);
     if (nextUrl) {
       getChunk(nextUrl)
         .then((res) => {
           if (res) {
+            setIsResultsPending(false)
             setNextUrl(res.next);
             setItems((prevItems) => [...prevItems, ...res.proteins]);
-            setIsNextPageLoading(false);
             console.log(res.next, "NEXT IN CHUNK");
             setHasNextPage(res.next ? true : false);
+            setIsNextPageLoading(false)
           }
         })
         .catch((err) => console.log(err));
     }
   };
-
   useEffect(() => {
+  },[nextUrl])
+  useEffect(() => {
+    setIsResultsPending(true)
     //is it really needed?
-    setRefreshTable(refreshTable + 1);
     if (initialSearchUrl && query) {
       console.log("url changed", initialSearchUrl);
       getSearchResults(initialSearchUrl, query)
@@ -102,18 +106,30 @@ const SearchResults = ({
             setSearchResultQuery(res.query);
             setSearchResultsQuantity(resulstsQuantity);
             setItems(res.proteins);
+            if(res.next){
+              
             setNextUrl(res.next);
+            setHasNextPage(true)
+            console.log({s: 'next from server', n: res.next})
+            }
             if (!res.next) {
+              console.warn('noNext')
               setHasNextPage(false);
+              
             }
           } else {
-            //throw new error
+            setSearchResultQuery(query);
+            setSearchResultsQuantity(0)
+            setItems([])
             return;
           }
         })
+        .then(()=> {
+          setIsResultsPending(false)
+        })
         .catch((err) => console.log(err));
     }
-  }, [initialSearchUrl, query]);
+  }, [initialSearchUrl]);
   const toggleSortingType = () => {
     if (sortingType) {
       sortingType === "asc"
@@ -144,14 +160,18 @@ const SearchResults = ({
     }
     //mb add return just for folowing some conventions)
   }, [sortingType, sortingBy]);
-
+  if(isResultsPending){
+    return <div className="search-results__preloader"></div>
+  }
   if (initialSearchUrl) {
     return (
+      
       <section className="search-results">
         <h3 className="search-results__quantity">{`${searchResultsQuantity} Search Results ${
           searchResultQuery !== "" ? `for ${searchResultQuery}` : ""
         }`}</h3>
         {items.length !== 0 ? (
+          
           <div className="search-results__table">
             <div className="search-results__table-row search-results__table-row-header">
               <div className="table__cell table__cell__number table__cell-header">
@@ -272,8 +292,10 @@ const SearchResults = ({
             />
           </div>
         ) : (
-            <div className="empty-search-results">
-            <p className="empty-search-results__description">No search results for your request</p>
+          <div className="empty-search-results">
+            <p className="empty-search-results__description">
+              No search results for your request
+            </p>
             <p className="empty-search-results__description">
               Please change try different keywords, or clear filters.
             </p>
