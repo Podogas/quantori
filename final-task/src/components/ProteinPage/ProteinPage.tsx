@@ -185,7 +185,7 @@ const ProteinPage = () => {
             </>
         )
     }
-    return <div>sorry fetch failed</div>
+    return <div className="protein__preloader"></div>
 }
 
 export {ProteinPage};

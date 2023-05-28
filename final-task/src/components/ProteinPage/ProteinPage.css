@@ -58,3 +58,11 @@
     border-bottom: 2px solid #3C86F4;
     border-radius: unset;
 } 
+.protein__preloader{
+    width: 100%;
+    height: 10vh;
+    margin-top: 30vh;
+    background-image: url('./assessments/loader.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+}
