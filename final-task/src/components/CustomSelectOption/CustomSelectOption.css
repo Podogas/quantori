@@ -24,7 +24,7 @@
     content: '';
     width: 7px;
     height: 13px;
-    background-image: url('./assessments/arrows.svg');
+    background-image: url('../../assets/arrows.svg');
 }
 .selected-text--active{
     background-color: #D8E7FF;

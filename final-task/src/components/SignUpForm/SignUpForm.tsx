@@ -40,11 +40,14 @@ const SignUpForm = ({
         })
         .catch((err) => {
           if (err.code === "auth/email-already-in-use") {
-            setIsFormResponseError(true);
-            setIsEmailInputValid(false);
-            setIsEmailErrorShown(true);
             setFormResponseError("This Email already in use!");
+            setIsEmailErrorShown(true);
+          } else {
+            console.log(1)
+            setFormResponseError('Something went wrong');
           }
+          setIsEmailInputValid(false);
+          setIsFormResponseError(true);
         });
     }
   };

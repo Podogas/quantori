@@ -73,6 +73,7 @@ const SearchFilter = ({
     };
 
     if (query) {
+      console.log(query)
       setIsResultsPending(true);
       getFacets(query, filters())
         .then((res) => {
@@ -92,7 +93,13 @@ const SearchFilter = ({
             setAnnotationScoreOptions(null);
           }
         })
-        .catch((err) => console.warn(err));
+        .catch((err) => {
+          setModelOrganismOptions(null);
+          setProteinsWithOptions(null);
+          setAnnotationScoreOptions(null);
+          setIsFilterApplied(false)
+          setIsResultsPending(false);
+          console.warn(err)});
     }
   }, [query, filter]);
   useEffect(()=>{

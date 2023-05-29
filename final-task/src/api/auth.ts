@@ -31,14 +31,16 @@ const SignUp = (email: string, password: string) => {
     if (res.user) {
       return onLogin(res.user);
     }
+    throw new Error();
   });
 };
 const Login = (email: string, password: string) => {
   return signInWithEmailAndPassword(auth, email, password).then((res) => {
     if (res.user) {
       return onLogin(res.user);
-    }
-  });
+    } 
+    throw new Error();
+  })
 };
 const Logout = () => {
   RemoveUserLocalstorage();

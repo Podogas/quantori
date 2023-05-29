@@ -42,7 +42,7 @@
 }
 .protein-details__sequence-copy-btn{
     display: block;
-    background-image: url('./assessments/copy-icon.svg');
+    background-image: url('../../assets/copy-icon.svg');
     width: 1.6rem;
     height: 1.6rem;
     padding: 0;
@@ -55,7 +55,7 @@
     cursor: pointer;
 }
 .protein-details__sequence-copy-btn--animated{
-    background-image: url('./assessments/copy-icon-blue.svg');
+    background-image: url('../../assets/assessments/copy-icon-blue.svg');
 }
 .protein-details__sequence-copy-btn--animated::after{
     content: 'Copied';

@@ -17,7 +17,6 @@ const LoginForm = ({
   const [isEmailErrorShown, setIsEmailErrorShown] = useState(false);
   const [isPassErrorShown, setIsPassErrorShown] = useState(false);
   const [isFormResponseError, setIsFormResponseError] = useState(false);
-  const [formResponseError, setFormResponseError] = useState("");
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const passRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
@@ -34,19 +33,15 @@ const LoginForm = ({
       const passValue = passInputRef.current.value;
       Login(emailValue, passValue)
         .then((res) => {
-          console.log(res);
-          dispatch(setUser(res));
-          navigate("/search");
-        })
-        .catch((err) => {
-          if (err.code === "auth/user-not-found") {
-            setFormResponseError("This E-mail is already in use");
-          } else {
-            setFormResponseError(
-              "Login failed! Please,  check you password and email and try again"
-            );
-            setIsFormResponseError(true);
+          if(res){
+            dispatch(setUser(res));
+            navigate("/search");
           }
+          return res;
+        })
+        // refactor
+        .catch(() => { 
+          setIsFormResponseError(true);
         });
     }
   };
@@ -121,7 +116,7 @@ const LoginForm = ({
                     ${
                       isFormResponseError
                         ? "loginForm__validation-error-message--hidden"
-                        : ""
+                        : ''
                     }
                     `}
         >
@@ -134,12 +129,12 @@ const LoginForm = ({
                     loginForm__response-error-message
                     ${
                       isFormResponseError
-                        ? ""
-                        : "loginForm__response-error-message--hidden"
+                        ? '' 
+                        : "loginForm__response-error-message--hidden" 
                     }
                 `}
         >
-          {formResponseError}
+          {'Login failed! Please,  check you password and email and try again'}
         </p>
         <button
           className={`loginForm__button 

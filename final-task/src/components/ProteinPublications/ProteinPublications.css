@@ -79,12 +79,12 @@
     margin-left: 1rem;
     width: 1.4rem;
     height: 1.4rem;
-    background-image: url(./assessments/link-icon.svg);
+    background-image: url(../../assets/link-icon.svg);
 }
 .publication__link--inactive{
     color: #9F9F9F;
     border-color: #9F9F9F;
 }
 .publication__link--inactive::after{
-    background-image: url(./assessments/link-icon-disabled.svg);
+    background-image: url(../../assets/link-icon-disabled.svg);
 }

@@ -1,6 +1,6 @@
 .authPage__wrapper {
    height: 100vh;
-   background-image: url(./assessments/main_page_background.jpg);
+   background-image: url(../../assets/main_page_background.jpg);
    background-size: cover;
    background-repeat: no-repeat;
 }

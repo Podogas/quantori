@@ -4,14 +4,14 @@
     height: 4rem;
     padding: 0;
     background-color: #D8E7FF;
-    background-image: url(./assessments/icon_options.svg);
+    background-image: url(../../assets/icon_options.svg);
     background-size: 50%;
     background-position: center;
     background-repeat: no-repeat;
 }
 .search-filter__button--opened {
     background-color: #3C86F4;
-    background-image: url(./assessments/icon_options--white.svg);
+    background-image: url(../../assets/icon_options--white.svg);
 }
 .search-filter__button--applied::after {
     content: '';
