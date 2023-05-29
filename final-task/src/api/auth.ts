@@ -1,4 +1,4 @@
-import {UserT} from './auth.t';
+import { UserT } from "./auth.t";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -21,17 +21,17 @@ const CheckAuthState = () => {
     return false;
   }
 };
-const onLogin = (user:UserT) => {
-   const userObj = { email: user.email, uid: user.uid };
-   SaveUserToLocalstorage(userObj);
-   return userObj;
-}
+const onLogin = (user: UserT) => {
+  const userObj = { email: user.email, uid: user.uid };
+  SaveUserToLocalstorage(userObj);
+  return userObj;
+};
 const SignUp = (email: string, password: string) => {
   return createUserWithEmailAndPassword(auth, email, password).then((res) => {
     if (res.user) {
       return onLogin(res.user);
-    } 
-   })
+    }
+  });
 };
 const Login = (email: string, password: string) => {
   return signInWithEmailAndPassword(auth, email, password).then((res) => {

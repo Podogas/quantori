@@ -8,24 +8,20 @@ import { InitialPage } from "./components/InitialPage/InitialPage";
 import { AuthPage } from "./components/AuthPage/AuthPage";
 import { ProteinPage } from "./components/ProteinPage/ProteinPage";
 
-import {
-  CheckAuthState,
-  SaveUserToLocalstorage,
-  RemoveUserLocalstorage,
-} from "./api/auth";
+import { CheckAuthState } from "./api/auth";
 import { useAppDispatch, useAppSelector } from "./store/store";
 import { setUser } from "./store/features/userSlice";
 import { NotFoundPage } from "./components/NotFoundPage/NotFoundPage";
 
 const App = () => {
   const dispatch = useAppDispatch();
-  const userLoggedIn = useAppSelector(state => state.user.isLoggedIn);
+  const userLoggedIn = useAppSelector((state) => state.user.isLoggedIn);
   const [authPending, setAuthPending] = useState(true);
   useEffect(() => {
     console.log("useEffect APP");
     const userAuth = CheckAuthState();
     if (userAuth) {
-      console.log(userAuth, 'user')
+      console.log(userAuth, "user");
       dispatch(setUser(userAuth));
       setAuthPending(false);
     } else {
@@ -33,10 +29,10 @@ const App = () => {
       setAuthPending(false);
     }
   }, []);
-// mb add preloader istead of null
+  // mb add preloader istead of null
   return (
     <Fragment>
-      {authPending ? null : 
+      {authPending ? null : (
         <Routes>
           <Route
             path="/auth"
@@ -54,7 +50,7 @@ const App = () => {
               </ProtectedRoute>
             }
           />
-          
+
           <Route
             path="/search"
             element={
@@ -74,7 +70,7 @@ const App = () => {
           <Route path="/not-found" element={<NotFoundPage />} />
           <Route path="/*" element={<Navigate to={"/not-found"} replace />} />
         </Routes>
-}
+      )}
     </Fragment>
   );
 };

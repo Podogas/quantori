@@ -1,52 +1,8 @@
-interface Genes {
-  orderedLocusNames: {
-    value: string;
-  };
-  geneName: {
-    value: string;
-  };
-}
-interface Protein {
-  comments: [
-    {
-      subcellularLocations: [
-        {
-          location: {
-            value: string;
-          };
-        }
-      ];
-    }
-  ];
-  primaryAccession: string;
-  uniProtkbId: string;
-  organism: {
-    scientificName: string;
-  };
-  sequence: {
-    length: string;
-  };
-  genes: Genes[];
-}
-interface ResT {
-  proteins: Protein[];
-  totalResultsCount: string | null;
-  next: string | null;
-}
 import "./SearchResults.css";
-import { useAppSelector } from "../../store/store";
-import {
-  useEffect,
-  useRef,
-  useState,
-  useCallback,
-  useLayoutEffect,
-  CSSProperties,
-} from "react";
+import { useEffect, useRef, useState } from "react";
 import { SearchResultsTable } from "../SearchResultsTable/SearchResultsTable";
-
 import { getChunk, getSearchResults } from "../../api/uniprot";
-
+import { ProteinT } from "../../utils/globalTypes.t";
 const SearchResults = ({
   setSortingQuery,
   initialSearchUrl,
@@ -56,8 +12,6 @@ const SearchResults = ({
   initialSearchUrl: undefined | string;
   query: string | undefined;
 }) => {
-  console.log('RERENDER')
-  const proteins = useAppSelector((state) => state.proteins);
   const accessionSortBtnRef = useRef<HTMLButtonElement | null>(null);
   const idSortBtnRef = useRef<HTMLButtonElement | null>(null);
   const geneSortBtnRef = useRef<HTMLButtonElement | null>(null);
@@ -67,35 +21,33 @@ const SearchResults = ({
   const [sortingType, setSortingType] = useState<string | undefined>(undefined);
   const [hasNextPage, setHasNextPage] = useState(true);
   const [isNextPageLoading, setIsNextPageLoading] = useState(false);
-  const [items, setItems] = useState<Protein[]>([]);
+  const [items, setItems] = useState<ProteinT[]>([]);
   const [searchResultsQuantity, setSearchResultsQuantity] = useState(0);
   const [searchResultQuery, setSearchResultQuery] = useState("");
   const [nextUrl, setNextUrl] = useState<string | null>(null);
-  const [refreshTable, setRefreshTable] = useState(0);
   const [isResultsPending, setIsResultsPending] = useState(true);
   const loadNextPage = () => {
-    setIsNextPageLoading(true)
+    setIsNextPageLoading(true);
     console.log(nextUrl, "nextUrl");
     console.log("loadNextPage");
     if (nextUrl) {
       getChunk(nextUrl)
         .then((res) => {
           if (res) {
-            setIsResultsPending(false)
+            setIsResultsPending(false);
             setNextUrl(res.next);
             setItems((prevItems) => [...prevItems, ...res.proteins]);
             console.log(res.next, "NEXT IN CHUNK");
             setHasNextPage(res.next ? true : false);
-            setIsNextPageLoading(false)
+            setIsNextPageLoading(false);
           }
         })
         .catch((err) => console.log(err));
     }
   };
+  useEffect(() => {}, [nextUrl]);
   useEffect(() => {
-  },[nextUrl])
-  useEffect(() => {
-    setIsResultsPending(true)
+    setIsResultsPending(true);
     //is it really needed?
     if (initialSearchUrl && query) {
       console.log("url changed", initialSearchUrl);
@@ -106,26 +58,24 @@ const SearchResults = ({
             setSearchResultQuery(res.query);
             setSearchResultsQuantity(resulstsQuantity);
             setItems(res.proteins);
-            if(res.next){
-              
-            setNextUrl(res.next);
-            setHasNextPage(true)
-            console.log({s: 'next from server', n: res.next})
+            if (res.next) {
+              setNextUrl(res.next);
+              setHasNextPage(true);
+              console.log({ s: "next from server", n: res.next });
             }
             if (!res.next) {
-              console.warn('noNext')
+              console.warn("noNext");
               setHasNextPage(false);
-              
             }
           } else {
             setSearchResultQuery(query);
-            setSearchResultsQuantity(0)
-            setItems([])
+            setSearchResultsQuantity(0);
+            setItems([]);
             return;
           }
         })
-        .then(()=> {
-          setIsResultsPending(false)
+        .then(() => {
+          setIsResultsPending(false);
         })
         .catch((err) => console.log(err));
     }
@@ -160,18 +110,16 @@ const SearchResults = ({
     }
     //mb add return just for folowing some conventions)
   }, [sortingType, sortingBy]);
-  if(isResultsPending){
-    return <div className="search-results__preloader"></div>
+  if (isResultsPending) {
+    return <div className="search-results__preloader"></div>;
   }
   if (initialSearchUrl) {
     return (
-      
       <section className="search-results">
         <h3 className="search-results__quantity">{`${searchResultsQuantity} Search Results ${
           searchResultQuery !== "" ? `for ${searchResultQuery}` : ""
         }`}</h3>
         {items.length !== 0 ? (
-          
           <div className="search-results__table">
             <div className="search-results__table-row search-results__table-row-header">
               <div className="table__cell table__cell__number table__cell-header">
@@ -284,7 +232,6 @@ const SearchResults = ({
               </div>
             </div>
             <SearchResultsTable
-              key={refreshTable}
               hasNextPage={hasNextPage}
               isNextPageLoading={isNextPageLoading}
               items={items}

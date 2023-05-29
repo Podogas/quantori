@@ -2,14 +2,7 @@ import "./SearchFilter.css";
 import { useState, useRef, useEffect } from "react";
 import { getFacets } from "../../api/uniprot";
 import { CustomSelectOption } from "../CustomSelectOption/CustomSelectOption.tsx";
-interface FiltrObjT {
-  gene: undefined | string;
-  organism: undefined | string;
-  lengthFrom: undefined | string;
-  lengthTo: undefined | string;
-  annotationScore: undefined | string;
-  protetinsWith: undefined | string;
-}
+import { FiltrObjT, OptionT } from "../../utils/globalTypes.t.ts";
 const SearchFilter = ({
   setFilter,
   filter,
@@ -19,23 +12,17 @@ const SearchFilter = ({
   filter: FiltrObjT;
   query: string | undefined;
 }) => {
-  interface Option {
-    count: number;
-    label: string;
-    value: string;
-  }
-
   const numberRegex = /^[0-9]+$/;
   const [isFiltersOpened, setIsFiltersOpened] = useState(false);
   const [isButtonActive, setIsButtonActive] = useState(false);
   const [isFilterApplied, setIsFilterApplied] = useState(false);
   // States for arrays that we get from API
-  const [modelOrganismOptions, setModelOrganismOptions] = useState<Option[]>(
+  const [modelOrganismOptions, setModelOrganismOptions] = useState<OptionT[]>(
     []
   );
-  const [proteinsWithOptions, setProteinsWithOptions] = useState<Option[]>([]);
+  const [proteinsWithOptions, setProteinsWithOptions] = useState<OptionT[]>([]);
   const [annotationScoreOptions, setAnnotationScoreOptions] = useState<
-    Option[]
+    OptionT[]
   >([]);
   // States that store filter options
   const [selectedGeneName, setSelectedGeneName] = useState<string | undefined>(
@@ -69,15 +56,23 @@ const SearchFilter = ({
   // setSelectedLengthTo(filter.lengthTo)
   useEffect(() => {
     const filters = () => {
-        let filterString = '';
-        filter.gene ? filterString += ` AND (gene:${filter.gene})` : "";
-        filter.annotationScore ? filterString += ` AND (annotation_score:${filter.annotationScore})` : "";
-        filter.lengthFrom && filter.lengthTo ? filterString += ` AND length:[${filter.lengthFrom} TO ${filter.lengthTo}]` : '';
-        filter.lengthFrom && !filter.lengthTo ? filterString += `mass:[${filter.lengthFrom} TO *]` : '';
-        !filter.lengthFrom && filter.lengthTo ? filterString += ` AND length:[1 TO ${filter.lengthTo}]` : '';
-        return encodeURI(filterString)
-    }
-    
+      let filterString = "";
+      filter.gene ? (filterString += ` AND (gene:${filter.gene})`) : "";
+      filter.annotationScore
+        ? (filterString += ` AND (annotation_score:${filter.annotationScore})`)
+        : "";
+      filter.lengthFrom && filter.lengthTo
+        ? (filterString += ` AND length:[${filter.lengthFrom} TO ${filter.lengthTo}]`)
+        : "";
+      filter.lengthFrom && !filter.lengthTo
+        ? (filterString += `mass:[${filter.lengthFrom} TO *]`)
+        : "";
+      !filter.lengthFrom && filter.lengthTo
+        ? (filterString += ` AND length:[1 TO ${filter.lengthTo}]`)
+        : "";
+      return encodeURI(filterString);
+    };
+
     if (query) {
       getFacets(query, filters())
         .then((res) => {
@@ -125,9 +120,9 @@ const SearchFilter = ({
         if (numberRegex.test(value)) {
           if (validateLengthFields()) {
             setIsButtonActive(true);
-            name === "length-from" ?
-            setSelectedLengthFrom(value):
-            setSelectedLengthTo(value)
+            name === "length-from"
+              ? setSelectedLengthFrom(value)
+              : setSelectedLengthTo(value);
           } else {
             setIsButtonActive(false);
           }
@@ -139,10 +134,10 @@ const SearchFilter = ({
     } else {
       if (name === "length-from" || "length-to") {
         if (validateLengthFields()) {
-          name === "length-from" ?
-            setSelectedLengthFrom(value):
-            setSelectedLengthTo(value)
-            setLengthError(false);
+          name === "length-from"
+            ? setSelectedLengthFrom(value)
+            : setSelectedLengthTo(value);
+          setLengthError(false);
           setIsButtonActive(true);
         } else {
           setIsButtonActive(false);

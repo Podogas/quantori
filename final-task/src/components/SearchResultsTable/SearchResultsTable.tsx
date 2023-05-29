@@ -1,46 +1,10 @@
-interface Genes {
-  orderedLocusNames: {
-    value: string;
-  };
-  geneName: {
-    value: string;
-  };
-}
-interface Protein {
-  comments: [
-    {
-      subcellularLocations: [
-        {
-          location: {
-            value: string;
-          };
-        }
-      ];
-    }
-  ];
-  primaryAccession: string;
-  uniProtkbId: string;
-  organism: {
-    scientificName: string;
-  };
-  sequence: {
-    length: string;
-  };
-  genes: Genes[];
-}
-interface ResT {
-  proteins: Protein[];
-  totalResultsCount: string | null;
-  next: string | null;
-}
-
 import InfiniteLoader from "react-window-infinite-loader";
 import { FixedSizeList as List } from "react-window";
 import { CSSProperties, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AutoSizer from "react-virtualized-auto-sizer";
 import "./SearchResults.css";
-
+import { ProteinT } from "../../utils/globalTypes.t";
 const SearchResultsTable = ({
   // Are there more items to load?
   // (This information comes from the most recent API request.)
@@ -54,14 +18,13 @@ const SearchResultsTable = ({
   items,
 
   // Callback function responsible for loading the next page of items.
-  loadNextPage
+  loadNextPage,
 }: {
   hasNextPage: boolean;
   isNextPageLoading: boolean;
-  items: Protein[];
+  items: ProteinT[];
   loadNextPage: () => void;
-}) => { 
-  
+}) => {
   const navigate = useNavigate();
   // If there are more items to be loaded then add an extra row to hold a loading indicator.
   console.log(items, hasNextPage);
@@ -83,11 +46,12 @@ const SearchResultsTable = ({
     style: CSSProperties;
   }) => {
     if (!isItemLoaded(index)) {
-      return(
-        <div className="search-results__table-row table-row--loading" style={style}>
-           
-        </div>
-      )
+      return (
+        <div
+          className="search-results__table-row table-row--loading"
+          style={style}
+        ></div>
+      );
     } else {
       const number = index + 1;
       const entry = items[index].primaryAccession;
@@ -143,31 +107,30 @@ const SearchResultsTable = ({
         </div>
       );
     }
-
   };
   return (
     <AutoSizer>
-  {({ height, width }) => (
-    <InfiniteLoader
-      isItemLoaded={isItemLoaded}
-      itemCount={itemCount}
-      loadMoreItems={loadMoreItems}
-    >
-      {({ onItemsRendered, ref }) => (
-        <List
-          height={height ? 528 : 0}
+      {({ height, width }) => (
+        <InfiniteLoader
+          isItemLoaded={isItemLoaded}
           itemCount={itemCount}
-          itemSize={height ? height/11 : 48}
-          width={width || 0}
-          onItemsRendered={onItemsRendered}
-          ref={ref}
+          loadMoreItems={loadMoreItems}
         >
-          {tableRow}
-        </List>
+          {({ onItemsRendered, ref }) => (
+            <List
+              height={height ? 528 : 0}
+              itemCount={itemCount}
+              itemSize={height ? height / 11 : 48}
+              width={width || 0}
+              onItemsRendered={onItemsRendered}
+              ref={ref}
+            >
+              {tableRow}
+            </List>
+          )}
+        </InfiniteLoader>
       )}
-    </InfiniteLoader>
-     )}
-     </AutoSizer>
+    </AutoSizer>
   );
 };
 export { SearchResultsTable };

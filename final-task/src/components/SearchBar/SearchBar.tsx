@@ -1,15 +1,8 @@
 import "./SearchBar.css";
 import { useState, useRef, useEffect } from "react";
 import { SearchFilter } from "../SearchFilter/SearchFilter";
+import { FiltrObjT } from "../../utils/globalTypes.t";
 
-interface FiltrObjT {
-  gene: undefined | string;
-  organism: undefined | string;
-  lengthFrom: undefined | string;
-  lengthTo: undefined | string;
-  annotationScore: undefined | string;
-  protetinsWith: undefined | string;
-}
 const SearchBar = ({
   setFilterQuery,
   setQuery,
@@ -57,9 +50,7 @@ const SearchBar = ({
         : ""
     }
     ${
-        filter.protetinsWith
-        ? ` AND (proteins_with:${filter.protetinsWith})`
-        : ""
+      filter.protetinsWith ? ` AND (proteins_with:${filter.protetinsWith})` : ""
     }
     ${
       filter.lengthFrom && filter.lengthTo
@@ -84,7 +75,7 @@ const SearchBar = ({
           className="search-bar__input"
           ref={inputRef}
           type="text"
-          defaultValue={query ? query : ''}
+          defaultValue={query ? query : ""}
           placeholder="Enter search value"
         />
         <button className="search-bar__button" type="submit">
