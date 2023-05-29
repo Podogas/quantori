@@ -48,6 +48,7 @@
 }
 .search-filter__element{
     color: #2B2B2B;
+    position: relative;
 }
 .search-filter__label{
     display: block;
@@ -109,4 +110,17 @@
 .search-filter-apply-btn--disabled{
     color: #FFFFFF;
     background-color: #CFCFCF;
+}
+.num-input__error{
+    right: 0;
+    position: absolute;
+    margin: 0;
+    bottom: -1.9rem;
+    color: #EC3030;
+    font-size: 1.2rem;
+    line-height: 1.2rem;
+    font-weight: 400;
+}
+.search-filter__num-input--error{
+    border:1px solid #EC3030;
 }
