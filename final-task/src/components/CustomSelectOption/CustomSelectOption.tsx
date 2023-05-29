@@ -1,6 +1,6 @@
 import "./CustomSelectOption.css";
 import React, { useState, useEffect, useRef } from "react";
-import { OptionT } from "./CustomSelectOption.t";
+import { OptionT } from "../../utils/globalTypes.t";
 const CustomSelectOption = ({
   optionsList,
   defaultText,
@@ -17,6 +17,7 @@ const CustomSelectOption = ({
   const selectRef = useRef(null);
 
   useEffect(() => {
+    optionsList ? null : setSelectedText('No options')
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
@@ -51,16 +52,19 @@ const CustomSelectOption = ({
   return (
     <div className="custom-select-container" ref={selectRef}>
       <div
-        className={
-          showOptionList
+        className={`
+          ${optionsList
+            ? ``
+            : 'selected-text--inactive'}
+          ${showOptionList
             ? `selected-text selected-text--active selected-text-${uniqueKey}`
-            : `selected-text selected-text-${uniqueKey}`
-        }
-        onClick={handleListDisplay}
+            : `selected-text selected-text-${uniqueKey}`}
+        `}
+        onClick={optionsList ? handleListDisplay : ()=>{}}
       >
         {selectedText}
       </div>
-      {showOptionList && (
+      {showOptionList && optionsList ?(
         <ul className="select-options">
           {optionsList.map((option) => (
             <li
@@ -73,7 +77,7 @@ const CustomSelectOption = ({
             </li>
           ))}
         </ul>
-      )}
+      ):null}
     </div>
   );
 };

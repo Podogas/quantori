@@ -1,6 +1,6 @@
 import InfiniteLoader from "react-window-infinite-loader";
 import { FixedSizeList as List } from "react-window";
-import { CSSProperties, useEffect } from "react";
+import { CSSProperties } from "react";
 import { useNavigate } from "react-router-dom";
 import AutoSizer from "react-virtualized-auto-sizer";
 import "./SearchResults.css";

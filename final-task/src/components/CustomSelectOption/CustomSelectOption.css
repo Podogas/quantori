@@ -56,3 +56,11 @@
     background-color: #D8E7FF;
     color: #175BC0;
 }
+.selected-text--inactive {
+    background-color: #ffffff;
+    color: #BFBFBF;
+    outline: 1px solid #CFCFCF;
+}
+.selected-text--inactive::after{
+    display: none;
+}

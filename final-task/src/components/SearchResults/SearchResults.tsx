@@ -45,10 +45,11 @@ const SearchResults = ({
         .catch((err) => console.log(err));
     }
   };
-  useEffect(() => {}, [nextUrl]);
+  useEffect(() => {}, []);
   useEffect(() => {
     setIsResultsPending(true);
     //is it really needed?
+    console.log(!!initialSearchUrl)
     if (initialSearchUrl && query) {
       console.log("url changed", initialSearchUrl);
       getSearchResults(initialSearchUrl, query)
@@ -110,7 +111,7 @@ const SearchResults = ({
     }
     //mb add return just for folowing some conventions)
   }, [sortingType, sortingBy]);
-  if (isResultsPending) {
+  if (isResultsPending && !!initialSearchUrl) {
     return <div className="search-results__preloader"></div>;
   }
   if (initialSearchUrl) {

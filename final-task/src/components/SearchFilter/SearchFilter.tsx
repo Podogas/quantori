@@ -77,6 +77,7 @@ const SearchFilter = ({
       getFacets(query, filters())
         .then((res) => {
           if (res.facets) {
+            console.log(res.facets)
             const modelOrganism = res.facets[0];
             const proteinsWith = res.facets[1];
             const annotationScore = res.facets[2];
@@ -107,6 +108,7 @@ const SearchFilter = ({
     }
   };
   const onInputChange = (ref: React.RefObject<HTMLInputElement>) => {
+    console.log(modelOrganismOptions)
     const name = ref.current?.name;
     const value =
       ref.current?.value.replace(/\s/g, "") !== ""
@@ -127,8 +129,7 @@ const SearchFilter = ({
             setIsButtonActive(false);
           }
         } else {
-          setLengthError("Field should only contain numbers");
-          setIsButtonActive(false);
+          
         }
       }
     } else {
