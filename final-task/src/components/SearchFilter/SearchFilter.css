@@ -124,3 +124,11 @@
 .search-filter__num-input--error{
     border:1px solid #EC3030;
 }
+.search-filter__button--disabled {
+    filter:grayscale(1)
+}
+.search-filter__button--loading {
+    background-image: url('../../assets/loader-dots-white.svg');
+    background-repeat: no-repeat;
+    background-size: 4rem;
+}

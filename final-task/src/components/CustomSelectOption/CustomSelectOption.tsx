@@ -7,7 +7,7 @@ const CustomSelectOption = ({
   uniqueKey,
   setState,
 }: {
-  optionsList: OptionT[];
+  optionsList: OptionT[]|null;
   defaultText: string;
   uniqueKey: string;
   setState: React.Dispatch<React.SetStateAction<string | undefined>>;

@@ -16,14 +16,13 @@ const SearchFilter = ({
   const [isFiltersOpened, setIsFiltersOpened] = useState(false);
   const [isButtonActive, setIsButtonActive] = useState(false);
   const [isFilterApplied, setIsFilterApplied] = useState(false);
+  const [isResultsPending, setIsResultsPending] = useState(false);
   // States for arrays that we get from API
-  const [modelOrganismOptions, setModelOrganismOptions] = useState<OptionT[]>(
+  const [modelOrganismOptions, setModelOrganismOptions] = useState<OptionT[]|null>(
     []
   );
-  const [proteinsWithOptions, setProteinsWithOptions] = useState<OptionT[]>([]);
-  const [annotationScoreOptions, setAnnotationScoreOptions] = useState<
-    OptionT[]
-  >([]);
+  const [proteinsWithOptions, setProteinsWithOptions] = useState<OptionT[]|null>([]);
+  const [annotationScoreOptions, setAnnotationScoreOptions] = useState<OptionT[]|null>([]);
   // States that store filter options
   const [selectedGeneName, setSelectedGeneName] = useState<string | undefined>(
     filter.gene
@@ -74,21 +73,31 @@ const SearchFilter = ({
     };
 
     if (query) {
+      setIsResultsPending(true);
       getFacets(query, filters())
         .then((res) => {
           if (res.facets) {
-            console.log(res.facets)
+            console.log(res.facets);
             const modelOrganism = res.facets[0];
             const proteinsWith = res.facets[1];
             const annotationScore = res.facets[2];
             setModelOrganismOptions(modelOrganism.values);
             setProteinsWithOptions(proteinsWith.values);
             setAnnotationScoreOptions(annotationScore.values);
+            setIsResultsPending(false);
+          } else {
+            setIsResultsPending(false);
+            setModelOrganismOptions(null);
+            setProteinsWithOptions(null);
+            setAnnotationScoreOptions(null);
           }
         })
         .catch((err) => console.warn(err));
     }
   }, [query, filter]);
+  useEffect(()=>{
+    setIsFiltersOpened(false);
+  },[query])
   const validateLengthFields = () => {
     const lengthFromValue = lengthFromInputRef.current?.value;
     const lengthToValue = lengthToInputRef.current?.value;
@@ -108,7 +117,7 @@ const SearchFilter = ({
     }
   };
   const onInputChange = (ref: React.RefObject<HTMLInputElement>) => {
-    console.log(modelOrganismOptions)
+    console.log(modelOrganismOptions);
     const name = ref.current?.name;
     const value =
       ref.current?.value.replace(/\s/g, "") !== ""
@@ -129,7 +138,6 @@ const SearchFilter = ({
             setIsButtonActive(false);
           }
         } else {
-          
         }
       }
     } else {
@@ -221,7 +229,7 @@ const SearchFilter = ({
     selectedLengthTo,
   ]);
 
-  if (isFiltersOpened && query) {
+  if (isFiltersOpened && query && !isResultsPending) {
     return (
       <>
         <button
@@ -344,14 +352,17 @@ const SearchFilter = ({
     );
   } else {
     return (
+    !isResultsPending ? 
       <button
-        className={`search-filter__button ${
-          isFilterApplied ? "search-filter__button--applied" : ""
-        } `}
+        className={`search-filter__button 
+        ${isFilterApplied ? "search-filter__button--applied" : ""}
+        ${query ? '' : "search-filter__button--disabled" }  
+       `}
         type="button"
         onClick={onToggleFilters}
         disabled={query ? false : true}
       ></button>
+      : <button className='search-filter__button search-filter__button--loading'></button>
     );
   }
 };
