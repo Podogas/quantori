@@ -106,6 +106,7 @@ const SearchResultsTable = ({
               width={width || 0}
               onItemsRendered={onItemsRendered}
               ref={ref}
+              className="search-results__table-list"
             >
               {tableRow}
             </List>
