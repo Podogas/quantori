@@ -31,7 +31,7 @@
     display: flex;
     flex-direction: column;
     height: 57.5rem;
-    overflow-y: scroll;
+    overflow:hidden;
 }
 .search-results__table-row{
     display: flex;
