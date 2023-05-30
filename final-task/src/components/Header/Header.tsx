@@ -4,7 +4,6 @@ import { Logout } from "../../api/auth";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { setUser } from "../../store/features/userSlice";
 const Header = () => {
-  //change <a>
   const email = useAppSelector((state) => state.user.email);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -13,11 +12,9 @@ const Header = () => {
       .then(() => {
         dispatch(setUser(undefined));
         navigate("/");
-        console.log("trying to navigate");
       })
       .catch((error) => {
-        console.log(error, "ERROR WHILE SIGNOUT");
-        // An error happened.
+        console.error(error);
       });
   };
   return (

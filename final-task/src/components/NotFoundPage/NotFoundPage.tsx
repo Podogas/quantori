@@ -3,7 +3,6 @@ import { useAppSelector } from "../../store/store";
 import { Header } from "../Header/Header";
 import { useNavigate } from "react-router-dom";
 const NotFoundPage = () => {
-  console.log("what?");
   const isAuth = useAppSelector((state) => state.user.isLoggedIn);
   const navigate = useNavigate();
   if (isAuth) {

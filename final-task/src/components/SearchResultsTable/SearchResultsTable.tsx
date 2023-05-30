@@ -6,18 +6,9 @@ import AutoSizer from "react-virtualized-auto-sizer";
 import "./SearchResults.css";
 import { ProteinT } from "../../utils/globalTypes.t";
 const SearchResultsTable = ({
-  // Are there more items to load?
-  // (This information comes from the most recent API request.)
   hasNextPage,
-
-  // Are we currently loading a page of items?
-  // (This may be an in-flight flag in your Redux store for example.)
   isNextPageLoading,
-
-  // Array of items loaded so far.
   items,
-
-  // Callback function responsible for loading the next page of items.
   loadNextPage,
 }: {
   hasNextPage: boolean;
@@ -26,18 +17,9 @@ const SearchResultsTable = ({
   loadNextPage: () => void;
 }) => {
   const navigate = useNavigate();
-  // If there are more items to be loaded then add an extra row to hold a loading indicator.
-  console.log(items, hasNextPage);
   const itemCount = hasNextPage ? items.length + 1 : items.length;
-
-  // Only load 1 page of items at a time.
-  // Pass an empty callback to InfiniteLoader in case it asks us to load more than once.
   const loadMoreItems = isNextPageLoading ? () => {} : loadNextPage;
-
-  // Every row is loaded except for our loading indicator row.
   const isItemLoaded = (index: number) => !hasNextPage || index < items.length;
-
-  // Render an item or a loading indicator.
   const tableRow = ({
     index,
     style,

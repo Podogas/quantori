@@ -1,3 +1,5 @@
+import { baseFacetsUrl, baseProteinUrl } from "../utils/UniprotUrls";
+import { HttpErrorsHandler } from "../utils/Errors";
 const httpHeader = {
   "Content-Type": "application/json",
 };
@@ -10,9 +12,7 @@ const formatNextLink = (str: string | null) => {
   }
   return null;
 };
-// basically the same fn as getChunk the only thing is a query. so mb make getChunk
 const getSearchResults = (url: string, query: string) => {
-  console.log("getSearchResults");
   return fetch(url, {
     method: "GET",
     headers: httpHeader,
@@ -26,13 +26,11 @@ const getSearchResults = (url: string, query: string) => {
         return { proteins, next, totalResultsCount, query };
       });
     } else {
-      console.log(res, "something went wrong");
+      throw HttpErrorsHandler(res);
     }
   });
 };
 const getChunk = (url: string) => {
-  console.log("getNextChunk", url);
-
   return fetch(url, {
     method: "GET",
     headers: httpHeader,
@@ -47,13 +45,12 @@ const getChunk = (url: string) => {
         return { proteins, next, totalResultsCount, query, url };
       });
     } else {
-      console.log(res, "something went wrong");
+      throw HttpErrorsHandler(res);
     }
   });
 };
 const getFacets = (query: string, filters: string) => {
-  console.log("getSearchFacets");
-  const url = `https://rest.uniprot.org/uniprotkb/search?facets=model_organism,proteins_with,annotation_score&query=(${query})${filters}`;
+  const url = `${baseFacetsUrl}=(${query})${filters}`;
   return fetch(url, {
     method: "GET",
     headers: httpHeader,
@@ -62,16 +59,14 @@ const getFacets = (query: string, filters: string) => {
       if (res.ok) {
         return res.json();
       } else {
-        // throw HttpErrorsHandler(res);
-        console.log("smth went wrong");
+        throw HttpErrorsHandler(res);
       }
     })
     .then((res) => res);
 };
 
 const getProtein = (id: string) => {
-  console.log("getSearchProtein");
-  const url = "https://rest.uniprot.org/uniprotkb/";
+  const url = baseProteinUrl;
   return fetch(url + id, {
     method: "GET",
     headers: httpHeader,
@@ -80,15 +75,14 @@ const getProtein = (id: string) => {
       if (res.ok) {
         return res.json();
       } else {
-        // throw HttpErrorsHandler(res);
-        console.log("smth went wrong");
+        throw HttpErrorsHandler(res);
       }
     })
     .then((res) => res);
 };
 
 const getProteinPublications = (id: string) => {
-  const url = `https://rest.uniprot.org/uniprotkb/${id}/publications`;
+  const url = `${baseProteinUrl+id}/publications`;
   return fetch(url, {
     method: "GET",
     headers: httpHeader,
@@ -97,8 +91,7 @@ const getProteinPublications = (id: string) => {
       if (res.ok) {
         return res.json();
       } else {
-        // throw HttpErrorsHandler(res);
-        console.log("smth went wrong");
+        throw HttpErrorsHandler(res);
       }
     })
     .then((res) => res.results);

@@ -21,15 +21,13 @@ const SignUpForm = ({
   const [isPassRepeatErrorShown, setIsPassRepeatErrorShown] = useState(false);
   const [isFormResponseError, setIsFormResponseError] = useState(false);
   const [formResponseError, setFormResponseError] = useState("");
+  const [isInitialBtnState, setIsInitialBtnState] = useState(true);
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const passRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  // TODO mb create functions that returns related error messages. Refactor ugly ternary operators in jsx.
-  // TODO Some trash code here, wtf is this catch block? and this JSX is the ternary hell, and why so many states? Refactor this!!!!
   const onSignUpSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("SIGN-UP");
     if (emailInputRef.current && passInputRef.current) {
       const emailValue = emailInputRef.current.value;
       const passValue = passInputRef.current.value;
@@ -43,15 +41,16 @@ const SignUpForm = ({
             setFormResponseError("This Email already in use!");
             setIsEmailErrorShown(true);
           } else {
-            console.log(1)
-            setFormResponseError('Something went wrong');
+            setFormResponseError("Something went wrong");
           }
+          setIsInitialBtnState(true);
           setIsEmailInputValid(false);
           setIsFormResponseError(true);
         });
     }
   };
   const validateEmail = () => {
+    setIsInitialBtnState(false);
     if (emailInputRef.current) {
       const emailValue = emailInputRef.current.value;
       if (emailRegex.test(emailValue)) {
@@ -68,6 +67,7 @@ const SignUpForm = ({
     }
   };
   const validatePass = () => {
+    setIsInitialBtnState(false);
     if (passInputRef.current) {
       const passValue = passInputRef.current.value;
       if (passRegex.test(passValue)) {
@@ -75,13 +75,13 @@ const SignUpForm = ({
         setIsPassErrorShown(false);
         validateRepeatPass();
       } else {
-        console.log(passRegex.test(passValue));
         setIsPassInputValid(false);
         setIsPassErrorShown(true);
       }
     }
   };
   const validateRepeatPass = () => {
+    setIsInitialBtnState(false);
     if (passInputRef.current && passRepeatInputRef.current) {
       const passValue = passInputRef.current.value;
       const passRepeatValue = passRepeatInputRef.current.value;
@@ -182,11 +182,13 @@ const SignUpForm = ({
           className={`
                         SignUpForm__button
                         ${
-                          isEmailInputValid &&
-                          isPassInputValid &&
-                          isPassRepeatInputValid
+                          isInitialBtnState
+                            ? ""
+                            : isEmailInputValid &&
+                              isPassInputValid &&
+                              isPassRepeatInputValid
                             ? "SignUpForm__button--valid"
-                            : ""
+                            : "SignUpForm__button--invalid"
                         }
                     `}
           type="submit"

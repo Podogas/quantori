@@ -9,11 +9,9 @@ import { ProteinPublications } from "../ProteinPublications/ProteinPublications"
 import { ProteinPublicationT, ProteinT } from "../../utils/globalTypes.t";
 
 const ProteinPage = () => {
-  //REDO PATH AND ROUTING
   const location = useLocation();
   const path = location.pathname.replace("/proteins", "");
   const navigate = useNavigate();
-  //
   const [protein, setProtein] = useState<ProteinT | null>(null);
   const [proteinPublications, setProteinPublications] = useState<
     ProteinPublicationT[] | null
@@ -25,16 +23,15 @@ const ProteinPage = () => {
         setProtein(res);
       })
       .catch((err) => {
-        console.warn(err, 222);
+        console.error(err);
         navigate("/not-found");
       });
     getProteinPublications(path)
       .then((res) => {
         setProteinPublications(res);
       })
-      // add error handlers for uniprot
       .catch((err) => {
-        console.warn(err);
+        console.error(err);
         navigate("/not-found");
       });
   }, []);
@@ -52,7 +49,6 @@ const ProteinPage = () => {
         );
       }
     };
-
     return (
       <>
         <Header />
@@ -68,13 +64,17 @@ const ProteinPage = () => {
             <p className="protein__description-paragraph">
               {protein.proteinDescription.recommendedName
                 ? protein.proteinDescription.recommendedName.fullName.value
-                : protein.proteinDescription.submissionNames[0].fullName.value}
+                : null}
             </p>
-            {protein.genes ? (
+            {protein.genes.map((g) =>
+              g.geneName ? g.geneName.value : null
+            )[0] ? (
               <>
                 <p className="protein__description-title-paragraph">Gene</p>
                 <p className="protein__description-paragraph">
-                  {protein.genes.map((g) => g.geneName.value)}
+                  {protein.genes.map((g) =>
+                    g.geneName ? g.geneName.value : null
+                  )}
                 </p>
               </>
             ) : null}

@@ -23,9 +23,6 @@ const SearchBar = ({
 
   const inputRef = useRef<HTMLInputElement | null>(null);
 
-  // const dispatch = useAppDispatch();
-  /// TEST ZONE
-
   const checkAndSetQuery = () => {
     if (inputRef.current) {
       if (inputRef.current.value !== query) {

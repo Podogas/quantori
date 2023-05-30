@@ -17,15 +17,12 @@ const LoginForm = ({
   const [isEmailErrorShown, setIsEmailErrorShown] = useState(false);
   const [isPassErrorShown, setIsPassErrorShown] = useState(false);
   const [isFormResponseError, setIsFormResponseError] = useState(false);
+  const [isInitialBtnState, setIsInitialBtnState] = useState(true);
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const passRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-
-  //refactoring zone
-
-  // TODO mb create functions that returns related error messages. Refactor ugly ternary operators in jsx.
   const onLoginSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (emailInputRef.current && passInputRef.current) {
@@ -39,13 +36,14 @@ const LoginForm = ({
           }
           return res;
         })
-        // refactor
-        .catch(() => { 
+        .catch(() => {
+          setIsInitialBtnState(true);
           setIsFormResponseError(true);
         });
     }
   };
   const validateEmail = () => {
+    setIsInitialBtnState(false);
     if (emailInputRef.current) {
       const emailValue = emailInputRef.current.value;
       if (emailRegex.test(emailValue)) {
@@ -61,6 +59,7 @@ const LoginForm = ({
     }
   };
   const validatePass = () => {
+    setIsInitialBtnState(false);
     if (passInputRef.current) {
       const passValue = passInputRef.current.value;
       if (passRegex.test(passValue)) {
@@ -138,11 +137,11 @@ const LoginForm = ({
         </p>
         <button
           className={`loginForm__button 
-                        ${
+                        ${ isInitialBtnState ? "" :
                           isEmailInputValid && isPassInputValid
                             ? "loginForm__button--valid"
-                            : ""
-                        }
+                            : "loginForm__button--invalid"
+                  }                            
                         `}
           type="submit"
           disabled={isEmailInputValid && isPassInputValid ? false : true}

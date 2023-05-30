@@ -98,3 +98,7 @@
     font-weight: 700;
     color: var(--caption-link-color);
 }
+.SignUpForm__button--invalid{
+    background-color: #CFCFCF;
+    color: #FFFFFF;
+}

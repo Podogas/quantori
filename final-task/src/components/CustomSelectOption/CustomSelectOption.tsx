@@ -7,7 +7,7 @@ const CustomSelectOption = ({
   uniqueKey,
   setState,
 }: {
-  optionsList: OptionT[]|null;
+  optionsList: OptionT[] | null;
   defaultText: string;
   uniqueKey: string;
   setState: React.Dispatch<React.SetStateAction<string | undefined>>;
@@ -17,7 +17,7 @@ const CustomSelectOption = ({
   const selectRef = useRef(null);
 
   useEffect(() => {
-    optionsList ? null : setSelectedText('No options')
+    optionsList ? null : setSelectedText("No options");
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
@@ -42,9 +42,6 @@ const CustomSelectOption = ({
     if (targetText) {
       setSelectedText(targetText);
       setState(targetText);
-      //delete afer
-    } else {
-      setSelectedText("dummy wrote this selector)");
     }
     setShowOptionList(false);
   };
@@ -53,18 +50,18 @@ const CustomSelectOption = ({
     <div className="custom-select-container" ref={selectRef}>
       <div
         className={`
-          ${optionsList
-            ? ``
-            : 'selected-text--inactive'}
-          ${showOptionList
-            ? `selected-text selected-text--active selected-text-${uniqueKey}`
-            : `selected-text selected-text-${uniqueKey}`}
+          ${optionsList ? `` : "selected-text--inactive"}
+          ${
+            showOptionList
+              ? `selected-text selected-text--active selected-text-${uniqueKey}`
+              : `selected-text selected-text-${uniqueKey}`
+          }
         `}
-        onClick={optionsList ? handleListDisplay : ()=>{}}
+        onClick={optionsList ? handleListDisplay : () => {}}
       >
         {selectedText}
       </div>
-      {showOptionList && optionsList ?(
+      {showOptionList && optionsList ? (
         <ul className="select-options">
           {optionsList.map((option) => (
             <li
@@ -77,7 +74,7 @@ const CustomSelectOption = ({
             </li>
           ))}
         </ul>
-      ):null}
+      ) : null}
     </div>
   );
 };

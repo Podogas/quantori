@@ -26,11 +26,9 @@ const SearchResults = ({
   const [searchResultQuery, setSearchResultQuery] = useState("");
   const [nextUrl, setNextUrl] = useState<string | null>(null);
   const [isResultsPending, setIsResultsPending] = useState(true);
-  const [isSortingPending,setIsSortingPending] = useState(false);
+  const [isSortingPending, setIsSortingPending] = useState(false);
   const loadNextPage = () => {
     setIsNextPageLoading(true);
-    console.log(nextUrl, "nextUrl");
-    console.log("loadNextPage");
     if (nextUrl) {
       getChunk(nextUrl)
         .then((res) => {
@@ -38,21 +36,16 @@ const SearchResults = ({
             setIsResultsPending(false);
             setNextUrl(res.next);
             setItems((prevItems) => [...prevItems, ...res.proteins]);
-            console.log(res.next, "NEXT IN CHUNK");
             setHasNextPage(res.next ? true : false);
             setIsNextPageLoading(false);
           }
         })
-        .catch((err) => console.log(err));
+        .catch((err) => console.error(err));
     }
   };
   useEffect(() => {
-    
-    //is it really needed?
-    console.log(!!initialSearchUrl);
     if (initialSearchUrl && query) {
-      setIsResultsPending(true)
-      console.log("url changed", initialSearchUrl, query);
+      setIsResultsPending(true);
       getSearchResults(initialSearchUrl, query)
         .then((res) => {
           if (res) {
@@ -63,10 +56,8 @@ const SearchResults = ({
             if (res.next) {
               setNextUrl(res.next);
               setHasNextPage(true);
-              console.log({ s: "next from server", n: res.next });
             }
             if (!res.next) {
-              console.warn("noNext");
               setHasNextPage(false);
             }
           } else {
@@ -80,7 +71,7 @@ const SearchResults = ({
           setIsResultsPending(false);
           setIsSortingPending(false);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => console.error(err));
     }
   }, [initialSearchUrl]);
   const toggleSortingType = () => {
@@ -112,7 +103,6 @@ const SearchResults = ({
     } else {
       setSortingQuery("");
     }
-    //mb add return just for folowing some conventions)
   }, [sortingType, sortingBy]);
   if (isResultsPending && !!initialSearchUrl && !isSortingPending) {
     return <div className="search-results__preloader"></div>;
@@ -269,39 +259,3 @@ const SearchResults = ({
   );
 };
 export { SearchResults };
-
-// const number = index+1;
-// const entry = item.primaryAccession;
-// const entryNames = item.uniProtkbId;
-// const genes = () => {
-//     if(item.genes){
-//       return  item.genes.map((g) => {
-//         if(g.geneName) {
-//             return g.geneName.value;
-//         } return ''})
-//     }
-// }
-// const subcellularLocations = () => {
-//     if(item.comments){
-//         if(item.comments[0]){
-//             if(item.comments[0].subcellularLocations){
-//                 return item.comments[0].subcellularLocations.map(v => v.location.value)
-//             }
-//         }
-//     return null}
-// }
-// const length = item.sequence.length
-// const organism = item.organism.scientificName;
-
-//  <div className='table__cell table__cell__number'>{number}</div>
-// <div className='table__cell table__cell__entry' onClick={()=>{navigate(`/proteins/${entry}`)}}>{entry}</div>
-// <div className='table__cell table__cell__entry-names'>{entryNames}</div>
-// <div className='table__cell table__cell__genes'>{genes()}</div>
-// <div className='table__cell table__cell__organism'>
-//     <span className='table__cell__organism-label'>{organism}</span>
-// </div>
-// <div className='table__cell table__cell__subcellular'>
-//     <div className='table__cell__subcellular-overflow-box'>{subcellularLocations()}</div>
-// </div>
-// <div className='table__cell table__cell__length'>{length}</div>
-//

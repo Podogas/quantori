@@ -17,13 +17,15 @@ const SearchFilter = ({
   const [isButtonActive, setIsButtonActive] = useState(false);
   const [isFilterApplied, setIsFilterApplied] = useState(false);
   const [isResultsPending, setIsResultsPending] = useState(false);
-  // States for arrays that we get from API
-  const [modelOrganismOptions, setModelOrganismOptions] = useState<OptionT[]|null>(
-    []
-  );
-  const [proteinsWithOptions, setProteinsWithOptions] = useState<OptionT[]|null>([]);
-  const [annotationScoreOptions, setAnnotationScoreOptions] = useState<OptionT[]|null>([]);
-  // States that store filter options
+  const [modelOrganismOptions, setModelOrganismOptions] = useState<
+    OptionT[] | null
+  >([]);
+  const [proteinsWithOptions, setProteinsWithOptions] = useState<
+    OptionT[] | null
+  >([]);
+  const [annotationScoreOptions, setAnnotationScoreOptions] = useState<
+    OptionT[] | null
+  >([]);
   const [selectedGeneName, setSelectedGeneName] = useState<string | undefined>(
     filter.gene
   );
@@ -46,13 +48,6 @@ const SearchFilter = ({
   const geneNameInputRef = useRef<HTMLInputElement | null>(null);
   const lengthFromInputRef = useRef<HTMLInputElement | null>(null);
   const lengthToInputRef = useRef<HTMLInputElement | null>(null);
-  // TEST ZONE
-  // setSelectedModelOrganism(filter.organism);
-  // setSelectedProteinsWith(filter.protetinsWith)
-  // setSelectedAnnotationScore(filter.annotationScore)
-  // setSelectedGeneName(filter.gene)
-  // setSelectedLengthFrom(filter.lengthFrom)
-  // setSelectedLengthTo(filter.lengthTo)
   useEffect(() => {
     const filters = () => {
       let filterString = "";
@@ -73,12 +68,10 @@ const SearchFilter = ({
     };
 
     if (query) {
-      console.log(query)
       setIsResultsPending(true);
       getFacets(query, filters())
         .then((res) => {
           if (res.facets) {
-            console.log(res.facets);
             const modelOrganism = res.facets[0];
             const proteinsWith = res.facets[1];
             const annotationScore = res.facets[2];
@@ -97,14 +90,15 @@ const SearchFilter = ({
           setModelOrganismOptions(null);
           setProteinsWithOptions(null);
           setAnnotationScoreOptions(null);
-          setIsFilterApplied(false)
+          setIsFilterApplied(false);
           setIsResultsPending(false);
-          console.warn(err)});
+          console.error(err);
+        });
     }
   }, [query, filter]);
-  useEffect(()=>{
+  useEffect(() => {
     setIsFiltersOpened(false);
-  },[query])
+  }, [query]);
   const validateLengthFields = () => {
     const lengthFromValue = lengthFromInputRef.current?.value;
     const lengthToValue = lengthToInputRef.current?.value;
@@ -113,18 +107,15 @@ const SearchFilter = ({
         setLengthError(false);
         return true;
       } else {
-        console.log(2);
         setLengthError("<From> field should be less or equal to <To> field");
         return false;
       }
     } else {
-      console.log(1);
       setLengthError(false);
       return true;
     }
   };
   const onInputChange = (ref: React.RefObject<HTMLInputElement>) => {
-    console.log(modelOrganismOptions);
     const name = ref.current?.name;
     const value =
       ref.current?.value.replace(/\s/g, "") !== ""
@@ -163,7 +154,6 @@ const SearchFilter = ({
   };
 
   const onToggleFilters = () => {
-    console.log(123);
     setSelectedModelOrganism(filter.organism);
     setSelectedProteinsWith(filter.protetinsWith);
     setSelectedAnnotationScore(filter.annotationScore);
@@ -189,7 +179,6 @@ const SearchFilter = ({
   };
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log({ d: selectedProteinsWith });
     const filterObj = {
       gene: selectedGeneName,
       organism: selectedModelOrganism,
@@ -358,18 +347,18 @@ const SearchFilter = ({
       </>
     );
   } else {
-    return (
-    !isResultsPending ? 
+    return !isResultsPending ? (
       <button
         className={`search-filter__button 
         ${isFilterApplied ? "search-filter__button--applied" : ""}
-        ${query ? '' : "search-filter__button--disabled" }  
+        ${query ? "" : "search-filter__button--disabled"}  
        `}
         type="button"
         onClick={onToggleFilters}
         disabled={query ? false : true}
       ></button>
-      : <button className='search-filter__button search-filter__button--loading'></button>
+    ) : (
+      <button className="search-filter__button search-filter__button--loading"></button>
     );
   }
 };

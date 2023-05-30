@@ -108,11 +108,15 @@
     line-height: 1.9rem;
 } 
 .table__cell__genes{
-    min-width: 16.4rem;
+    width: 16.4rem;
     color: #2B2B2B;
     font-weight: 600;
     font-size: 1.4rem;
     line-height: 1.9rem;
+    
+    white-space: wrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 } 
 .table__cell__organism{
     width: 16.4rem;
