@@ -92,7 +92,7 @@ const SearchResultsTable = ({
   };
   return (
     <AutoSizer>
-      {({ height, width }) => (
+      {({ height, width }:{height:any, width:any}) => (
         <InfiniteLoader
           isItemLoaded={isItemLoaded}
           itemCount={itemCount}

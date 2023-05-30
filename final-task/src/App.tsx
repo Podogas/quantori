@@ -18,10 +18,8 @@ const App = () => {
   const userLoggedIn = useAppSelector((state) => state.user.isLoggedIn);
   const [authPending, setAuthPending] = useState(true);
   useEffect(() => {
-    console.log("useEffect APP");
     const userAuth = CheckAuthState();
     if (userAuth) {
-      console.log(userAuth, "user");
       dispatch(setUser(userAuth));
       setAuthPending(false);
     } else {

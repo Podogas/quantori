@@ -1,6 +1,5 @@
 import React from 'react';
-
-declare global {
+declare global{
   namespace JSX {
     interface IntrinsicElements {
       'protvista-uniprot': ProtvistaUniprotProps; // Use the custom props type
