@@ -171,10 +171,11 @@
 
 .table__cell-header-sort-btn--asc-sorting{
     background-image: url(../../assets/sort-icon-active.svg);
+    transform: rotate(180deg);
 }
 .table__cell-header-sort-btn--desc-sorting{
     background-image: url(../../assets/sort-icon-active.svg);
-    transform: rotate(180deg);
+    
 }
 .search-results__preloader {
     width: 100%;
