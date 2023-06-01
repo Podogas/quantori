@@ -31,6 +31,8 @@ const SearchBar = ({
         } else {
           setQuery("*");
         }
+      } else {
+        setQuery("*");
       }
     }
   };
@@ -72,7 +74,7 @@ const SearchBar = ({
           className="search-bar__input"
           ref={inputRef}
           type="text"
-          defaultValue={query ? query : ""}
+          defaultValue={query !== '*' ? query : ""}
           placeholder="Enter search value"
         />
         <button className="search-bar__button" type="submit">

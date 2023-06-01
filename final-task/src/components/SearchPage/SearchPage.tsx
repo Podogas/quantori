@@ -29,7 +29,7 @@ const SearchPage = () => {
         ? encodeURIComponent(query)
         : query;
       navigate({ pathname: path, search: `q=${urlSearchQuery}` });
-    }
+    } 
   }, [query, filterQuery, sortingQuery]);
   return (
     <div className="search-page">
