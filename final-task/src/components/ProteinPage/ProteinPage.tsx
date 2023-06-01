@@ -66,7 +66,7 @@ const ProteinPage = () => {
                 ? protein.proteinDescription.recommendedName.fullName.value
                 : null}
             </p>
-            {protein.genes.map((g) =>
+            {protein.genes ? (protein.genes.map((g) =>
               g.geneName ? g.geneName.value : null
             )[0] ? (
               <>
@@ -77,7 +77,7 @@ const ProteinPage = () => {
                   )}
                 </p>
               </>
-            ) : null}
+            ) : null): null}
           </div>
           <nav className="protein__tabs">
             <button

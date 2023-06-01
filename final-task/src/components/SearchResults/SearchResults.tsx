@@ -27,6 +27,7 @@ const SearchResults = ({
   const [nextUrl, setNextUrl] = useState<string | null>(null);
   const [isResultsPending, setIsResultsPending] = useState(true);
   const [isSortingPending, setIsSortingPending] = useState(false);
+  const [searchResultsKey, setSearchResultsKey] = useState(0);
   const loadNextPage = () => {
     setIsNextPageLoading(true);
     if (nextUrl) {
@@ -44,6 +45,7 @@ const SearchResults = ({
     }
   };
   useEffect(() => {
+    setSearchResultsKey(searchResultsKey+1)
     if (initialSearchUrl && query) {
       setIsResultsPending(true);
       getSearchResults(initialSearchUrl, query)
@@ -239,6 +241,7 @@ const SearchResults = ({
             </div>
           </div>
           <SearchResultsTable
+            key={searchResultsKey}
             hasNextPage={hasNextPage}
             isNextPageLoading={isNextPageLoading}
             items={items}
