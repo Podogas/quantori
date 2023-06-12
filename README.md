@@ -1,2 +1,1 @@
-# quantori
-homework
+## Quantori homework 

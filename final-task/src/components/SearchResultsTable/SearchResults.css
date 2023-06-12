@@ -1,0 +1,10 @@
+/* Other css for rows in ../SearchResults/SearchResults.css */
+.table-row--loading{
+    top: 20px;
+    background-color: #F5F5F5;
+    border-radius: 0.8rem;
+    background-image: url('../../assets/loader-dots.svg');
+    box-sizing: border-box;
+    background-repeat: no-repeat;
+    background-position: center;
+}

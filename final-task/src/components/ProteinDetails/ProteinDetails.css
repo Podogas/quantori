@@ -1,0 +1,77 @@
+.protein-details__title{
+    color: #000000;
+    font-weight: 600;
+    font-size: 1.6rem;
+    line-height: 2.2rem;
+    margin-top: 2.4rem;
+    margin-bottom: 0.8rem;
+}
+.protein-details__description-wrapper{
+    display: flex;
+    flex-wrap: wrap;
+    width: 50%;
+}
+.protein-details__description{
+    font-size: 1.2rem;
+    line-height: 1.6rem;
+    min-width: 17.9rem;
+    margin-right: 2.1rem;
+    margin-bottom: 7px;
+}
+.protein-details__description-title-paragraph{
+    font-weight: 600;
+    color: #616161;
+    margin: 0;
+    margin-bottom: 0.4rem;
+}
+.protein-details__description-paragraph{
+    font-weight: 400;
+    color: #2B2B2B;
+    margin: 0;
+}
+.protein-details__sequence{
+    width: 100%;
+}
+.protein-details__sequence-copy-btn::after{
+   content: "Copy";
+   display: inline-block;
+   margin-left: 2.4rem;
+   font-weight: 600;
+   font-size: 1.2rem;
+   transition: content 0.2s;
+}
+.protein-details__sequence-copy-btn{
+    display: block;
+    background-image: url('../../assets/copy-icon.svg');
+    width: 1.6rem;
+    height: 1.6rem;
+    padding: 0;
+    border-radius: unset;
+    background-size: cover;
+    background-repeat: no-repeat;
+    margin-right: 4.2rem;
+    margin-left: auto;
+    background-color: transparent;
+    cursor: pointer;
+}
+.protein-details__sequence-copy-btn--animated{
+    background-image: url('../../assets/copy-icon-blue.svg');
+}
+.protein-details__sequence-copy-btn--animated::after{
+    content: 'Copied';
+    color: #175BC0;
+    transition: content 0.2s;
+}
+
+.protein-details__sequence-text{
+    margin-top: 0.7rem;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    background-color: #F2F2F2;
+    padding: 1.2rem;
+    border-radius: 0.8rem;
+    font-weight: 400;
+    font-size: 1.2rem;
+    line-height: 1.63rem;
+    color:#000000;
+}

@@ -1,0 +1,66 @@
+.custom-select-container{
+    position: relative;
+}
+.custom-select-container::after{
+}
+.selected-text-protein-with::after{
+    content: '';
+    display: none;
+}
+.selected-text{    
+    background-color: #F5F5F5;
+    font-weight: 400;
+    line-height: 1.9rem;
+    font-size: 1.4rem;
+    padding: 1.6rem 1.1rem ;
+    color:#6C6C6C;
+    border-radius: 0.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+}
+.selected-text::after{
+    content: '';
+    width: 7px;
+    height: 13px;
+    background-image: url('../../assets/arrows.svg');
+}
+.selected-text--active{
+    background-color: #D8E7FF;
+} 
+
+.select-options{
+    width: 100%;
+    list-style: none;
+    font-weight: 400;
+    line-height: 1.9rem;
+    font-size: 1.4rem;
+    color:#6C6C6C;
+    padding: 0;
+    margin: 0;
+    height: 20rem;
+    padding: 0;
+    overflow-y: scroll;
+    position: absolute;
+    background-color: #fff;
+    z-index: 3;
+}
+.custom-select-option{
+    background-color: #F5F5F5;
+    border-radius: 0.8rem;
+    padding: 1.1rem 1.5rem;
+    margin-bottom: 5px;
+}
+.custom-select-option:hover{
+    background-color: #D8E7FF;
+    color: #175BC0;
+}
+.selected-text--inactive {
+    background-color: #ffffff;
+    color: #BFBFBF;
+    outline: 1px solid #CFCFCF;
+}
+.selected-text--inactive::after{
+    display: none;
+}

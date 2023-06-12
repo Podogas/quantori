@@ -1,0 +1,29 @@
+.header{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    top: 0;
+    width: 100%;
+    min-height: 4.8rem;
+    max-width: 1280px;
+    border-bottom: 1px solid #D8E7FF;
+    padding: 0 13rem;
+    box-sizing: border-box;
+}
+.header__user-email{
+    margin-right: 3rem;
+    line-height: 1.6rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #2B2B2B;
+}
+.header__logout{
+    font-size: 1.2rem;
+    line-height: 1.6rem;
+    font-weight: 600;
+    color: #7EA0D2;
+    margin-right: 2.3rem;
+}
+.header__logout:hover{
+    cursor: pointer;
+}
